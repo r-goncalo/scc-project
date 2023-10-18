@@ -47,10 +47,15 @@ function random( val){
 function loadData() {
 	var i
 	var basefile
+
+	
+	basefile = __dirname
+
 	if( fs.existsSync( '/images')) 
-		basefile = '/images/house.'
+		basefile = __dirname + '/images/house.'
 	else
-		basefile =  'images/cats.'	
+		basefile = __dirname + 'images/cats.'	
+
 	for( i = 1; i <= 40 ; i++) {
 		var img  = fs.readFileSync(basefile + i + '.jpg')
 		images.push( img)
