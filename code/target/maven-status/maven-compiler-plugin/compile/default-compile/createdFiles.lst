@@ -1,0 +1,7 @@
+scc\srv\MediaResource.class
+scc\data\UserDAO.class
+scc\utils\Hash.class
+scc\srv\ControlResource.class
+scc\db\CosmosDBLayer.class
+scc\srv\MainApplication.class
+scc\data\User.class
