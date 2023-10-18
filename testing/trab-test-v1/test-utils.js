@@ -51,7 +51,7 @@ function loadData() {
 	
 	basefile = __dirname
 
-	if( fs.existsSync( '/images')) 
+	if( fs.existsSync( basefile +'/images')) 
 		basefile = __dirname + '/images/house.'
 	else
 		basefile = __dirname + 'images/cats.'	
