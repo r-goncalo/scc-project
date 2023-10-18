@@ -4,5 +4,3 @@
 *.class
 *.jpg
 */.idea/
-*.lst
-/target/
