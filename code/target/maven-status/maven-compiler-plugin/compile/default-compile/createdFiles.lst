@@ -4,4 +4,5 @@ scc\utils\Hash.class
 scc\srv\ControlResource.class
 scc\db\CosmosDBLayer.class
 scc\srv\MainApplication.class
+scc\srv\UserResource.class
 scc\data\User.class
