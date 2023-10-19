@@ -32,8 +32,6 @@ public class MediaResource
 	String STORAGE_CONNECT_STRING = "DefaultEndpointsProtocol=https;AccountName=scc212260519;AccountKey=xVv6vISsfKHzOI25XVSgWqDsUUz5W2ZuVCiBBYszBh+VxShMJJ6LN0vZR2x9oFcvo5Fj2QELbizi+AStkZyu6A==;EndpointSuffix=core.windows.net";
 
 
-	Map<String,byte[]> fileCashMap = new HashMap<String,byte[]>();
-
 	/**
 	 * Post a new image.The id of the image is its hash.
 	 */
@@ -44,8 +42,6 @@ public class MediaResource
 	public String upload(byte[] contents) {
 
 		String key = Hash.of(contents);
-
-		fileCashMap.put(key, contents);
 
 		try {
 			BinaryData data = BinaryData.fromFile(java.nio.file.Path.of(key));
@@ -81,13 +77,6 @@ public class MediaResource
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public byte[] download(@PathParam("id") String id) {
-
-		byte[] toReturn = fileCashMap.get(id);
-
-		if(toReturn != null)
-			return toReturn;
-
-
 
 		// Get container client
 		BlobContainerClient containerClient = new BlobContainerClientBuilder()
