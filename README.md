@@ -1,6 +1,6 @@
 # scc-project
 
-Done by:
+## Done by:
 
 Ricardo Gonçalo 60519
 Afonso Ribeiro
