@@ -54,7 +54,7 @@ function loadData() {
 	if( fs.existsSync( basefile +'/images')) 
 		basefile = __dirname + '/images/house.'
 	else
-		basefile = __dirname + 'images/cats.'	
+		basefile = __dirname + '/images/cats.'	
 
 	for( i = 1; i <= 40 ; i++) {
 		var img  = fs.readFileSync(basefile + i + '.jpg')
