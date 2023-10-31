@@ -19,8 +19,10 @@ import java.util.*;
 /**
  * Resource for managing users
  */
-@Path("/user") //this means the path will be /rest/media
+@Path("/user") //this means the path will be /rest/user
 public class UserResource {
+
+    private static final int MAX_USERS_IN_CACHE = 5;
 
 
     @POST
@@ -33,37 +35,26 @@ public class UserResource {
         CosmosDBLayer db = CosmosDBLayer.getInstance();
         String id = "0:" + System.currentTimeMillis();
         UserDAO u = new UserDAO(user);
-        db.putUser(u);
+        db.putUser(u); //puts user in database
 
 
-
+        //we'll save the user in cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            jedis.set("user:"+id, mapper.writeValueAsString(u));
-            String res = jedis.get("user:"+id);
-
-            // How to convert string to object
-            UserDAO uread = mapper.readValue(res, UserDAO.class);
-            System.out.println("GET value = " + res);
+            jedis.set("user:"+id, mapper.writeValueAsString(u)); //the index will be "user" + <that user's id>
 
             Long cnt = jedis.lpush("MostRecentUsers", mapper.writeValueAsString(u));
 
-            if (cnt > 5)
-                jedis.ltrim("MostRecentUsers", 0, 4);
+            if (cnt > MAX_USERS_IN_CACHE)
+                jedis.ltrim("MostRecentUsers", 0, MAX_USERS_IN_CACHE - 1);
 
-            List<String> lst = jedis.lrange("MostRecentUsers", 0, -1);
-            System.out.println("MostRecentUsers");
-
-            for( String s : lst)
-                System.out.println(s);
-
-            cnt = jedis.incr("NumUsers");
-            System.out.println( "Num users : " + cnt);
+            jedis.incr("NumUsers");
 
         } catch (JsonMappingException e) {
             e.printStackTrace();
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -75,35 +66,47 @@ public class UserResource {
     /**
      * Note: This method is not needed
      *
-     * Return the contents of an image. Throw an appropriate error message if
+     * Return the user. Throw an appropriate error message if
      * id does not exist.
      * @return
      */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public CosmosPagedIterable<UserDAO> download(@PathParam("id") String id) {
+    public User getUser(@PathParam("id") String id) {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+        ObjectMapper mapper = new ObjectMapper();
 
-            ObjectMapper mapper = new ObjectMapper();
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             String res = jedis.get("user:"+id);
 
-            // How to convert string to object
-            UserDAO uread = mapper.readValue(res, UserDAO.class);
-            System.out.println("GET value = " + res);
+            if(res != null) {
+
+                // How to convert string to object
+                UserDAO uread = mapper.readValue(res, UserDAO.class);
+
+                return uread.toUser();
+
+            }
+
+
         } catch (JsonMappingException e) {
             e.printStackTrace();
+
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
+        CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
 
-        return db.getUserById(id);
+        UserDAO userDao = dbUser.iterator().next();
+
+        return userDao.toUser();
     }
 
     /**
