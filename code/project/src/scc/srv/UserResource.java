@@ -12,6 +12,7 @@ import scc.cache.RedisCache;
 import scc.data.User;
 import scc.data.UserDAO;
 import scc.db.CosmosDBLayer;
+import scc.utils.Hash;
 
 
 import java.util.*;
@@ -44,6 +45,7 @@ public class UserResource {
 
         UserDAO u = new UserDAO(user);
         u.setId(id);
+        u.setPwd(Hash.of(user.getPwd()));
         db.putUser(u); //puts user in database
 
 
