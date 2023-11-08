@@ -40,7 +40,7 @@ public class AzureManagement {
 	// TODO: These variable allow you to control what is being created
 	static final boolean CREATE_STORAGE = true;
 	static final boolean CREATE_COSMOSDB = true;
-	static final boolean CREATE_REDIS = false;
+	static final boolean CREATE_REDIS = true;
 
 	// TODO: change your suffix and other names if you want
   static final String MY_SUFFIX = "60519"; // Add your suffix here
