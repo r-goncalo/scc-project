@@ -20,11 +20,7 @@ public class ControlResource
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String hello() {
-
-		LogResource.writeLine("CTRL : GET VERSION");
-
 		return "v: 0001";
-
 	}
 
 }
