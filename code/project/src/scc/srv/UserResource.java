@@ -25,6 +25,7 @@ public class UserResource {
 
     private static final int MAX_USERS_IN_CACHE = 5;
 
+    public UserResource (){}
 
     /**
      *
