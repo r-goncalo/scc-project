@@ -13,7 +13,7 @@ public class LogResource {
     private static String LOG = "";
 
     public static void writeLine(String line){
-        LOG += "\n" + line;
+        LOG += line + "\n";
     }
 
     @GET
