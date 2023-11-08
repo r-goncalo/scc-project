@@ -128,6 +128,40 @@ public class UserResource {
         return userDao.toUser();
     }
 
+    @DELETE
+    @Path("/{id}")
+    public void deleteUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
+
+        Locale.setDefault(Locale.US);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+
+        //delete from database
+        CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
+
+        UserDAO userDao = dbUser.iterator().next();
+
+        if(userDao.getPwd().equals(Hash.of(pwd)))
+            throw new ForbiddenException();
+
+        db.delUserById(id);
+
+
+        //delete from cache
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+
+            jedis.del("user:" + id);
+
+
+        } catch (Exception e){
+
+            e.printStackTrace();
+
+        }
+
+
+    }
+
     /**
      * Lists the ids of images stored.
      */
