@@ -12,10 +12,12 @@ public class MainApplication extends Application
 
 	public MainApplication() {
 		resources.add(ControlResource.class);
+		resources.add(LogResource.class);
 
 		singletons.add( new MediaResource());
 		singletons.add( new UserResource());
 		singletons.add( new HouseResource());
+
 	}
 
 	@Override

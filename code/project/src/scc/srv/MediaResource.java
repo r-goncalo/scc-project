@@ -32,6 +32,7 @@ public class MediaResource
 	private static final String CONTAINER_NAME = "media";
 	String STORAGE_CONNECT_STRING = System.getenv("BlobStoreConnection");
 
+	public MediaResource() {}
 
 	/**
 	 * Post a new image.The id of the image is its hash.
