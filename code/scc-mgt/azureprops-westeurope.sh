@@ -4,3 +4,7 @@ az functionapp config appsettings set --name scc24appwesteurope60519 --resource-
 az functionapp config appsettings set --name scc24appwesteurope60519 --resource-group scc24-rg-westeurope-60519 --settings "COSMOSDB_URL=https://scc2460519.documents.azure.com:443/"
 az functionapp config appsettings set --name scc24appwesteurope60519 --resource-group scc24-rg-westeurope-60519 --settings "COSMOSDB_DATABASE=scc24db60519"
 az functionapp config appsettings set --name scc23funwesteurope60519 --resource-group scc24-rg-westeurope-60519 --settings "AzureCosmosDBConnection=AccountEndpoint=https://scc2460519.documents.azure.com:443/;AccountKey=OxnvqRhSvR4yoqiRkBhbTlYYMCbxHljUdnokRB4BShDwii5FHJioG2Y8c60y0xt9ZEyWSYkeIocvACDbGPKUzA==;"
+az functionapp config appsettings set --name scc24appwesteurope60519 --resource-group scc24-rg-westeurope-60519 --settings "REDIS_KEY=1fGJN5X09N7dpDyPRf93bw8W2QF3yNEWaAzCaB4jTP4="
+az functionapp config appsettings set --name scc24appwesteurope60519 --resource-group scc24-rg-westeurope-60519 --settings "REDIS_URL=rediswesteurope60519.redis.cache.windows.net"
+az functionapp config appsettings set --name scc23funwesteurope60519 --resource-group scc24-rg-westeurope-60519 --settings "REDIS_KEY=1fGJN5X09N7dpDyPRf93bw8W2QF3yNEWaAzCaB4jTP4="
+az functionapp config appsettings set --name scc23funwesteurope60519 --resource-group scc24-rg-westeurope-60519 --settings "REDIS_URL=rediswesteurope60519.redis.cache.windows.net"
