@@ -2,7 +2,10 @@ package scc.data;
 
 import java.util.List;
 
-public class House {
+public class HouseDao {
+
+    private String _rid;
+    private String _ts;
     private String id;
     private String name;
     private String location;
@@ -11,7 +14,7 @@ public class House {
     private double normalPrice;
     private double promotionPrice;
 
-    public House(String id, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice) {
+    public HouseDao(String id, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -21,13 +24,26 @@ public class House {
         this.promotionPrice = promotionPrice;
     }
 
-    public House(HouseDao house) {
+    public House toHouse(){
+        return new House(this);//todo acho que pode dar problemas
+    }
+
+    public HouseDao(House house) {
         this(house.getId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getNormalPrice(), house.getPromotionPrice());
     }
 
-    public House(){
+    public HouseDao(){
 
     }
+
+    public String get_rid() {
+        return _rid;
+    }
+
+    public String get_ts() {
+        return _ts;
+    }
+
     public String getId() {
         return id;
     }

@@ -11,6 +11,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
 
+import scc.data.House;
+import scc.data.HouseDao;
 import scc.data.UserDAO;
 
 public class CosmosDBLayer {
@@ -43,6 +45,7 @@ public class CosmosDBLayer {
 	private CosmosClient client;
 	private CosmosDatabase db;
 	private CosmosContainer users;
+	private CosmosContainer houses;
 	
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
@@ -53,6 +56,7 @@ public class CosmosDBLayer {
 			return;
 		db = client.getDatabase(DB_NAME);
 		users = db.getContainer("users");
+		houses = db.getContainer("houses");
 		
 	}
 
@@ -85,6 +89,21 @@ public class CosmosDBLayer {
 	public void close() {
 		client.close();
 	}
-	
-	
+
+
+	public CosmosItemResponse<HouseDao> putHouse(HouseDao h) {
+		init();
+		return houses.createItem(h);
+	}
+
+	public CosmosPagedIterable<HouseDao> getHouseById(String id) {
+		init();
+		return houses.queryItems("SELECT * FROM houses WHERE users.id=\"" + id + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+	}
+
+	public CosmosPagedIterable<HouseDao> getHouses() {
+		init();
+		return houses.queryItems("SELECT * FROM houses", new CosmosQueryRequestOptions(), HouseDao.class);
+
+	}
 }
