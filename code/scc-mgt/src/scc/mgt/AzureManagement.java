@@ -40,15 +40,16 @@ public class AzureManagement {
 	// TODO: These variable allow you to control what is being created
 	static final boolean CREATE_STORAGE = true;
 	static final boolean CREATE_COSMOSDB = true;
-	static final boolean CREATE_REDIS = true;
+	static final boolean CREATE_REDIS = false;
 
 	// TODO: change your suffix and other names if you want
-	static final String MY_SUFFIX = "59895-60519-67632"; // Add your suffix here
+	static final String MY_SUFFIX = "188046"; // Add your suffix here
 	
 	static final String AZURE_COSMOSDB_NAME = "scc24" + MY_SUFFIX;	// Cosmos DB account name
 	static final String AZURE_COSMOSDB_DATABASE = "scc24db" + MY_SUFFIX;	// Cosmos DB database name
-	static final String[] BLOB_CONTAINERS = { "images" };	// TODO: Containers to add to the blob storage
+	static final String[] BLOB_CONTAINERS = { "media" };	// TODO: Containers to add to the blob storage
 
+	static final String[] cosmosDBCollections= { "users", "houses", "Rentals", "Questions"};
 	static final Region[] REGIONS = new Region[] { Region.EUROPE_WEST}; // Define the regions to deploy resources here
 	
 	// Name of resoruce group for each region
@@ -70,7 +71,7 @@ public class AzureManagement {
 			.toArray(String[]::new);
 		
 	// Name of Azure functions to be launched in each regions
-	static final String[] AZURE_FUNCTIONS_NAME = Arrays.stream(REGIONS).map(reg -> "scc23fun" + reg.name() + MY_SUFFIX)
+	static final String[] AZURE_FUNCTIONS_NAME = Arrays.stream(REGIONS).map(reg -> "scc24fun" + reg.name() + MY_SUFFIX)
 			.toArray(String[]::new);
 
 	// Name of property file with keys and URLS to access resources
@@ -451,8 +452,13 @@ public class AzureManagement {
 							createCosmosDatabase(cosmosClient, AZURE_COSMOSDB_DATABASE);
 
 							//TODO: create the collections you have in your application
-							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "users", "/id",
-									null);
+
+							for (String collection :
+									cosmosDBCollections) {
+								createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, collection, "/id",
+										null);
+							}
+
 
 							System.err.println("Azure Cosmos DB resources created with success");
 

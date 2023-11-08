@@ -11,13 +11,15 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
 
+import scc.data.House;
+import scc.data.HouseDao;
 import scc.data.UserDAO;
 
 public class CosmosDBLayer {
 
-	private static final String CONNECTION_URL = "https://scc2459895-60519-67632.documents.azure.com:443/";
-	private static final String DB_KEY = "X3mXpjhkyBIpeMRtLY9Ky5wXOCdMkTtCSILIJpCvZL8drJ3Q6lXM8INanw3rLV2BrRFufNYzPpqMACDbpste2Q==";
-	private static final String DB_NAME = "scc24db59895-60519-67632";
+	private static final String CONNECTION_URL = System.getenv("COSMOSDB_URL");
+	private static final String DB_KEY = System.getenv("COSMOSDB_KEY");
+	private static final String DB_NAME = System.getenv("COSMOSDB_DATABASE");
 	
 	private static CosmosDBLayer instance;
 
@@ -43,6 +45,7 @@ public class CosmosDBLayer {
 	private CosmosClient client;
 	private CosmosDatabase db;
 	private CosmosContainer users;
+	private CosmosContainer houses;
 	
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
@@ -53,6 +56,7 @@ public class CosmosDBLayer {
 			return;
 		db = client.getDatabase(DB_NAME);
 		users = db.getContainer("users");
+		houses = db.getContainer("houses");
 		
 	}
 
@@ -85,6 +89,21 @@ public class CosmosDBLayer {
 	public void close() {
 		client.close();
 	}
-	
-	
+
+
+	public CosmosItemResponse<HouseDao> putHouse(HouseDao h) {
+		init();
+		return houses.createItem(h);
+	}
+
+	public CosmosPagedIterable<HouseDao> getHouseById(String id) {
+		init();
+		return houses.queryItems("SELECT * FROM houses WHERE users.id=\"" + id + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+	}
+
+	public CosmosPagedIterable<HouseDao> getHouses() {
+		init();
+		return houses.queryItems("SELECT * FROM houses", new CosmosQueryRequestOptions(), HouseDao.class);
+
+	}
 }

@@ -29,7 +29,8 @@ import jakarta.ws.rs.core.MediaType;
 public class MediaResource
 {
 
-	String STORAGE_CONNECT_STRING = "DefaultEndpointsProtocol=https;AccountName=scc212260519;AccountKey=xVv6vISsfKHzOI25XVSgWqDsUUz5W2ZuVCiBBYszBh+VxShMJJ6LN0vZR2x9oFcvo5Fj2QELbizi+AStkZyu6A==;EndpointSuffix=core.windows.net";
+	private static final String CONTAINER_NAME = "media";
+	String STORAGE_CONNECT_STRING = System.getenv("BlobStoreConnection");
 
 
 	/**
@@ -49,7 +50,7 @@ public class MediaResource
 			// Get container client
 			BlobContainerClient containerClient = new BlobContainerClientBuilder()
 					.connectionString(STORAGE_CONNECT_STRING)
-					.containerName("images")
+					.containerName(CONTAINER_NAME)
 					.buildClient();
 
 			// Get client to blob
@@ -81,7 +82,7 @@ public class MediaResource
 		// Get container client
 		BlobContainerClient containerClient = new BlobContainerClientBuilder()
 				.connectionString(STORAGE_CONNECT_STRING)
-				.containerName("images")
+				.containerName(CONTAINER_NAME)
 				.buildClient();
 
 		// Get client to blob
@@ -109,7 +110,7 @@ public class MediaResource
 
 		BlobContainerClient containerClient = new BlobContainerClientBuilder()
 				.connectionString(STORAGE_CONNECT_STRING)
-				.containerName("images")
+				.containerName(CONTAINER_NAME)
 				.buildClient();
 
 

@@ -14,6 +14,10 @@ public class User {
 	private String pwd;
 	private String photoId;
 	private String[] houseIds;
+
+	public User(){
+
+	}
 	public User(String id, String name, String pwd, String photoId, String[] houseIds) {
 		super();
 		this.id = id;
