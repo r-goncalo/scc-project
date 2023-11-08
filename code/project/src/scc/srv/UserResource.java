@@ -33,8 +33,11 @@ public class UserResource {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+
         String id = "0:" + System.currentTimeMillis();
+
         UserDAO u = new UserDAO(user);
+        u.setId(id);
         db.putUser(u); //puts user in database
 
 
