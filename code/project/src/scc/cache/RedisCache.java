@@ -5,7 +5,7 @@ import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisCache {
 
-	private static final String RedisHostname = "scc2324cashe60519.redis.cache.windows.net";
+	private static final String RedisHostname = "scc24cashe60519.redis.cache.windows.net";
 	private static final String RedisKey = "lMGJufUGIpFzrFEnZLOeelqmU2hMw96Q4AzCaG4CPJQ=";
 	
 	private static JedisPool instance;

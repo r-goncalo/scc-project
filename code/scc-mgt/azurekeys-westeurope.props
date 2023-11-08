@@ -1,0 +1,5 @@
+# Date : 08/11/23, 11:49
+BlobStoreConnection=DefaultEndpointsProtocol=https;AccountName=sccstwesteurope60519;AccountKey=EFGwY5Mbb6n5W8R+2AYga9E72cwWpdWJKvlDuZLTjWuNWqNuFsXv6wojpWkejlpheoqHmlXy2fNY+AStX09mqQ==;EndpointSuffix=core.windows.net
+COSMOSDB_KEY=p60MJ7MWQr5GIH8SS2Nm6p9Ai4kWdvX186L9kfml1XQ2r7die92G024TJFx1GTwlL2nheD2lto8TACDbSJIs8Q==
+COSMOSDB_URL=https://scc2460519.documents.azure.com:443/
+COSMOSDB_DATABASE=scc24db60519

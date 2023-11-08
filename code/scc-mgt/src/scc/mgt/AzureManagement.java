@@ -39,11 +39,11 @@ import scc.utils.AzureProperties;
 public class AzureManagement {
 	// TODO: These variable allow you to control what is being created
 	static final boolean CREATE_STORAGE = true;
-	static final boolean CREATE_COSMOSDB = false;
-	static final boolean CREATE_REDIS = false;
+	static final boolean CREATE_COSMOSDB = true;
+	static final boolean CREATE_REDIS = true;
 
 	// TODO: change your suffix and other names if you want
-	static final String MY_SUFFIX = "60519"; // Add your suffix here
+	static final String MY_SUFFIX = "59895-60519-67632"; // Add your suffix here
 	
 	static final String AZURE_COSMOSDB_NAME = "scc24" + MY_SUFFIX;	// Cosmos DB account name
 	static final String AZURE_COSMOSDB_DATABASE = "scc24db" + MY_SUFFIX;	// Cosmos DB database name
