@@ -5,10 +5,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-import java.util.ArrayList;
-
 /**
- * Class with control endpoints.
+ * temporary class to store (public, unrestrained, unsecure) logs
  */
 @Path("/log")
 public class LogResource {
@@ -22,11 +20,7 @@ public class LogResource {
         LOG += "\n" + line;
 
     }
-
-    /**
-     * This methods just prints a string. It may be useful to check if the current
-     * version is running on Azure.
-     */
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getLog() {
