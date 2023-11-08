@@ -172,8 +172,8 @@
 			                </resource>
 			            </resources>
 			        </deployment>
-			        <resourceGroup>scc24-rg-westeurope-59895-60519-67632</resourceGroup>
-			        <appName>scc24-rg-westeurope-59895-60519-67632</appName>
+			        <resourceGroup>scc24-rg-westeurope-60519</resourceGroup>
+			        <appName>scc24westeurope60519</appName>
 			    </configuration>
 			</plugin>
 		</plugins>
