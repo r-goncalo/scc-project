@@ -44,6 +44,8 @@ public class UserResource {
 
         String id = "0:" + System.currentTimeMillis();
 
+        LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", " + "id = " + id + ", pwd = " + user.getPwd());
+
         UserDAO u = new UserDAO(user);
         u.setId(id);
         u.setPwd(Hash.of(user.getPwd()));
@@ -89,6 +91,8 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public User getUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
+        LogResource.writeLine("USER : GET USER : id = " + id + ", pwd = " + pwd);
+
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -133,6 +137,8 @@ public class UserResource {
     @Path("/{id}")
     public void deleteUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
+        LogResource.writeLine("USER : DELETE USER : id = " + id + ", pwd = " + pwd);
+
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -170,6 +176,8 @@ public class UserResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> list() {
+
+        LogResource.writeLine("USER : GET USERS");
 
         List<String> toReturn = new ArrayList<>();
 
