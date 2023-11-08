@@ -10,8 +10,9 @@ module.exports = {
 }
 
 
-const Faker = require('@faker-js/faker');
+const {faker} = require('@faker-js/faker');
 const fs = require('fs')
+
 
 var imagesIds = []
 var images = []
@@ -47,15 +48,13 @@ function random( val){
 function loadData() {
 	var i
 	var basefile
-
 	
 	basefile = __dirname
-
 	if( fs.existsSync( basefile +'/images')) 
 		basefile = __dirname + '/images/house.'
 	else
 		basefile = __dirname + '/images/cats.'	
-
+	
 	for( i = 1; i <= 40 ; i++) {
 		var img  = fs.readFileSync(basefile + i + '.jpg')
 		images.push( img)
@@ -116,12 +115,12 @@ function selectUser(context, events, done) {
  * Generate data for a new user using Faker
  */
 function genNewUser(context, events, done) {
-	const first = `${Faker.name.firstName()}`
-	const last = `${Faker.name.lastName()}`
-	context.vars.id = first + "." + last
-	context.vars.name = first + " " + last
-	context.vars.pwd = `${Faker.internet.password()}`
-	return done()
+    //const first = `${Faker.name.firstName()}`
+    // const last = `${Faker.name.lastName()}`
+    context.vars.id = faker.internet.userName()
+    context.vars.name = faker.internet.displayName() //first + " " + last
+    context.vars.pwd = `${faker.internet.password()}`
+    return done()
 }
 
 
@@ -136,6 +135,3 @@ function genNewUserReply(requestParams, response, context, ee, next) {
 	}
     return next()
 }
-
-
-
