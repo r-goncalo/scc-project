@@ -25,6 +25,12 @@ public class UserResource {
     private static final int MAX_USERS_IN_CACHE = 5;
 
 
+    /**
+     *
+     * @param user
+     *
+     * @return the generated id of the user
+     */
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -68,10 +74,12 @@ public class UserResource {
 
     /**
      * Note: This method is not needed
+     * Note: missing password implementation
      *
      * Return the user. Throw an appropriate error message if
      * id does not exist.
-     * @return
+     *
+     * @return the getted user, null if it does not exist
      */
     @GET
     @Path("/{id}")
