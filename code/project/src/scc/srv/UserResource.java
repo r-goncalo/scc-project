@@ -12,6 +12,7 @@ import scc.cache.RedisCache;
 import scc.data.User;
 import scc.data.UserDAO;
 import scc.db.CosmosDBLayer;
+import scc.utils.Hash;
 
 
 import java.util.*;
@@ -24,7 +25,14 @@ public class UserResource {
 
     private static final int MAX_USERS_IN_CACHE = 5;
 
+    public UserResource (){}
 
+    /**
+     *
+     * @param user
+     *
+     * @return the generated id of the user
+     */
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -33,8 +41,14 @@ public class UserResource {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+
         String id = "0:" + System.currentTimeMillis();
+
+        LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", " + "id = " + id + ", pwd = " + user.getPwd());
+
         UserDAO u = new UserDAO(user);
+        u.setId(id);
+        u.setPwd(Hash.of(user.getPwd()));
         db.putUser(u); //puts user in database
 
 
@@ -65,15 +79,19 @@ public class UserResource {
 
     /**
      * Note: This method is not needed
+     * Note: missing password implementation
      *
      * Return the user. Throw an appropriate error message if
      * id does not exist.
-     * @return
+     *
+     * @return the getted user, null if it does not exist
      */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@PathParam("id") String id) {
+    public User getUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
+
+        LogResource.writeLine("USER : GET USER : id = " + id + ", pwd = " + pwd);
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -88,6 +106,9 @@ public class UserResource {
 
                 // How to convert string to object
                 UserDAO uread = mapper.readValue(res, UserDAO.class);
+
+                if(uread.getPwd().equals(Hash.of(pwd)))
+                    throw new ForbiddenException();
 
                 return uread.toUser();
 
@@ -106,7 +127,46 @@ public class UserResource {
 
         UserDAO userDao = dbUser.iterator().next();
 
+        if(userDao.getPwd().equals(Hash.of(pwd)))
+            throw new ForbiddenException();
+
         return userDao.toUser();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public void deleteUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
+
+        LogResource.writeLine("USER : DELETE USER : id = " + id + ", pwd = " + pwd);
+
+        Locale.setDefault(Locale.US);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+
+        //delete from database
+        CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
+
+        UserDAO userDao = dbUser.iterator().next();
+
+        if(userDao.getPwd().equals(Hash.of(pwd)))
+            throw new ForbiddenException();
+
+        db.delUserById(id);
+
+
+        //delete from cache
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+
+            jedis.del("user:" + id);
+
+
+        } catch (Exception e){
+
+            e.printStackTrace();
+
+        }
+
+
     }
 
     /**
@@ -116,6 +176,8 @@ public class UserResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> list() {
+
+        LogResource.writeLine("USER : GET USERS");
 
         List<String> toReturn = new ArrayList<>();
 
