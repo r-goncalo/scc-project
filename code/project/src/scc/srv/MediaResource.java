@@ -45,6 +45,8 @@ public class MediaResource
 
 		String key = Hash.of(contents);
 
+		LogResource.writeLine("MEDIA : UPLOAD : id(hash) = " + key);
+
 		try {
 			BinaryData data = BinaryData.fromFile(java.nio.file.Path.of(key));
 
@@ -60,7 +62,7 @@ public class MediaResource
 			// Upload contents from BinaryData (check documentation for other alternatives)
 			blob.upload(data);
 
-			System.out.println( "File updloaded : " + key);
+			LogResource.writeLine("    File uploaded");
 
 		} catch( Exception e) {
 			e.printStackTrace();
@@ -79,6 +81,8 @@ public class MediaResource
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public byte[] download(@PathParam("id") String id) {
+
+		LogResource.writeLine("MEDIA : DOWNLOAD : id = " + id);
 
 		// Get container client
 		BlobContainerClient containerClient = new BlobContainerClientBuilder()

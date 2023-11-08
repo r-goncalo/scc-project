@@ -146,10 +146,19 @@ public class UserResource {
         //delete from database
         CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
 
+        if(dbUser == null) {
+            LogResource.writeLine("    USER NOT IN COSMOS");
+            return;
+        }
+
         UserDAO userDao = dbUser.iterator().next();
 
-        if(userDao.getPwd().equals(Hash.of(pwd)))
+        if(userDao.getPwd().equals(Hash.of(pwd))){
+
+            LogResource.writeLine("    hash(pwd) != <pwdInCosmos>");
             throw new ForbiddenException();
+
+        }
 
         db.delUserById(id);
 
@@ -159,10 +168,6 @@ public class UserResource {
 
             jedis.del("user:" + id);
 
-
-        } catch (Exception e){
-
-            e.printStackTrace();
 
         }
 
