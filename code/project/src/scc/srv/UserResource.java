@@ -86,7 +86,7 @@ public class UserResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@PathParam("id") String id) {
+    public User getUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -101,6 +101,9 @@ public class UserResource {
 
                 // How to convert string to object
                 UserDAO uread = mapper.readValue(res, UserDAO.class);
+
+                if(uread.getPwd().equals(Hash.of(pwd)))
+                    throw new ForbiddenException();
 
                 return uread.toUser();
 
@@ -118,6 +121,9 @@ public class UserResource {
         CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
 
         UserDAO userDao = dbUser.iterator().next();
+
+        if(userDao.getPwd().equals(Hash.of(pwd)))
+            throw new ForbiddenException();
 
         return userDao.toUser();
     }
