@@ -11,9 +11,10 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
 
-import scc.data.House;
-import scc.data.HouseDao;
-import scc.data.UserDAO;
+import scc.data.*;
+
+import java.util.Date;
+
 import scc.srv.LogResource;
 
 public class CosmosDBLayer {
@@ -60,8 +61,8 @@ public class CosmosDBLayer {
 	private CosmosDatabase db;
 	private CosmosContainer users;
 	private CosmosContainer houses;
-	//private CosmosContainer rentals;
-	//private CosmosContainer questions;
+	private CosmosContainer rentals;
+	private CosmosContainer questions;
 	
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
@@ -76,8 +77,8 @@ public class CosmosDBLayer {
 
 		users = db.getContainer("users");
 		houses = db.getContainer("houses");
-		//rentals = db.getContainer("rentals");
-		//questions = db.getContainer("questions");
+		rentals = db.getContainer("rentals");
+		questions = db.getContainer("questions");
 		
 	}
 
@@ -134,4 +135,104 @@ public class CosmosDBLayer {
 		return houses.queryItems("SELECT * FROM houses", new CosmosQueryRequestOptions(), HouseDao.class);
 
 	}
+
+
+	public CosmosItemResponse<Object> delHouseById(String id) {
+		init();
+		PartitionKey key = new PartitionKey(id);
+		return houses.deleteItem(id, key, new CosmosItemRequestOptions());
+	}
+
+	//list all of a users house
+	public CosmosPagedIterable<HouseDao> getHousesForUser(String id) {
+		init();
+		return houses.queryItems("SELECT * FROM houses WHERE houses.ownerId=\"" + id + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+	}
+
+	//make a function to get all the houses in a given location
+	public CosmosPagedIterable<HouseDao> getHousesByLocation(String location) {
+		init();
+		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+	}
+
+
+	public CosmosPagedIterable<HouseDao> getHouseByLocationAndTime(String location, Date start, Date end) {
+		init();
+
+		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+	}
+
+	public CosmosPagedIterable<HouseDao> getAllHouses() {
+		init();
+		return houses.queryItems("SELECT * FROM houses", new CosmosQueryRequestOptions(), HouseDao.class);
+
+	}
+	/*
+	////////////////// RENTALS ////////////////
+	 */
+
+	//make a function to get all the rentals in a given date for a given house id
+	public CosmosPagedIterable<RentalDao> getHouseRentalForDate(Date date, String houseId) {
+		init();
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.houseId=\"" + houseId + "\" AND rentals.day=\"" + date.toString() + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
+
+
+
+	//return CosmosItemResponse<RentalDao> with all the rentals in a given period from start to end.
+	// Use between in the sql query
+	public CosmosPagedIterable<RentalDao> getRentalsByPeriod(String start, String end) {
+		init();
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.day BETWEEN \"" + start + "\" AND \"" + end + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
+
+
+	//do the same functions of users and houses but for rentals and questions
+	public CosmosItemResponse<RentalDao> putRental(RentalDao rental) {
+		init();
+		return rentals.createItem(rental);
+	}
+
+	public CosmosPagedIterable<RentalDao> getRentalById(String id) {
+		init();
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.id=\"" + id + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
+
+	//getrentalsforhouse
+	public CosmosPagedIterable<RentalDao> getRentalsForHouse(String id) {
+		init();
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.houseId=\"" + id + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
+	//get rental for user
+	public CosmosPagedIterable<RentalDao> getRentalsForUser(String id) {
+		init();
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.userId=\"" + id + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
+	//get all rentals
+	public CosmosPagedIterable<RentalDao> getRentals() {
+		init();
+		return rentals.queryItems("SELECT * FROM rentals ", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
+
+	/*
+	/////////////////// QUESTIONS /////////////
+	 */
+
+	//Questions
+	public CosmosItemResponse<Object> putQuestion(Object question) {
+		init();
+		return questions.createItem(question);
+	}
+
+	public CosmosPagedIterable<Object> getQuestionById(String id) {
+		init();
+		return questions.queryItems("SELECT * FROM questions WHERE questions.id=\"" + id + "\"", new CosmosQueryRequestOptions(), Object.class);
+	}
+
+	public CosmosPagedIterable<Object> getQuestions() {
+		init();
+		return questions.queryItems("SELECT * FROM questions ", new CosmosQueryRequestOptions(), Object.class);
+	}
+
+
 }

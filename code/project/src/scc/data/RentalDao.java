@@ -2,18 +2,16 @@ package scc.data;
 
 import java.util.Date;
 
-//Rental: Each rental should include information about the house being rented, the
-//user renting the house, the period and price of the rental.
-//make the Rental class
-
-public class Rental {
+public class RentalDao {
+    private String _rid;
+    private String _ts;
     private String id;
     private String houseId;
     private String userId;
     private Date day;
     private double price;
 
-    public Rental(String id, String houseId, String userId, Date day, double price) {
+    public RentalDao(String id, String houseId, String userId, Date day, double price) {
         this.id = id;
         this.houseId = houseId;
         this.userId = userId;
@@ -21,15 +19,23 @@ public class Rental {
         this.price = price;
     }
 
-    public Rental(RentalDao rental) {
+    public RentalDao(Rental rental) {
         this(rental.getId(), rental.getHouseId(), rental.getUserId(), rental.getDay(), rental.getPrice());
     }
 
-    public Rental(){
+    public RentalDao(){
 
     }
 
     //getters
+    public String get_rid() {
+        return _rid;
+    }
+
+    public String get_ts() {
+        return _ts;
+    }
+
     public String getId() {
         return id;
     }

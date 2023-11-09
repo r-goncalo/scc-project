@@ -7,21 +7,26 @@ public class HouseDao {
     private String _rid;
     private String _ts;
     private String id;
+    private String ownerId;
     private String name;
     private String location;
     private String description;
     private List<String> photoIds;
+
     private double normalPrice;
     private double promotionPrice;
+    private String renterId;
 
-    public HouseDao(String id, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice) {
+    public HouseDao(String id, String ownerId, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice, String renterId) {
         this.id = id;
+        this.ownerId = ownerId;
         this.name = name;
         this.location = location;
         this.description = description;
         this.photoIds = photos;
         this.normalPrice = normalPrice;
         this.promotionPrice = promotionPrice;
+        this.renterId = renterId;
     }
 
     public House toHouse(){
@@ -29,7 +34,7 @@ public class HouseDao {
     }
 
     public HouseDao(House house) {
-        this(house.getId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getNormalPrice(), house.getPromotionPrice());
+        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getNormalPrice(), house.getPromotionPrice(), house.getRenterId());
     }
 
     public HouseDao(){
@@ -46,6 +51,10 @@ public class HouseDao {
 
     public String getId() {
         return id;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
     }
 
     public String getName() {
@@ -70,5 +79,9 @@ public class HouseDao {
 
     public double getPromotionPrice() {
         return promotionPrice;
+    }
+
+    public String getRenterID() {
+        return renterId;
     }
 }
