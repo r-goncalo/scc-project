@@ -63,7 +63,7 @@ public class UserDAO {
 	}
 
 	public User toUser() {
-		return new User( id, name, pwd, photoId);
+		return new User( id, name, pwd, photoId, null);
 	}
 	@Override
 	public String toString() {
