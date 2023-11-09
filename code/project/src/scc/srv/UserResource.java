@@ -51,17 +51,25 @@ public class UserResource {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
+        //restrictions in regards to houses
         for(String houseId : user.getHouseIds()){
 
-            CosmosPagedIterable<HouseDao> h = db.getHouseById(houseId);
+            LogResource.writeLine("    here1");
 
-            if(h == null){
+            Iterator<HouseDao> h = (db.getHouseById(houseId)).iterator();
+
+            if(!h.hasNext()){
 
                 LogResource.writeLine("    House with id: " + houseId + " does not exist");
                 throw new ForbiddenException("House with id: " + houseId + " does not exist"); // this exception should be different
+
             }
 
+            HouseDao house = h.next();
+
         }
+
+        LogResource.writeLine("    here2");
 
         UserDAO u = new UserDAO(user);
         u.setId(id);
@@ -91,6 +99,7 @@ public class UserResource {
             e.printStackTrace();
         }
 
+        LogResource.writeLine("    user created with success");
         return id;
 
     }
@@ -205,13 +214,16 @@ public class UserResource {
         List<String> toReturn = new ArrayList<>();
 
 
-        Iterable<UserDAO> users =  CosmosDBLayer.getInstance().getUsers();
+        CosmosPagedIterable<UserDAO> users =  CosmosDBLayer.getInstance().getUsers();
+
 
         for( UserDAO user : users){
 
             toReturn.add(user.getName());
 
         }
+
+        LogResource.writeLine("   Number of users: " + toReturn.size());
 
         return toReturn;
 
@@ -258,6 +270,8 @@ public class UserResource {
 
 
     }
+
+    
 
 
 
