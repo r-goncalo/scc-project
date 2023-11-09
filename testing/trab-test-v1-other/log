@@ -1,0 +1,16 @@
+Test run id: t6xk6_kwkp6w35hbnwqh364fg5dcqtbnhqr_thez
+Phase started: Create users (index: 0, duration: 1s) 18:21:37(+0100)
+
+Phase completed: Create users (index: 0, duration: 1s) 18:21:39(+0100)
+
+--------------------------------------
+Metrics for period to: 18:21:40(+0100) (width: 0.079s)
+--------------------------------------
+
+http.request_rate: ............................................................. 1/sec
+http.requests: ................................................................. 1
+vusers.created: ................................................................ 1
+vusers.created_by_name.Create users: ........................................... 1
+
+
+Warning: multiple batches of metrics for period 1697304090000 2023-10-14T17:21:30.000Z

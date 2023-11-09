@@ -1,0 +1,7 @@
+{
+  "id": "some_id_value",
+  "name": "John Doe",
+  "pwd": "password123",
+  "photoId": "photo123",
+  "houseIds": ["house1", "house2"]
+}
