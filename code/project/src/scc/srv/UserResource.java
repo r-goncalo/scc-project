@@ -214,6 +214,9 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response auth(User user){
 
+
+        LogResource.writeLine("USER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
+
         boolean pwdOk = false;
 
         if(pwdOk){
@@ -228,7 +231,7 @@ public class UserResource {
                     .httpOnly(true)
                     .build();
 
-            RedisCache.getCachePool().putSession(new Session(uid, user);
+            RedisCache.putSession(new Session(uid, user));
 
             return Response.ok().cookie(cookie).build();
 

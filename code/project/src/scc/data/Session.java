@@ -5,8 +5,8 @@ package scc.data;
  */
 public class Session {
 
-    String uid; //the id of the session (cookie)
-    User user; //a user object with relevant information (id, ...)
+    private String uid; //the id of the session (cookie)
+    private User user; //a user object with relevant information (id, ...)
 
     public Session(String uid, User user) {
 
@@ -15,7 +15,7 @@ public class Session {
 
     }
 
-    String getUid() {return uid;}
-    User getUser(){return user;}
+    public String getUid() {return uid;}
+    public User getUser(){return user;}
 
 }

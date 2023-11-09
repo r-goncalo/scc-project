@@ -1,11 +1,14 @@
 package scc.cache;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.core.Cookie;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import scc.data.Session;
+import scc.data.UserDAO;
+import scc.srv.LogResource;
 
 import java.io.NotActiveException;
 
@@ -45,15 +48,39 @@ public class RedisCache {
 	///////////////////// SESSION ///////////////
 	*/
 
-	public Session putSession(Session session){
+	public static void putSession(Session session){
 
 		ObjectMapper mapper = new ObjectMapper();
-		getCachePool().getResource().set("session=" + session.getUid(), mapper.writeValueAsString(session.getUser());
+
+		try {
+
+			getCachePool().getResource().set("session=" + session.getUid(), mapper.writeValueAsString(session.getUser()));
+
+		} catch (JsonProcessingException e) {
+
+			LogResource.writeLine("   Error puting session in cache");
+
+			e.printStackTrace();
+		}
 
 	}
 
-	public Session getSession(String uid){
+	public static Session getSession(String uid) throws JsonProcessingException {
 
+		Session session = null;
+
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			String sessionString = getCachePool().getResource().get("session=" + uid);
+			session = mapper.readValue(sessionString, Session.class);
+
+		}catch(JsonProcessingException exception){
+
+			LogResource.writeLine("   Error getting session from cache");
+
+		}
+		return session;
 
 	}
 
@@ -75,15 +102,18 @@ public class RedisCache {
 
 		try {
 
-			s = getCachePool().getSession(session.getValue());
+			s = getSession(session.getValue());
 
-		} catch (CacheException e) {
+		} catch (Exception e) {
 			return null;
 		}
-		if (s == null || s.getUser() == null || s.getUser().length() == 0)
+		if (s == null || s.getUser() == null)
+
 			throw new NotAuthorizedException("No valid session initialized");
+
 		if (!s.getUser().equals(id) && !s.getUser().equals("admin"))
 			throw new NotAuthorizedException("Invalid user : " + s.getUser());
+
 		return s;
 
 	}
