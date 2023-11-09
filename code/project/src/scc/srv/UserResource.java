@@ -46,7 +46,7 @@ public class UserResource {
         LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
         String id = "0:" + System.currentTimeMillis();
-        LogResource.writeLine("   Generated id: " + id);
+        LogResource.writeLine("    Generated id: " + id);
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -73,10 +73,10 @@ public class UserResource {
             jedis.incr("NumUsers");
 
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+            LogResource.writeLine("    error creating user: " + e.getMessage());
 
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            LogResource.writeLine("    error creating user: " + e.getMessage());
         }
 
         LogResource.writeLine("    user created with success");
