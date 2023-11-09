@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
 import scc.data.User;
@@ -45,7 +47,7 @@ public class UserResource {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-        
+
         UserDAO u = new UserDAO(user);
         u.setId(id);
         u.setPwd(Hash.of(user.getPwd()));
@@ -198,6 +200,41 @@ public class UserResource {
         return toReturn;
 
     }
+
+    /*
+    @POST
+    @Path("/auth")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response auth(User user){
+
+        boolean pwdOk = false;
+
+        if(pwdOk){
+
+            String uid = UUID.randomUUID().toString();
+            NewCookie cookie = new NewCookie.Builder("scc:session")
+                    .value(uid)
+                    .path("/")
+                    .comment("sessionid")
+                    .maxAge(3600)
+                    .secure(false)
+                    .httpOnly(true)
+                    .build();
+
+            RedisCache.getCachePool().putSession(new Session(uid, user.getUser()));
+
+            return Response.ok().cookie(cookie).build();
+
+        }else{
+
+            throw new NotAuthorizedException("Incorrect login");
+
+        }
+
+
+    }
+
+     */
 
 
 }
