@@ -73,7 +73,7 @@ public class UserResource {
             jedis.incr("NumUsers");
 
         } catch (Exception e) {
-            LogResource.writeLine("    error creating user: " + e.getMessage());
+            LogResource.writeLine("    error" + e.getClass() + " creating user: " + e.getMessage());
             throw new InternalServerErrorException();
 
         }
@@ -123,12 +123,10 @@ public class UserResource {
             }
 
 
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LogResource.writeLine("    error" + e.getClass() + " creating user: " + e.getMessage());
+            throw new InternalServerErrorException();
 
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         }
 
         CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
@@ -170,14 +168,7 @@ public class UserResource {
 
         db.delUserById(id);
 
-
-        //delete from cache
-        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
-
-            jedis.del("user:" + id);
-
-
-        }
+        RedisCache.getCachePool().getResource().del("user:" + id);
 
 
     }
