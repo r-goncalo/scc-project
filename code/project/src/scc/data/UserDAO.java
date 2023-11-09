@@ -12,20 +12,18 @@ public class UserDAO {
 	private String name;
 	private String pwd;
 	private String photoId;
-	private String[] houseIds;
 
 	public UserDAO() {
 	}
 	public UserDAO( User u) {
-		this(u.getId(), u.getName(), u.getPwd(), u.getPhotoId(), u.getHouseIds());
+		this(u.getId(), u.getName(), u.getPwd(), u.getPhotoId());
 	}
-	public UserDAO(String id, String name, String pwd, String photoId, String[] houseIds) {
+	public UserDAO(String id, String name, String pwd, String photoId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.pwd = pwd;
 		this.photoId = photoId;
-		this.houseIds = houseIds;
 	}
 	public String get_rid() {
 		return _rid;
@@ -63,19 +61,14 @@ public class UserDAO {
 	public void setPhotoId(String photoId) {
 		this.photoId = photoId;
 	}
-	public String[] getHouseIds() {
-		return houseIds == null ? new String[0] : houseIds ;
-	}
-	public void setHouseIds(String[] houseIds) {
-		this.houseIds = houseIds;
-	}
+
 	public User toUser() {
-		return new User( id, name, pwd, photoId, houseIds == null ? null : Arrays.copyOf(houseIds,houseIds.length));
+		return new User( id, name, pwd, photoId);
 	}
 	@Override
 	public String toString() {
 		return "UserDAO [_rid=" + _rid + ", _ts=" + _ts + ", id=" + id + ", name=" + name + ", pwd=" + pwd
-				+ ", photoId=" + photoId + ", houseIds=" + Arrays.toString(houseIds) + "]";
+				+ ", photoId=" + photoId +"]";
 	}
 
 }

@@ -1,8 +1,6 @@
 package scc.srv;
 
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -17,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-@Path("/house") //this means the path will be /rest/user
+@Path("/house")
 public class HouseResource {
 
 
@@ -51,10 +49,7 @@ public class HouseResource {
 
             jedis.incr("NumHouses");
 
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-
-        } catch (JsonProcessingException e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
 
@@ -85,11 +80,7 @@ public class HouseResource {
             }
 
 
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-
-
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -111,7 +102,7 @@ public class HouseResource {
         List<String> toReturn = new ArrayList<>();
 
 
-        Iterable<HouseDao> houses =  CosmosDBLayer.getInstance().getHouses();
+        Iterable<HouseDao> houses =  CosmosDBLayer.getInstance().getAllHouses();
 
         for( HouseDao house : houses){
             toReturn.add(house.getName());
@@ -119,5 +110,54 @@ public class HouseResource {
         return toReturn;
     }
 
+    @DELETE
+    @Path("/house/{id}")
+    public void deleteHouse(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
+        Locale.setDefault(Locale.US);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        //delete from database
+        CosmosPagedIterable<HouseDao> dbHouse = db.getHouseById(id);
+
+        HouseDao houseDao = dbHouse.iterator().next();
+
+        db.delUserById(houseDao.getId());
+
+
+        //delete from cache
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+            jedis.del("house:" + id);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @GET
+    @Path("/location/{location}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<House> getHousesByLocation(@PathParam("location") String location) {
+
+        Locale.setDefault(Locale.US);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        CosmosPagedIterable<HouseDao> houses = db.getHousesByLocation(location);
+
+        List<House> ret = new ArrayList<>();
+
+        for (HouseDao h : houses)
+            ret.add(new House(h));
+
+        return ret;
+    }
+
+    //get all the houses in a given location and whithin a given time range from start to end
+    //    @GET
+    //    @Path("/location/{location}/{start}/{end}")
+    //    @Produces(MediaType.APPLICATION_JSON)
+    //    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @PathParam("start") String start, @PathParam("end") String end) {
+    //
+    //    }
 }

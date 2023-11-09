@@ -9,6 +9,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
+import scc.data.HouseDao;
 import scc.data.User;
 import scc.data.UserDAO;
 import scc.db.CosmosDBLayer;
@@ -109,9 +110,7 @@ public class UserResource {
         return userDao.toUser();
     }
 
-    /**
-     * Lists the ids of images stored.
-     */
+
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -131,6 +130,24 @@ public class UserResource {
         return toReturn;
 
     }
+
+    // list user's houses
+    @GET
+    @Path("/{id}/houses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> listHouses(@PathParam("id") String id) {
+        Locale.setDefault(Locale.US);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+        CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);
+
+        List<String> toReturn = new ArrayList<>();
+        for (HouseDao house : houses) {
+            toReturn.add(house.getName());
+        }
+        return toReturn;
+    }
+
+
 
 
 }
