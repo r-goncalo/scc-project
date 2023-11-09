@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
@@ -96,9 +97,21 @@ public class UserResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
+    public User getUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
         LogResource.writeLine("USER : GET USER : id = " + id + ", pwd = " + pwd);
+
+        User user = getUser(id);
+
+        if(!user.getPwd().equals(Hash.of(pwd)))
+            throw new ForbiddenException();
+
+        return user;
+
+
+    }
+
+    public User getUser(String id){
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -115,9 +128,6 @@ public class UserResource {
 
                 // How to convert string to object
                 UserDAO uread = mapper.readValue(res, UserDAO.class);
-
-                if(uread.getPwd().equals(Hash.of(pwd)))
-                    throw new ForbiddenException();
 
                 return uread.toUser();
 
@@ -136,10 +146,8 @@ public class UserResource {
 
         UserDAO userDao = dbUser.iterator().next();
 
-        if(userDao.getPwd().equals(Hash.of(pwd)))
-            throw new ForbiddenException();
-
         return userDao.toUser();
+
     }
 
     @DELETE
