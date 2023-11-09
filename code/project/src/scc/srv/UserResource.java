@@ -50,28 +50,6 @@ public class UserResource {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-/*
-        //restrictions in regards to houses
-        for(String houseId : user.getHouseIds()){
-
-            LogResource.writeLine("    here1");
-
-            Iterator<HouseDao> h = (db.getHouseById(houseId)).iterator();
-
-            if(!h.hasNext()){
-
-                LogResource.writeLine("    House with id: " + houseId + " does not exist");
-                throw new ForbiddenException("House with id: " + houseId + " does not exist"); // this exception should be different
-
-            }
-
-            HouseDao house = h.next();
-
-        }
-
-        LogResource.writeLine("    here2");
-        */
-
 
         UserDAO u = new UserDAO(user);
         u.setId(id);
