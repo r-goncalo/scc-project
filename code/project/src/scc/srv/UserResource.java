@@ -51,25 +51,33 @@ public class UserResource {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        //restrictions in regards to houses
-        for(String houseId : user.getHouseIds()){
+        try {
 
-            LogResource.writeLine("    here1");
+            //restrictions in regards to houses
+            for (String houseId : user.getHouseIds()) {
 
-            Iterator<HouseDao> h = (db.getHouseById(houseId)).iterator();
 
-            if(!h.hasNext()){
+                Iterator<HouseDao> h = (db.getHouseById(houseId)).iterator();
 
-                LogResource.writeLine("    House with id: " + houseId + " does not exist");
-                throw new ForbiddenException("House with id: " + houseId + " does not exist"); // this exception should be different
+                if (!h.hasNext()) {
+
+                    LogResource.writeLine("    House with id: " + houseId + " does not exist");
+                    throw new ForbiddenException("House with id: " + houseId + " does not exist"); // this exception should be different
+
+                }
+
+                HouseDao house = h.next();
 
             }
 
-            HouseDao house = h.next();
+        } catch (Exception e){
+
+            LogResource.writeLine("    Error evaluating houses: " + e.getMessage());
+
+            throw e;
 
         }
 
-        LogResource.writeLine("    here2");
 
 
 
