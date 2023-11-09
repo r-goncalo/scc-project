@@ -14,6 +14,7 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import scc.data.House;
 import scc.data.HouseDao;
 import scc.data.UserDAO;
+import scc.srv.LogResource;
 
 public class CosmosDBLayer {
 
@@ -27,17 +28,30 @@ public class CosmosDBLayer {
 		if( instance != null)
 			return instance;
 
-		CosmosClient client = new CosmosClientBuilder()
-		         .endpoint(CONNECTION_URL)
-		         .key(DB_KEY)
-		         //.directMode()
-		         .gatewayMode()		
-		         // replace by .directMode() for better performance
-		         .consistencyLevel(ConsistencyLevel.SESSION)
-		         .connectionSharingAcrossClientsEnabled(true)
-		         .contentResponseOnWriteEnabled(true)
-		         .buildClient();
-		instance = new CosmosDBLayer( client);
+		LogResource.writeLine("Creating Cosmos Database Client...");
+
+		try {
+
+			CosmosClient client = new CosmosClientBuilder()
+					.endpoint(CONNECTION_URL)
+					.key(DB_KEY)
+					//.directMode()
+					.gatewayMode()
+					// replace by .directMode() for better performance
+					.consistencyLevel(ConsistencyLevel.SESSION)
+					.connectionSharingAcrossClientsEnabled(true)
+					.contentResponseOnWriteEnabled(true)
+					.buildClient();
+			instance = new CosmosDBLayer(client);
+
+		} catch (Exception e){
+
+			LogResource.writeLine("    error creating cosmos database client: " + e.getMessage());
+
+		}
+
+		LogResource.writeLine("Ended creation of Cosmos Database Client...");
+
 		return instance;
 		
 	}
@@ -46,17 +60,24 @@ public class CosmosDBLayer {
 	private CosmosDatabase db;
 	private CosmosContainer users;
 	private CosmosContainer houses;
+	//private CosmosContainer rentals;
+	//private CosmosContainer questions;
 	
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
 	}
 	
 	private synchronized void init() {
+
 		if( db != null)
 			return;
+
 		db = client.getDatabase(DB_NAME);
+
 		users = db.getContainer("users");
 		houses = db.getContainer("houses");
+		//rentals = db.getContainer("rentals");
+		//questions = db.getContainer("questions");
 		
 	}
 
