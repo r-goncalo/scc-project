@@ -72,11 +72,10 @@ public class UserResource {
 
             jedis.incr("NumUsers");
 
-        } catch (JsonMappingException e) {
+        } catch (Exception e) {
             LogResource.writeLine("    error creating user: " + e.getMessage());
+            throw new InternalServerErrorException();
 
-        } catch (JsonProcessingException e) {
-            LogResource.writeLine("    error creating user: " + e.getMessage());
         }
 
         LogResource.writeLine("    user created with success");
