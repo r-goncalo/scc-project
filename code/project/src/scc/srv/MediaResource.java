@@ -48,7 +48,7 @@ public class MediaResource
 		LogResource.writeLine("MEDIA : UPLOAD : id(hash) = " + key);
 
 		try {
-			BinaryData data = BinaryData.fromFile(java.nio.file.Path.of(key));
+			BinaryData data = BinaryData.fromBytes(contents);
 
 			// Get container client
 			BlobContainerClient containerClient = new BlobContainerClientBuilder()
@@ -65,6 +65,9 @@ public class MediaResource
 			LogResource.writeLine("    File uploaded");
 
 		} catch( Exception e) {
+
+			LogResource.writeLine("   Error uploading: " + e.getMessage());
+
 			e.printStackTrace();
 		}
 
