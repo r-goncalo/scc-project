@@ -41,7 +41,7 @@ public class UserResource {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static String newUser(User user){
+    public static User newUser(User user){
 
         LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
@@ -80,7 +80,7 @@ public class UserResource {
         }
 
         LogResource.writeLine("    user created with success");
-        return id;
+        return user;
 
     }
 
