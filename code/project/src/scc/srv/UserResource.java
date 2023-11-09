@@ -46,13 +46,13 @@ public class UserResource {
         LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
         String id = "0:" + System.currentTimeMillis();
+        user.setId(id);
         LogResource.writeLine("    Generated id: " + id);
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
         UserDAO u = new UserDAO(user);
-        u.setId(id);
         u.setPwd(Hash.of(user.getPwd()));
         db.putUser(u); //puts user in database
 
