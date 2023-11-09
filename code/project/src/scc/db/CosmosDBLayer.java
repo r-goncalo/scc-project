@@ -81,6 +81,14 @@ public class CosmosDBLayer {
 		
 	}
 
+	public void close() {
+		client.close();
+	}
+
+	/*
+	 //////////////////// USERS ///////////////
+	 */
+
 	public CosmosItemResponse<Object> delUserById(String id) {
 		init();
 		PartitionKey key = new PartitionKey( id);
@@ -107,10 +115,9 @@ public class CosmosDBLayer {
 		return users.queryItems("SELECT * FROM users ", new CosmosQueryRequestOptions(), UserDAO.class);
 	}
 
-	public void close() {
-		client.close();
-	}
-
+	/*
+	//////////////////// HOUSES ///////////////
+	*/
 
 	public CosmosItemResponse<HouseDao> putHouse(HouseDao h) {
 		init();
