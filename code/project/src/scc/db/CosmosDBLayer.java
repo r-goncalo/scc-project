@@ -29,7 +29,7 @@ public class CosmosDBLayer {
 		if( instance != null)
 			return instance;
 
-		LogResource.writeLine("Creating Cosmos Database Client...");
+		LogResource.writeLine("    Creating Cosmos Database Client...");
 
 		try {
 
@@ -47,11 +47,11 @@ public class CosmosDBLayer {
 
 		} catch (Exception e){
 
-			LogResource.writeLine("    error creating cosmos database client: " + e.getMessage());
+			LogResource.writeLine("        error creating cosmos database client: " + e.getMessage());
 
 		}
 
-		LogResource.writeLine("Ended creation of Cosmos Database Client...");
+		LogResource.writeLine("    Ended creation of Cosmos Database Client...");
 
 		return instance;
 		
