@@ -1,5 +1,6 @@
 package scc.srv;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -21,4 +22,10 @@ public class LogResource {
     public String getLog() {
         return LOG;
     }
+
+    @POST
+    public void cleanLog() {
+        LOG = "";
+    }
+
 }
