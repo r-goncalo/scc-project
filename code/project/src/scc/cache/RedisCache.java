@@ -50,37 +50,7 @@ public class RedisCache {
 
 	public static void putSession(Session session){
 
-		ObjectMapper mapper = new ObjectMapper();
-
-		try {
-
-			getCachePool().getResource().set("session=" + session.getUid(), mapper.writeValueAsString(session.getUser()));
-
-		} catch (JsonProcessingException e) {
-
-			LogResource.writeLine("   Error puting session in cache");
-
-			e.printStackTrace();
-		}
-
-	}
-
-	public static Session getSession(String uid) throws JsonProcessingException {
-
-		Session session = null;
-
-		try {
-
-			ObjectMapper mapper = new ObjectMapper();
-			String sessionString = getCachePool().getResource().get("session=" + uid);
-			session = mapper.readValue(sessionString, Session.class);
-
-		}catch(JsonProcessingException exception){
-
-			LogResource.writeLine("   Error getting session from cache");
-
-		}
-		return session;
+		getCachePool().getResource().set("session=" + session.getUid(), session.getUserId());
 
 	}
 
@@ -93,28 +63,23 @@ public class RedisCache {
 	 *
 	 * @throws NotActiveException
 	 */
-	public Session checkCookieUser(Cookie session, String id) throws NotActiveException {
+	public static boolean isSessionOfUser(Cookie session, String id) throws NotAuthorizedException {
 
 		if(session == null || session.getValue() == null)
 			throw new NotAuthorizedException("No session initialized");
 
-		Session s;
+		String sessionUserId;
 
-		try {
+		sessionUserId = getCachePool().getResource().get(session.getValue());
 
-			s = getSession(session.getValue());
-
-		} catch (Exception e) {
-			return null;
-		}
-		if (s == null || s.getUser() == null)
+		if (sessionUserId == null)
 
 			throw new NotAuthorizedException("No valid session initialized");
 
-		if (!s.getUser().equals(id) && !s.getUser().equals("admin"))
-			throw new NotAuthorizedException("Invalid user : " + s.getUser());
+		if (!sessionUserId.equals(id))
+			return false;
 
-		return s;
+		return true;
 
 	}
 }

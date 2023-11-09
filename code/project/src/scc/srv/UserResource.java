@@ -42,7 +42,7 @@ public class UserResource {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static String newUser(User user){
+    public static User newUser(User user){
 
         LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
@@ -81,7 +81,7 @@ public class UserResource {
         }
 
         LogResource.writeLine("    user created with success");
-        return id;
+        return user;
 
     }
 
@@ -101,10 +101,36 @@ public class UserResource {
 
         LogResource.writeLine("USER : GET USER : id = " + id + ", pwd = " + pwd);
 
+
+        //using session
+        try {
+
+            boolean isSessionValid = RedisCache.isSessionOfUser(session, id);
+
+            if(!isSessionValid)
+                throw new ForbiddenException("    session not authorized (wrong session or wrong pwd)");
+
+            return getUser(id);
+
+        } catch(NotAuthorizedException e){
+
+            LogResource.writeLine("    " + e.getMessage());
+
+        }
+
+        //there is no session, using pwd
+        if(pwd == null)
+            throw new ForbiddenException("    session not authorized (wrong session or wrong pwd)");
+
         User user = getUser(id);
 
-        if(!user.getPwd().equals(Hash.of(pwd)))
-            throw new ForbiddenException();
+        if(!user.getPwd().equals(Hash.of(pwd))) {
+
+            LogResource.writeLine("    wrong password");
+            throw new ForbiddenException("    wrong password");
+
+
+        }
 
         return user;
 
@@ -234,9 +260,9 @@ public class UserResource {
 
         LogResource.writeLine("USER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
 
-        boolean pwdOk = false;
+        User userInDb = getUser(user.getId());
 
-        if(pwdOk){
+        if(Hash.of(user.getPwd()).equals(userInDb.getPwd())){
 
             String uid = UUID.randomUUID().toString();
             NewCookie cookie = new NewCookie.Builder("scc:session")
@@ -248,7 +274,7 @@ public class UserResource {
                     .httpOnly(true)
                     .build();
 
-            RedisCache.putSession(new Session(uid, user));
+            RedisCache.putSession(new Session(uid, userInDb.getId()));
 
             return Response.ok().cookie(cookie).build();
 
