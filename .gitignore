@@ -9,3 +9,6 @@
 *.iml
 code/scc-mgt/azurekeys-westeurope.props
 code/scc-mgt/azureprops-westeurope.sh
+code/scc-mgt/azurekeys-westeurope.props
+code/scc-mgt/azureprops-westeurope.sh
+code/scc-mgt/azurekeys-westeurope.props
