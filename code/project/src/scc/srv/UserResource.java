@@ -50,7 +50,7 @@ public class UserResource {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-/*
+
         //restrictions in regards to houses
         for(String houseId : user.getHouseIds()){
 
@@ -70,7 +70,7 @@ public class UserResource {
         }
 
         LogResource.writeLine("    here2");
-        */
+
 
 
         UserDAO u = new UserDAO(user);
