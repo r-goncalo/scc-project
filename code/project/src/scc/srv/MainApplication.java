@@ -11,12 +11,19 @@ public class MainApplication extends Application
 	private Set<Class<?>> resources = new HashSet<Class<?>>();
 
 	public MainApplication() {
+
+		LogResource.writeLine("Starting app...");
+
 		resources.add(ControlResource.class);
 		resources.add(LogResource.class);
 
 		singletons.add( new MediaResource());
 		singletons.add( new UserResource());
 		singletons.add( new HouseResource());
+
+		LogResource.writeLine("Resources added");
+
+
 
 	}
 
