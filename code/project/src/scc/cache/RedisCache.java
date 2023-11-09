@@ -1,7 +1,13 @@
 package scc.cache;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.core.Cookie;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import scc.data.Session;
+
+import java.io.NotActiveException;
 
 public class RedisCache {
 
@@ -28,5 +34,57 @@ public class RedisCache {
 
 		return instance;
 		
+	}
+
+
+	/*
+	///////////////////// USERS ///////////////
+	*/
+
+	/*
+	///////////////////// SESSION ///////////////
+	*/
+
+	public Session putSession(Session session){
+
+		ObjectMapper mapper = new ObjectMapper();
+		getCachePool().getResource().set("session=" + session.getUid(), mapper.writeValueAsString(session.getUser());
+
+	}
+
+	public Session getSession(String uid){
+
+
+	}
+
+	/**
+	 *
+	 * @param session
+	 * @param id
+	 *
+	 * @return
+	 *
+	 * @throws NotActiveException
+	 */
+	public Session checkCookieUser(Cookie session, String id) throws NotActiveException {
+
+		if(session == null || session.getValue() == null)
+			throw new NotAuthorizedException("No session initialized");
+
+		Session s;
+
+		try {
+
+			s = getCachePool().getSession(session.getValue());
+
+		} catch (CacheException e) {
+			return null;
+		}
+		if (s == null || s.getUser() == null || s.getUser().length() == 0)
+			throw new NotAuthorizedException("No valid session initialized");
+		if (!s.getUser().equals(id) && !s.getUser().equals("admin"))
+			throw new NotAuthorizedException("Invalid user : " + s.getUser());
+		return s;
+
 	}
 }

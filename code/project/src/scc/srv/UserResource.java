@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
+import scc.data.Session;
 import scc.data.User;
 import scc.data.UserDAO;
 import scc.db.CosmosDBLayer;
@@ -201,7 +202,13 @@ public class UserResource {
 
     }
 
-    /*
+
+    /**
+     *
+     * @param user a user with the relevant information (id, pwd)
+     *
+     * @return a session id cookie
+     */
     @POST
     @Path("/auth")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -221,7 +228,7 @@ public class UserResource {
                     .httpOnly(true)
                     .build();
 
-            RedisCache.getCachePool().putSession(new Session(uid, user.getUser()));
+            RedisCache.getCachePool().putSession(new Session(uid, user);
 
             return Response.ok().cookie(cookie).build();
 
@@ -234,7 +241,6 @@ public class UserResource {
 
     }
 
-     */
 
 
 }
