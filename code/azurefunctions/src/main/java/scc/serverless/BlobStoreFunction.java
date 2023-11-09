@@ -12,6 +12,9 @@ import com.microsoft.azure.functions.*;
  */
 public class BlobStoreFunction
 {
+	private static final String CONTAINER_NAME = "media";
+	String STORAGE_CONNECT_STRING = System.getenv("BlobStoreConnection");
+
 	@FunctionName("blobtest")
 	public void setLastBlobInfo(@BlobTrigger(name = "blobtest", 
 									dataType = "binary", 
