@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>pt.unl.fct.di.scc</groupId>
-	<artifactId>scc2324-lab5</artifactId>
+	<artifactId>scc24-projectfunctions</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
@@ -14,8 +14,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>11</java.version>
-		<functionAppName>scc24funnortheurope4204</functionAppName>
-		<functionAppRegion>northeurope</functionAppRegion>
+		<functionAppName>sccfunwesteurope60519</functionAppName>
+		<functionAppRegion>westeurope</functionAppRegion>
 		<functionPricingTier>B1</functionPricingTier>
 		<functionResourceGroup>scc24-rg-northeurope-4204</functionResourceGroup>
 	</properties>
