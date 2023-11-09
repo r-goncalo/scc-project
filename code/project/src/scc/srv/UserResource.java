@@ -39,13 +39,13 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public static String newUser(User user){
 
-        Locale.setDefault(Locale.US);
-        CosmosDBLayer db = CosmosDBLayer.getInstance();
-
         String id = "0:" + System.currentTimeMillis();
 
         LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", " + "id = " + id + ", pwd = " + user.getPwd());
 
+        Locale.setDefault(Locale.US);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+        
         UserDAO u = new UserDAO(user);
         u.setId(id);
         u.setPwd(Hash.of(user.getPwd()));
