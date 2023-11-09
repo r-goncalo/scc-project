@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
+import scc.data.HouseDao;
 import scc.data.Session;
 import scc.data.User;
 import scc.data.UserDAO;
@@ -42,18 +43,32 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public static String newUser(User user){
 
-        String id = "0:" + System.currentTimeMillis();
+        LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
-        LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", " + "id = " + id + ", pwd = " + user.getPwd());
+        String id = "0:" + System.currentTimeMillis();
+        LogResource.writeLine("   Generated id: " + id);
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        for(String houseId : user.getHouseIds()){
+
+            CosmosPagedIterable<HouseDao> h = db.getHouseById(houseId);
+
+            if(h == null){
+
+                LogResource.writeLine("    House with id: " + houseId + " does not exist");
+                throw new ForbiddenException("House with id: " + houseId + " does not exist"); // this exception should be different
+            }
+
+        }
 
         UserDAO u = new UserDAO(user);
         u.setId(id);
         u.setPwd(Hash.of(user.getPwd()));
         db.putUser(u); //puts user in database
 
+        //Note: maybe redis stuff should be in separate methods or even class
 
         //we'll save the user in cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
