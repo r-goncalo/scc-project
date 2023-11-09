@@ -27,9 +27,13 @@ public class HouseResource {
     @Produces(MediaType.APPLICATION_JSON)
     public static House newHouse(House house){
 
+        LogResource.writeLine("HOUSE : CREATE HOUSE : name = " + house.getName());
+
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
         String id = "0:" + System.currentTimeMillis();
+
+        LogResource.writeLine("   id = " + id);
 
         HouseDao h = new HouseDao(house);
         db.putHouse(h);
@@ -61,6 +65,8 @@ public class HouseResource {
     @Produces(MediaType.APPLICATION_JSON)
     public House getHouse(@PathParam("id") String id) {
 
+        LogResource.writeLine("HOUSE : CREATE HOUSE : id = " + id);
+
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -71,6 +77,8 @@ public class HouseResource {
             String res = jedis.get("user:"+id);
 
             if(res != null) {
+
+                LogResource.writeLine("    cache hit");
 
                 // How to convert string to object
                 HouseDao uread = mapper.readValue(res, HouseDao.class);
@@ -98,6 +106,8 @@ public class HouseResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> list() {
+
+        LogResource.writeLine("HOUSE : LIST HOUSES");
 
         List<String> toReturn = new ArrayList<>();
 

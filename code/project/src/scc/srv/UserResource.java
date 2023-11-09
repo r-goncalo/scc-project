@@ -111,6 +111,8 @@ public class UserResource {
 
             if(res != null) {
 
+                LogResource.writeLine("    cache hit");
+
                 // How to convert string to object
                 UserDAO uread = mapper.readValue(res, UserDAO.class);
 
