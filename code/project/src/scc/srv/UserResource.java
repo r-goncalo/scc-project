@@ -47,13 +47,13 @@ public class UserResource {
         LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
         String id = "0:" + System.currentTimeMillis();
-        LogResource.writeLine("   Generated id: " + id);
+        user.setId(id);
+        LogResource.writeLine("    Generated id: " + id);
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
         UserDAO u = new UserDAO(user);
-        u.setId(id);
         u.setPwd(Hash.of(user.getPwd()));
         db.putUser(u); //puts user in database
 
@@ -73,11 +73,9 @@ public class UserResource {
 
             jedis.incr("NumUsers");
 
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LogResource.writeLine("    error when putting in cache: " + e.getClass() + ": " + e.getMessage());
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         }
 
         LogResource.writeLine("    user created with success");
@@ -160,12 +158,9 @@ public class UserResource {
             }
 
 
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
 
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         }
 
         CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
@@ -205,14 +200,7 @@ public class UserResource {
 
         db.delUserById(id);
 
-
-        //delete from cache
-        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
-
-            jedis.del("user:" + id);
-
-
-        }
+        RedisCache.getCachePool().getResource().del("user:" + id);
 
 
     }

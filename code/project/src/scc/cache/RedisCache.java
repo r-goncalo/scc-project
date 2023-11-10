@@ -24,6 +24,8 @@ public class RedisCache {
 		if( instance != null)
 			return instance;
 
+		LogResource.writeLine("    Creating Redis Client...");
+
 		final JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxTotal(128);
 		poolConfig.setMaxIdle(128);
@@ -34,6 +36,8 @@ public class RedisCache {
 		poolConfig.setNumTestsPerEvictionRun(3);
 		poolConfig.setBlockWhenExhausted(true);
 		instance = new JedisPool(poolConfig, RedisHostname, 6380, 1000, RedisKey, true);
+
+		LogResource.writeLine("    Finished creating Redis Client...");
 
 		return instance;
 		
