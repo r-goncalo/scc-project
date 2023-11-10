@@ -6,16 +6,16 @@ package scc.data;
 public class Session {
 
     private String uid; //the id of the session (cookie)
-    private User user; //a user object with relevant information (id, ...)
+    private String userId; //a user object with relevant information (id, ...)
 
-    public Session(String uid, User user) {
+    public Session(String uid, String userId) {
 
         this.uid = uid;
-        this.user = user;
+        this.userId = userId;
 
     }
 
     public String getUid() {return uid;}
-    public User getUser(){return user;}
+    public String getUserId(){return userId;}
 
 }

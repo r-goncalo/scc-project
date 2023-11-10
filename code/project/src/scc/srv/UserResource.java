@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
@@ -19,6 +20,7 @@ import scc.db.CosmosDBLayer;
 import scc.utils.Hash;
 
 
+import java.io.NotActiveException;
 import java.util.*;
 
 /**
@@ -43,7 +45,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public static User newUser(User user){
 
-        LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
+        LogResource.writeLine("\nUSER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
         String id = "0:" + System.currentTimeMillis();
         user.setId(id);
@@ -94,9 +96,81 @@ public class UserResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
+    public User getUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) throws ForbiddenException, NotFoundException{
 
-        LogResource.writeLine("USER : GET USER : id = " + id + ", pwd = " + pwd);
+        LogResource.writeLine("\nUSER : GET USER : id = " + id + ", pwd = " + pwd + ", cookie (" + session.getName() + ") = " + session.getValue());
+
+        User user = verifyUser(session, id, pwd); //this will cause an exception in case of failing
+
+        if(user == null)
+            user = getUser(id);
+
+        LogResource.writeLine("    user sent with success");
+
+        return user;
+
+
+    }
+
+    /**
+     *
+     * @param session
+     * @param id, id of user client is claiming to be
+     * @param pwd
+     *
+     * @return the user if it was getted during verification, null otherwise (session verification)
+     *
+     * @throws ForbiddenException if the session and pwd failed
+     */
+    public User verifyUser(Cookie session, String id, String pwd) throws ForbiddenException{
+
+        try {
+
+            boolean isSessionValid = RedisCache.isSessionOfUser(session, id);
+
+            if(!isSessionValid) {
+
+                LogResource.writeLine("    session not authorized");
+                throw new ForbiddenException("    session not authorized");
+            }
+
+            return null;
+
+        } catch(NotAuthorizedException e){
+
+            LogResource.writeLine("    " + e.getMessage());
+
+        }
+
+        //there is no session, using pwd
+        if(pwd == null) {
+            LogResource.writeLine("    No registered password");
+            throw new ForbiddenException("    session not authorized (wrong session or wrong pwd)");
+        }
+
+        User user = getUser(id);
+
+        if(!user.getPwd().equals(Hash.of(pwd))) {
+
+            LogResource.writeLine("    wrong password");
+            throw new ForbiddenException("    wrong password");
+
+
+        }
+
+        return user;
+
+    }
+
+    /**
+     *
+     * @param id of the user to get
+     *
+     * @return the user
+     *
+     * @throws NotFoundException when can't retrieve user from cache or database
+     */
+    public User getUser(String id) throws NotFoundException{
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -109,65 +183,47 @@ public class UserResource {
 
             if(res != null) {
 
-                LogResource.writeLine("    cache hit");
+                LogResource.writeLine("    cache hit getting user with id: " + id);
 
                 // How to convert string to object
                 UserDAO uread = mapper.readValue(res, UserDAO.class);
 
-                if(uread.getPwd().equals(Hash.of(pwd)))
-                    throw new ForbiddenException();
-
                 return uread.toUser();
 
             }
-
 
         } catch (Exception e) {
             LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
 
         }
 
-        CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
+        Iterator<UserDAO> dbUser = db.getUserById(id).iterator();
 
-        UserDAO userDao = dbUser.iterator().next();
+        if(!dbUser.hasNext()) {
+            LogResource.writeLine("    user not found in database");
+            throw new NotFoundException("User does not exist");
+        }
 
-        if(userDao.getPwd().equals(Hash.of(pwd)))
-            throw new ForbiddenException();
+        return dbUser.next().toUser();
 
-        return userDao.toUser();
     }
 
     @DELETE
     @Path("/{id}")
-    public void deleteUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
+    public void deleteUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
-        LogResource.writeLine("USER : DELETE USER : id = " + id + ", pwd = " + pwd);
+        LogResource.writeLine("\nUSER : DELETE USER : id = " + id + ", pwd = " + pwd + ", cookie (" + session.getName() + ") = " + session.getValue());
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-
-        //delete from database
-        CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
-
-        if(dbUser == null) {
-            LogResource.writeLine("    USER NOT IN COSMOS");
-            return;
-        }
-
-        UserDAO userDao = dbUser.iterator().next();
-
-        if(userDao.getPwd().equals(Hash.of(pwd))){
-
-            LogResource.writeLine("    hash(pwd) != <pwdInCosmos>");
-            throw new ForbiddenException();
-
-        }
+        User user = verifyUser(session, id, pwd); //this will cause an exception in case of failing
 
         db.delUserById(id);
 
         RedisCache.getCachePool().getResource().del("user:" + id);
 
+        LogResource.writeLine("    user deleted with success");
 
     }
 
@@ -193,7 +249,7 @@ public class UserResource {
 
         }
 
-        LogResource.writeLine("   Number of users: " + toReturn.size());
+        LogResource.writeLine("   list users returned with success: number of users: " + toReturn.size());
 
         return toReturn;
 
@@ -209,14 +265,14 @@ public class UserResource {
     @POST
     @Path("/auth")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response auth(User user){
+    public Response auth(User user) throws InternalServerErrorException, NotAuthorizedException {
 
 
-        LogResource.writeLine("USER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
+        LogResource.writeLine("\nUSER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
 
-        boolean pwdOk = false;
+        User userInDb = getUser(user.getId());
 
-        if(pwdOk){
+        if(Hash.of(user.getPwd()).equals(userInDb.getPwd())){
 
             String uid = UUID.randomUUID().toString();
             NewCookie cookie = new NewCookie.Builder("scc:session")
@@ -228,15 +284,26 @@ public class UserResource {
                     .httpOnly(true)
                     .build();
 
-            RedisCache.putSession(new Session(uid, user));
+            try {
 
+                RedisCache.putSession(new Session(uid, userInDb.getId()));
+
+            }catch(Exception e){
+
+                LogResource.writeLine("    Error saving session in cache: " + e.getClass() + ": " + e.getMessage());
+                throw new InternalServerErrorException("Error saving session");
+
+
+            }
+
+            LogResource.writeLine("    Authenticated with success: (cookie = " + cookie.getValue() + ", userId = " + user.getId());
             return Response.ok().cookie(cookie).build();
 
-        }else{
-
-            throw new NotAuthorizedException("Incorrect login");
-
         }
+
+        LogResource.writeLine("    wrong password");
+        throw new NotAuthorizedException("Incorrect login");
+
 
 
     }

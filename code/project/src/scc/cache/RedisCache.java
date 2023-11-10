@@ -56,71 +56,42 @@ public class RedisCache {
 
 	public static void putSession(Session session){
 
-		ObjectMapper mapper = new ObjectMapper();
-
-		try {
-
-			getCachePool().getResource().set("session=" + session.getUid(), mapper.writeValueAsString(session.getUser()));
-
-		} catch (JsonProcessingException e) {
-
-			LogResource.writeLine("   Error puting session in cache");
-
-			e.printStackTrace();
-		}
-
-	}
-
-	public static Session getSession(String uid) throws JsonProcessingException {
-
-		Session session = null;
-
-		try {
-
-			ObjectMapper mapper = new ObjectMapper();
-			String sessionString = getCachePool().getResource().get("session=" + uid);
-			session = mapper.readValue(sessionString, Session.class);
-
-		}catch(JsonProcessingException exception){
-
-			LogResource.writeLine("   Error getting session from cache");
-
-		}
-		return session;
+		getCachePool().getResource().set("session=" + session.getUid(), session.getUserId());
 
 	}
 
 	/**
 	 *
-	 * @param session
-	 * @param id
+	 * @param session, the cookie sent by the client
+	 * @param id, the id of the user the client is claiming to be
 	 *
-	 * @return
+	 * @return if user corresponding to session and id are the same, false otherwise
 	 *
-	 * @throws NotActiveException
+	 * @throws NotAuthorizedException if the session of the user is not initialized or there is no session of that user in cache
 	 */
-	public Session checkCookieUser(Cookie session, String id) throws NotActiveException {
+	public static boolean isSessionOfUser(Cookie session, String id) throws NotAuthorizedException {
 
-		if(session == null || session.getValue() == null)
+		if(session == null || session.getValue() == null) {
+			LogResource.writeLine("    cookie session invalid or non existent");
 			throw new NotAuthorizedException("No session initialized");
-
-		Session s;
-
-		try {
-
-			s = getSession(session.getValue());
-
-		} catch (Exception e) {
-			return null;
 		}
-		if (s == null || s.getUser() == null)
 
+		String sessionUserId;
+
+		sessionUserId = getCachePool().getResource().get("session=" + session.getValue());
+
+		if (sessionUserId == null) {
+			LogResource.writeLine("    no cookie session in cache registered with value: " + session.getValue());
 			throw new NotAuthorizedException("No valid session initialized");
 
-		if (!s.getUser().equals(id) && !s.getUser().equals("admin"))
-			throw new NotAuthorizedException("Invalid user : " + s.getUser());
+		}
 
-		return s;
+		if (!sessionUserId.equals(id)) {
+			LogResource.writeLine("    cookie session existent but with different id: " + id + " != " + sessionUserId);
+			return false;
+		}
+
+		return true;
 
 	}
 }
