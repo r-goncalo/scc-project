@@ -73,7 +73,7 @@ public class UserResource {
             jedis.incr("NumUsers");
 
         } catch (Exception e) {
-            LogResource.writeLine("    error " + e.getClass() + " creating user: " + e.getMessage());
+            LogResource.writeLine("    error " + e.getClass() + ", creating user: " + e.getMessage());
             throw new InternalServerErrorException();
 
         }
@@ -124,7 +124,7 @@ public class UserResource {
 
 
         } catch (Exception e) {
-            LogResource.writeLine("    error " + e.getClass() + " creating user: " + e.getMessage());
+            LogResource.writeLine("    error " + e.getClass() + ", creating user: " + e.getMessage());
             throw new InternalServerErrorException();
 
         }
