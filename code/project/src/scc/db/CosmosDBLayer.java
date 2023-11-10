@@ -22,7 +22,7 @@ public class CosmosDBLayer {
 	private static final String CONNECTION_URL = System.getenv("COSMOSDB_URL");
 	private static final String DB_KEY = System.getenv("COSMOSDB_KEY");
 	private static final String DB_NAME = System.getenv("COSMOSDB_DATABASE");
-	
+
 	private static CosmosDBLayer instance;
 
 	public static synchronized CosmosDBLayer getInstance() {
@@ -54,20 +54,20 @@ public class CosmosDBLayer {
 		LogResource.writeLine("    Ended creation of Cosmos Database Client...");
 
 		return instance;
-		
+
 	}
-	
+
 	private CosmosClient client;
 	private CosmosDatabase db;
 	private CosmosContainer users;
 	private CosmosContainer houses;
 	private CosmosContainer rentals;
 	private CosmosContainer questions;
-	
+
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
 	}
-	
+
 	private synchronized void init() {
 
 		if( db != null)
@@ -79,7 +79,7 @@ public class CosmosDBLayer {
 		houses = db.getContainer("houses");
 		rentals = db.getContainer("rentals");
 		questions = db.getContainer("questions");
-		
+
 	}
 
 	public void close() {
@@ -95,17 +95,17 @@ public class CosmosDBLayer {
 		PartitionKey key = new PartitionKey( id);
 		return users.deleteItem(id, key, new CosmosItemRequestOptions());
 	}
-	
+
 	public CosmosItemResponse<Object> delUser(UserDAO user) {
 		init();
 		return users.deleteItem(user, new CosmosItemRequestOptions());
 	}
-	
+
 	public CosmosItemResponse<UserDAO> putUser(UserDAO user) {
 		init();
 		return users.createItem(user);
 	}
-	
+
 	public CosmosPagedIterable<UserDAO> getUserById( String id) {
 		init();
 		return users.queryItems("SELECT * FROM users WHERE users.id=\"" + id + "\"", new CosmosQueryRequestOptions(), UserDAO.class);
@@ -158,9 +158,10 @@ public class CosmosDBLayer {
 
 	public CosmosPagedIterable<HouseDao> getHouseByLocationAndTime(String location, Date start, Date end) {
 		init();
-
-		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+		// select * from house where house.location = location and house.id not in (select houseId from rental where rental.day between start and end)
+		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\" AND houses.id NOT IN (SELECT rentals.houseId FROM rentals WHERE rentals.day BETWEEN \"" + start.toString() + "\" AND \"" + end.toString() + "\")", new CosmosQueryRequestOptions(), HouseDao.class);
 	}
+
 
 	public CosmosPagedIterable<HouseDao> getAllHouses() {
 		init();
@@ -177,6 +178,13 @@ public class CosmosDBLayer {
 		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.houseId=\"" + houseId + "\" AND rentals.day=\"" + date.toString() + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
 
+	// list of rentals that will have a discounted price in the following two months
+	public CosmosPagedIterable<RentalDao> getRentalsWithDiscount() {
+		init();
+		//SELECT * FROM rentals WHERE rentals.day BETWEEN CURRENT_DATE and CURRENT_DATE + INTERVAL 2 MONTH and rentals.price = (select house.discount from house where house.id = rentals.houseId)
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.day BETWEEN CURRENT_DATE and CURRENT_DATE + INTERVAL 2 MONTH and rentals.price = (select house.discount from house where house.id = rentals.houseId)", new CosmosQueryRequestOptions(), RentalDao.class);
+
+	}
 
 
 	//return CosmosItemResponse<RentalDao> with all the rentals in a given period from start to end.
