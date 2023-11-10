@@ -98,12 +98,14 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public User getUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) throws ForbiddenException, NotFoundException{
 
-        LogResource.writeLine("\nUSER : GET USER : id = " + id + ", pwd = " + pwd);
+        LogResource.writeLine("\nUSER : GET USER : id = " + id + ", pwd = " + pwd + ", cookie (" + session.getName() + ") = " + session.getValue());
 
         User user = verifyUser(session, id, pwd); //this will cause an exception in case of failing
 
         if(user == null)
             user = getUser(id);
+
+        LogResource.writeLine("    user sent with success");
 
         return user;
 
@@ -210,7 +212,7 @@ public class UserResource {
     @Path("/{id}")
     public void deleteUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
-        LogResource.writeLine("\nUSER : DELETE USER : id = " + id + ", pwd = " + pwd);
+        LogResource.writeLine("\nUSER : DELETE USER : id = " + id + ", pwd = " + pwd + ", cookie (" + session.getName() + ") = " + session.getValue());
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -220,6 +222,8 @@ public class UserResource {
         db.delUserById(id);
 
         RedisCache.getCachePool().getResource().del("user:" + id);
+
+        LogResource.writeLine("    user deleted with success");
 
     }
 
@@ -245,7 +249,7 @@ public class UserResource {
 
         }
 
-        LogResource.writeLine("   Number of users: " + toReturn.size());
+        LogResource.writeLine("   list users returned with success: number of users: " + toReturn.size());
 
         return toReturn;
 
@@ -297,6 +301,7 @@ public class UserResource {
 
         }
 
+        LogResource.writeLine("    wrong password");
         throw new NotAuthorizedException("Incorrect login");
 
 
