@@ -1,0 +1,9 @@
+{
+  "id": "12345",
+  "name": "Cozy Cottage",
+  "location": "123 Main Street",
+  "description": "A charming cottage with a beautiful garden.",
+  "photoIds": ["photo1", "photo2", "photo3"],
+  "normalPrice": 1000.00,
+  "promotionPrice": 800.00
+}

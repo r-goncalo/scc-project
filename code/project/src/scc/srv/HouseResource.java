@@ -8,9 +8,13 @@ import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
 import scc.data.House;
 import scc.data.HouseDao;
+import scc.data.UserDAO;
 import scc.db.CosmosDBLayer;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,6 +37,12 @@ public class HouseResource {
 
         HouseDao h = new HouseDao(house);
         db.putHouse(h);
+
+        // check if user ownerID exists
+        if(db.getUserById(house.getOwnerId()).iterator().hasNext() == false)
+        	throw new NotFoundException("User not found");
+
+
 
 
         //we'll save the user in cache
@@ -154,10 +164,31 @@ public class HouseResource {
     }
 
     //get all the houses in a given location and whithin a given time range from start to end
-    //    @GET
-    //    @Path("/location/{location}/{start}/{end}")
-    //    @Produces(MediaType.APPLICATION_JSON)
-    //    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @PathParam("start") String start, @PathParam("end") String end) {
-    //
-    //    }
+    @GET
+    @Path("/location/{location}/{start}/{end}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @PathParam("start") String start, @PathParam("end") String end) {
+
+        Locale.setDefault(Locale.US);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //todo check if this is the right format
+
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = sdf.parse(start);
+            endDate = sdf.parse(end);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        CosmosPagedIterable<HouseDao> houses = db.getHouseByLocationAndTime(location, startDate, endDate);
+
+        List<House> ret = new ArrayList<>();
+
+        for (HouseDao h : houses)
+            ret.add(new House(h));
+
+        return ret;
+    }
 }

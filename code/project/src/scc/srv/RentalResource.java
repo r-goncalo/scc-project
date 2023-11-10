@@ -1,13 +1,17 @@
 package scc.srv;
 
+import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import scc.data.HouseDao;
 import scc.data.Rental;
 import scc.data.RentalDao;
 import scc.db.CosmosDBLayer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,23 +74,24 @@ public class RentalResource {
         //confirm rental's houseid
         if(!houseId.equals(rental.getHouseId())){
             //throw 404
-            throw new NotFoundException();
+            throw new NotFoundException("House not found");
         }
 
         //todo confirm rental's date is not taken. use db.gethouserentalfordate
         if(db.getHouseRentalForDate(rental.getDay(),rental.getHouseId()).iterator().hasNext())
-            throw new BadRequestException(); //todo date already taken exception
-
+            throw new WebApplicationException("Rental date is already taken for the given house", Response.Status.CONFLICT);
 
         // confirm rental's user exists
         if(!db.getUserById(rental.getUserId()).stream().iterator().hasNext())
             throw new NotFoundException(); //todo user not found exception
 
+        Iterator<HouseDao> h = db.getHouseById(rental.getHouseId()).iterator();
         //todo confirm rental's house exists
-        if(!db.getHouseById(rental.getHouseId()).stream().iterator().hasNext())
+        if(h.hasNext() == false)
             throw new NotFoundException(); //todo house not found exception
 
         //todo assign rental price
+        rental.setPrice(h.next().getNormalPrice()); //todo fazer para o discounted price
 
 
         RentalDao r = new RentalDao(rental);

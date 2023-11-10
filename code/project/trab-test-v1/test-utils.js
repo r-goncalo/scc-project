@@ -4,9 +4,10 @@
  * Exported functions to be used in the testing scripts.
  */
 module.exports = {
-  uploadImageBody,
-  genNewUser,
-  genNewUserReply
+    uploadImageBody,
+    genNewUser,
+    genNewUserReply,
+    
 }
 
 
@@ -20,7 +21,6 @@ const locations = [
   'Sobreda',
   'Tavira'
 ];
-
 
 var imagesIds = []
 var images = []
@@ -143,3 +143,34 @@ function genNewUserReply(requestParams, response, context, ee, next) {
 
 
 
+// function generateHouseData() {
+//     context.vars.id.id= faker.random.uuid()
+//     context.vars.id.ownerId= 
+//     context.vars.id.name= 
+//     context.vars.id.location= 
+//     context.vars.id.description=
+//     context.vars.id.photoIds=
+//     context.vars.id.normalPrice= faker.random.number({ min: 1000, max: 5000, precision: 0.01 })
+//     context.vars.id.promotionPrice= faker.random.number({ min: 800, max: 4500, precision: 0.01 }),
+//     context.vars.id.monthWithDiscount= faker.random.number({ min: 1, max: 12 }),
+
+//     const house = {
+//     id: ,
+//     ownerId: faker.random.uuid(),
+//     renterId: faker.random.uuid(),
+//     name: faker.address.streetName(),
+//     location: faker.address.city(),
+//     description: faker.lorem.sentence(),
+//     photoIds: [faker.random.uuid(), faker.random.uuid(), faker.random.uuid()],
+//     normalPrice: 
+
+//     promotionPrice: 
+//     monthWithDiscount: 
+//     }
+
+
+
+//     return done()
+
+//   return JSON.stringify(house, null, 2);
+// };

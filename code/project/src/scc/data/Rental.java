@@ -50,4 +50,8 @@ public class Rental {
         return price;
     }
 
+    //setters
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

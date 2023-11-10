@@ -1,0 +1,15 @@
+{
+  "id": "cc83e292-d457-45f6-82c9-7c78faaa31cd",
+  "ownerId": "Amira94",
+  "name": "4006 Rodriguez Mountain",
+  "location": "Dibbertfort",
+  "description": "Spectaculum nemo vorax temperantia denuncio corrupti.",
+  "photoIds": [
+    "8eb93d99-bfaf-4dba-9eb1-f6e6ca50259e",
+    "6138b188-8dc3-4f39-9673-c85d2112361a",
+    "2e59c320-b14d-464a-8035-ad0c411876d6"
+  ],
+  "normalPrice": 1244.89,
+  "promotionPrice": 978.67,
+  "monthWithDiscount": 2
+}

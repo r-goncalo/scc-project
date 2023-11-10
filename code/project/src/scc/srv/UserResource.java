@@ -30,37 +30,33 @@ public class UserResource {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static String newUser(User user){
+    public User newUser(User user){
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-        String id = "0:" + System.currentTimeMillis();
         UserDAO u = new UserDAO(user);
         db.putUser(u); //puts user in database
 
 
         //we'll save the user in cache
-        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+//        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//
+//            jedis.set("user:"+id, mapper.writeValueAsString(u)); //the index will be "user" + <that user's id>
+//
+//            Long cnt = jedis.lpush("MostRecentUsers", mapper.writeValueAsString(u));
+//
+//            if (cnt > MAX_USERS_IN_CACHE)
+//                jedis.ltrim("MostRecentUsers", 0, MAX_USERS_IN_CACHE - 1);
+//
+//            jedis.incr("NumUsers");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-            ObjectMapper mapper = new ObjectMapper();
-
-            jedis.set("user:"+id, mapper.writeValueAsString(u)); //the index will be "user" + <that user's id>
-
-            Long cnt = jedis.lpush("MostRecentUsers", mapper.writeValueAsString(u));
-
-            if (cnt > MAX_USERS_IN_CACHE)
-                jedis.ltrim("MostRecentUsers", 0, MAX_USERS_IN_CACHE - 1);
-
-            jedis.incr("NumUsers");
-
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return id;
+        return user;
 
     }
 

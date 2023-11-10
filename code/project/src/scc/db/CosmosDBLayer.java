@@ -188,10 +188,17 @@ public class CosmosDBLayer {
 		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
 	}
 
-
 	public CosmosPagedIterable<HouseDao> getHouseByLocationAndTime(String location, Date start, Date end) {
 		init();
+		// select * from house where house.location = location and house.id not in (select houseId from rental where rental.day between start and end)
+		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\" AND houses.id NOT IN (SELECT rentals.houseId FROM rentals WHERE rentals.day BETWEEN \"" + start.toString() + "\" AND \"" + end.toString() + "\")", new CosmosQueryRequestOptions(), HouseDao.class);
+	}
 
-		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+	// list of rentals that will have a discounted price in the following two months
+	public CosmosPagedIterable<RentalDao> getRentalsWithDiscount() {
+		init();
+		//SELECT * FROM rentals WHERE rentals.day BETWEEN CURRENT_DATE and CURRENT_DATE + INTERVAL 2 MONTH and rentals.price = (select house.discount from house where house.id = rentals.houseId)
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.day BETWEEN CURRENT_DATE and CURRENT_DATE + INTERVAL 2 MONTH and rentals.price = (select house.discount from house where house.id = rentals.houseId)", new CosmosQueryRequestOptions(), RentalDao.class);
+
 	}
 }
