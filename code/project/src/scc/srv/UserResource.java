@@ -73,7 +73,7 @@ public class UserResource {
             jedis.incr("NumUsers");
 
         } catch (Exception e) {
-            LogResource.writeLine("    error when putting in cache " + e.getClass() + ", creating user: " + e.getMessage());
+            LogResource.writeLine("    error when putting in cache: " + e.getClass() + ": " + e.getMessage());
 
         }
 
@@ -123,7 +123,7 @@ public class UserResource {
 
 
         } catch (Exception e) {
-            LogResource.writeLine("    error when getting from cache " + e.getClass() + ", creating user: " + e.getMessage());
+            LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
 
         }
 
