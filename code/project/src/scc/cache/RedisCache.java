@@ -78,7 +78,7 @@ public class RedisCache {
 
 		String sessionUserId;
 
-		sessionUserId = getCachePool().getResource().get(session.getValue());
+		sessionUserId = getCachePool().getResource().get("session=" + session.getValue());
 
 		if (sessionUserId == null) {
 			LogResource.writeLine("    no cookie session in cache registered with value: " + session.getValue());
