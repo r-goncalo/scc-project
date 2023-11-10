@@ -4,15 +4,15 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
-import scc.data.House;
-import scc.data.HouseDao;
+import scc.data.*;
 import scc.db.CosmosDBLayer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Path("/house")
@@ -27,16 +27,18 @@ public class HouseResource {
     @Produces(MediaType.APPLICATION_JSON)
     public static House newHouse(House house){
 
-        LogResource.writeLine("HOUSE : CREATE HOUSE : name = " + house.getName());
-
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
         String id = "0:" + System.currentTimeMillis();
 
-        LogResource.writeLine("   id = " + id);
-
         HouseDao h = new HouseDao(house);
         db.putHouse(h);
+
+        // check if user ownerID exists
+        if(db.getUserById(house.getOwnerId()).iterator().hasNext() == false)
+            throw new NotFoundException("User not found");
+
+
 
 
         //we'll save the user in cache
@@ -65,8 +67,6 @@ public class HouseResource {
     @Produces(MediaType.APPLICATION_JSON)
     public House getHouse(@PathParam("id") String id) {
 
-        LogResource.writeLine("HOUSE : CREATE HOUSE : id = " + id);
-
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -77,8 +77,6 @@ public class HouseResource {
             String res = jedis.get("user:"+id);
 
             if(res != null) {
-
-                LogResource.writeLine("    cache hit");
 
                 // How to convert string to object
                 HouseDao uread = mapper.readValue(res, HouseDao.class);
@@ -106,8 +104,6 @@ public class HouseResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> list() {
-
-        LogResource.writeLine("HOUSE : LIST HOUSES");
 
         List<String> toReturn = new ArrayList<>();
 
@@ -164,10 +160,32 @@ public class HouseResource {
     }
 
     //get all the houses in a given location and whithin a given time range from start to end
-    //    @GET
-    //    @Path("/location/{location}/{start}/{end}")
-    //    @Produces(MediaType.APPLICATION_JSON)
-    //    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @PathParam("start") String start, @PathParam("end") String end) {
-    //
-    //    }
+    @GET
+    @Path("/location/{location}/{start}/{end}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @PathParam("start") String start, @PathParam("end") String end) {
+
+        Locale.setDefault(Locale.US);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //todo check if this is the right format
+
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = sdf.parse(start);
+            endDate = sdf.parse(end);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        CosmosPagedIterable<HouseDao> houses = db.getHouseByLocationAndTime(location, startDate, endDate);
+
+        List<House> ret = new ArrayList<>();
+
+        for (HouseDao h : houses)
+            ret.add(new House(h));
+
+        return ret;
+    }
+
 }
