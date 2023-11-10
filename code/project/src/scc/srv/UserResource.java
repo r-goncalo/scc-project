@@ -44,7 +44,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public static User newUser(User user){
 
-        LogResource.writeLine("USER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
+        LogResource.writeLine("\nUSER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
         String id = "0:" + System.currentTimeMillis();
         user.setId(id);
@@ -97,7 +97,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public User getUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
-        LogResource.writeLine("USER : GET USER : id = " + id + ", pwd = " + pwd);
+        LogResource.writeLine("\nUSER : GET USER : id = " + id + ", pwd = " + pwd);
 
 
         //using session
@@ -105,8 +105,11 @@ public class UserResource {
 
             boolean isSessionValid = RedisCache.isSessionOfUser(session, id);
 
-            if(!isSessionValid)
-                throw new ForbiddenException("    session not authorized (wrong session or wrong pwd)");
+            if(!isSessionValid) {
+
+                LogResource.writeLine("    session not authorized");
+                throw new ForbiddenException("    session not authorized (wrong session or wrong pwd compared to session)");
+            }
 
             return getUser(id);
 
@@ -117,8 +120,10 @@ public class UserResource {
         }
 
         //there is no session, using pwd
-        if(pwd == null)
+        if(pwd == null) {
+            LogResource.writeLine("    No registered password");
             throw new ForbiddenException("    session not authorized (wrong session or wrong pwd)");
+        }
 
         User user = getUser(id);
 
@@ -148,7 +153,7 @@ public class UserResource {
 
             if(res != null) {
 
-                LogResource.writeLine("    cache hit");
+                LogResource.writeLine("    cache hit getting user with id: " + id);
 
                 // How to convert string to object
                 UserDAO uread = mapper.readValue(res, UserDAO.class);
@@ -163,11 +168,15 @@ public class UserResource {
 
         }
 
-        CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
 
-        UserDAO userDao = dbUser.iterator().next();
+        Iterator<UserDAO> dbUser = db.getUserById(id).iterator();
 
-        return userDao.toUser();
+        if(!dbUser.hasNext()) {
+            LogResource.writeLine("    user not found in database");
+            throw new NotFoundException("User does not exist");
+        }
+
+        return dbUser.next().toUser();
 
     }
 
@@ -175,7 +184,7 @@ public class UserResource {
     @Path("/{id}")
     public void deleteUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
-        LogResource.writeLine("USER : DELETE USER : id = " + id + ", pwd = " + pwd);
+        LogResource.writeLine("\nUSER : DELETE USER : id = " + id + ", pwd = " + pwd);
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -246,7 +255,7 @@ public class UserResource {
     public Response auth(User user){
 
 
-        LogResource.writeLine("USER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
+        LogResource.writeLine("\nUSER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
 
         User userInDb = getUser(user.getId());
 
