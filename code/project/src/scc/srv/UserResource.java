@@ -274,13 +274,13 @@ public class UserResource {
 
             }
 
+            LogResource.writeLine("    Authenticated with success: (cookie = " + cookie.getValue() + ", userId = " + user.getId());
             return Response.ok().cookie(cookie).build();
 
-        }else{
-
-            throw new NotAuthorizedException("Incorrect login");
-
         }
+
+        throw new NotAuthorizedException("Incorrect login");
+
 
 
     }
