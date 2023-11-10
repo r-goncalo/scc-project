@@ -262,7 +262,17 @@ public class UserResource {
                     .httpOnly(true)
                     .build();
 
-            RedisCache.putSession(new Session(uid, userInDb.getId()));
+            try {
+
+                RedisCache.putSession(new Session(uid, userInDb.getId()));
+
+            }catch(Exception e){
+
+                LogResource.writeLine("    Error saving session in cache: " + e.getClass() + ": " + e.getMessage());
+                throw new InternalServerErrorException("Error saving session");
+
+
+            }
 
             return Response.ok().cookie(cookie).build();
 
