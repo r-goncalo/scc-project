@@ -14,8 +14,10 @@ import java.io.NotActiveException;
 
 public class RedisCache {
 
-	private static final String RedisHostname = System.getenv("REDIS_KEY");
-	private static final String RedisKey = System.getenv("REDIS_URL");
+	private static final String REDIS_HOST_NAME = System.getenv("REDIS_KEY");
+	private static final String REDIS_KEY = System.getenv("REDIS_URL");
+
+	private static final int TIMEOUT = 5000;
 	
 	private static JedisPool instance;
 	
@@ -25,6 +27,8 @@ public class RedisCache {
 			return instance;
 
 		LogResource.writeLine("    Creating Redis Client...");
+		LogResource.writeLine("        Redis host: " + REDIS_HOST_NAME);
+		LogResource.writeLine("        Redis key: " + REDIS_KEY);
 
 		final JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxTotal(128);
@@ -35,7 +39,7 @@ public class RedisCache {
 		poolConfig.setTestWhileIdle(true);
 		poolConfig.setNumTestsPerEvictionRun(3);
 		poolConfig.setBlockWhenExhausted(true);
-		instance = new JedisPool(poolConfig, RedisHostname, 6380, 1000, RedisKey, true);
+		instance = new JedisPool(poolConfig, REDIS_HOST_NAME, 6380, TIMEOUT, REDIS_KEY, true);
 
 		LogResource.writeLine("    Finished creating Redis Client...");
 
