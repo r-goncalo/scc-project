@@ -1,0 +1,15 @@
+{
+  "id": "ee0e5514-08b0-410f-9724-e2ca858c58a3",
+  "ownerId": "Amira94",
+  "name": "227 Smith Underpass",
+  "location": "Littelstead",
+  "description": "Templum taedium complectus.",
+  "photoIds": [
+    "5ff1d9c8-9ee6-41ab-afd9-29fada37143e",
+    "4db4dea1-8034-46c9-a433-f69030be8dd3",
+    "d9673c13-835b-4aa5-be07-d5d92ac1c57b"
+  ],
+  "normalPrice": 1475.31,
+  "promotionPrice": 800.15,
+  "monthWithDiscount": 7
+}
