@@ -9,6 +9,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
+import scc.data.House;
 import scc.data.HouseDao;
 import scc.data.User;
 import scc.data.UserDAO;
@@ -110,16 +111,16 @@ public class UserResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> list() {
+    public List<User> list() {
 
-        List<String> toReturn = new ArrayList<>();
+        List<User> toReturn = new ArrayList<>();
 
 
         Iterable<UserDAO> users =  CosmosDBLayer.getInstance().getUsers();
 
         for( UserDAO user : users){
 
-            toReturn.add(user.getName());
+            toReturn.add(user.toUser());
 
         }
 
@@ -131,14 +132,14 @@ public class UserResource {
     @GET
     @Path("/{id}/houses")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> listHouses(@PathParam("id") String id) {
+    public List<House> listHouses(@PathParam("id") String id) {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
         CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);
 
-        List<String> toReturn = new ArrayList<>();
+        List<House> toReturn = new ArrayList<>();
         for (HouseDao house : houses) {
-            toReturn.add(house.getName());
+            toReturn.add(house.toHouse());
         }
         return toReturn;
     }

@@ -4,19 +4,15 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
-import scc.data.House;
-import scc.data.HouseDao;
-import scc.data.UserDAO;
+import scc.data.*;
 import scc.db.CosmosDBLayer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 @Path("/house")
@@ -191,4 +187,5 @@ public class HouseResource {
 
         return ret;
     }
+
 }

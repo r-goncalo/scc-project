@@ -2,10 +2,6 @@ package scc.data;
 
 import java.util.Date;
 
-//Rental: Each rental should include information about the house being rented, the
-//user renting the house, the period and price of the rental.
-//make the Rental class
-
 public class Rental {
     private String id;
     private String houseId;
@@ -30,6 +26,10 @@ public class Rental {
     }
 
     //getters
+    public Date getDay() {
+        return day;
+    }
+
     public String getId() {
         return id;
     }
@@ -40,10 +40,6 @@ public class Rental {
 
     public String getUserId() {
         return userId;
-    }
-
-    public Date getDay() {
-        return day;
     }
 
     public double getPrice() {

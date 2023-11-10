@@ -9,6 +9,8 @@ module.exports = {
     genNewUserReply,
     genNewHouse,
     genNewHouseReply,
+    genNewRental,
+    genNewRentalReply,
 }
 
 
@@ -27,6 +29,7 @@ var imagesIds = []
 var images = []
 var users = []
 var houses = []
+var rentals = []
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
 var statsPrefix = [ ["/rest/media/","GET"],
@@ -34,6 +37,8 @@ var statsPrefix = [ ["/rest/media/","GET"],
 		    ["/rest/user/","GET"],
 		    ["/rest/house/","POST"],
 		    ["/rest/house/","GET"],
+		    ["/rest/rental/","POST"],
+		    ["/rest/rental/","GET"],
 	]
 
 // Function used to compress statistics
@@ -78,6 +83,11 @@ function loadData() {
     if( fs.existsSync('houses.data')) {
 	str = fs.readFileSync('houses.data','utf8')
 	houses = JSON.parse(str)
+    }
+
+        if( fs.existsSync('rentals.data')) {
+	str = fs.readFileSync('rentals.data','utf8')
+	rentals = JSON.parse(str)
     }
 }
 
@@ -153,8 +163,8 @@ function genNewUserReply(requestParams, response, context, ee, next) {
 
 
 function genNewHouse(context, events, done) {
-    context.vars.id= faker.location.streetAddress()
-    context.vars.ownerId= users[Math.floor(Math.random() * users.length)].id
+    context.vars.id= faker.string.uuid()
+    context.vars.ownerId= users.sample().id
     context.vars.name= faker.location.streetAddress()
     context.vars.location= faker.location.city() // todo usar locations array
     context.vars.description= faker.lorem.sentence()
@@ -173,4 +183,26 @@ function genNewHouseReply(requestParams, response, context, ee, next) {
 	}
     return next()
 }
+
+
+function genNewRental(context, events, done) {
+    const house = houses.sample()
+    context.vars.id = faker.string.uuid();
+    context.vars.houseId = house.id;
+    context.vars.userId = users.sample().id; // Assuming users array is available
+    context.vars.day = faker.date.future({years: 1});
+    context.vars.price = house.normalPrice;
+
+    return done();
+}
+
+function genNewRentalReply(requestParams, response, context, ee, next) {
+	if( response.statusCode >= 200 && response.statusCode < 300 && response.body.length > 0)  {
+		let r = JSON.parse( response.body)
+		rentals.push(r)
+		fs.writeFileSync('rental.data', JSON.stringify(houses));
+	}
+    return next()
+}
+
 

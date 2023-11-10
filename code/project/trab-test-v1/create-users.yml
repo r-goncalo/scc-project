@@ -12,10 +12,13 @@ config:
   - name: "Create houses"    # Create users
     duration: 1
     arrivalCount: 1
+  - name: "Create rentals"
+    duration: 1
+    arrivalCount: 1
 
 scenarios:
   - name: 'Create users'
-    weight: 100
+    weight: 1000
     flow:
       - loop:                            # let's create 50 users - loop ... count
         - post:                          # First: post image for the user
@@ -39,12 +42,13 @@ scenarios:
               pwd: "{{ pwd }}"
               photoId: "{{ imageId }}"
             afterResponse: "genNewUserReply"    # capture result and store in file
-        - function: "genNewHouse"
-        count: 50
+
+        count: 10
   - name: 'Create houses'
-    weight: 2
+    weight: 900
     flow:
       - loop:                            # let's create 50 users - loop ... count
+        - function: "genNewHouse"
         - post:
             url: "/house"
             headers:
@@ -61,4 +65,26 @@ scenarios:
               promotionPrice: "{{ promotionPrice }}"
               monthWithDiscount: "{{ monthWithDiscount }}"
             afterResponse: "genNewHouseReply"    # capture result and store in file
-          count: 50
+          count: 10
+  - name: 'Create rentals' # rentals not working :(
+    weight: 800
+    flow:
+      - loop:                            # let's create 50 users - loop ... count
+        - function: "genNewRental"
+        - post:
+            url: "/house/{{ houseId }}/rental"
+            headers:
+              Content-Type: application/json
+              Accept: application/json
+            json:
+              id: "{{ id }}"
+              houseId: "{{ houseId }}"
+              ownerId: "{{ ownerId }}"
+              renterId: "{{ renterId }}"
+              day: "{{ startDate }}"
+              price: "{{ price }}"
+            afterResponse: "genNewRentalReply"    # capture result and store in file
+          count: 10
+
+# todo rentals
+  

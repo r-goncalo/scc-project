@@ -86,9 +86,9 @@ public class CosmosDBLayer {
 		return rentals.createItem(rental);
 	}
 
-	public CosmosPagedIterable<RentalDao> getRentalById(String id) {
+	public CosmosPagedIterable<RentalDao> getRentalByIdAndHOuse(String houseId,String rentalid) {
 		init();
-		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.id=\"" + id + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.id=\"" + rentalid + "\" AND rentals.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
 
 	//getrentalsforhouse
@@ -108,19 +108,19 @@ public class CosmosDBLayer {
 	}
 
 	//Questions
-	public CosmosItemResponse<Object> putQuestion(Object question) {
+	public CosmosItemResponse<QuestionDao> putQuestion(QuestionDao question) {
 		init();
 		return questions.createItem(question);
 	}
 
-	public CosmosPagedIterable<Object> getQuestionById(String id) {
+	public CosmosPagedIterable<QuestionDao> getQuestionById(String id) {
 		init();
-		return questions.queryItems("SELECT * FROM questions WHERE questions.id=\"" + id + "\"", new CosmosQueryRequestOptions(), Object.class);
+		return questions.queryItems("SELECT * FROM questions WHERE questions.id=\"" + id + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
 	}
 
-	public CosmosPagedIterable<Object> getQuestions() {
+	public CosmosPagedIterable<QuestionDao> getQuestions() {
 		init();
-		return questions.queryItems("SELECT * FROM questions ", new CosmosQueryRequestOptions(), Object.class);
+		return questions.queryItems("SELECT * FROM questions ", new CosmosQueryRequestOptions(), QuestionDao.class);
 	}
 
 	public CosmosItemResponse<Object> delUserById(String id) {
@@ -197,8 +197,22 @@ public class CosmosDBLayer {
 	// list of rentals that will have a discounted price in the following two months
 	public CosmosPagedIterable<RentalDao> getRentalsWithDiscount() {
 		init();
-		//SELECT * FROM rentals WHERE rentals.day BETWEEN CURRENT_DATE and CURRENT_DATE + INTERVAL 2 MONTH and rentals.price = (select house.discount from house where house.id = rentals.houseId)
 		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.day BETWEEN CURRENT_DATE and CURRENT_DATE + INTERVAL 2 MONTH and rentals.price = (select house.discount from house where house.id = rentals.houseId)", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
 
+	//given a question id check if there exists a question with the same replytoid
+	public CosmosPagedIterable<QuestionDao> getQuestionByReplyToIdAndHouse( String houseId, String questionId) {
+		init();
+		return questions.queryItems("SELECT * FROM questions WHERE questions.replyToId=\"" + questionId + "\" AND questions.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
+		}
+
+	//getQuestionByIdAndHouse
+	public CosmosPagedIterable<QuestionDao> getQuestionByIdAndHouse(String houseId, String questionID) {
+		init();
+		return questions.queryItems("SELECT * FROM questions WHERE questions.id=\"" + questionID + "\" AND questions.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
+	}
+
+	public CosmosPagedIterable<QuestionDao> getQuestionsForHouse(String houseId) {
+		return questions.queryItems("SELECT * FROM questions WHERE questions.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
 	}
 }
