@@ -20,6 +20,7 @@ import scc.db.CosmosDBLayer;
 import scc.utils.Hash;
 
 
+import java.io.NotActiveException;
 import java.util.*;
 
 /**
@@ -95,7 +96,7 @@ public class UserResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) {
+    public User getUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) throws ForbiddenException, NotFoundException{
 
         LogResource.writeLine("\nUSER : GET USER : id = " + id + ", pwd = " + pwd);
 
@@ -216,11 +217,9 @@ public class UserResource {
 
         User user = verifyUser(session, id, pwd); //this will cause an exception in case of failing
 
-
         db.delUserById(id);
 
         RedisCache.getCachePool().getResource().del("user:" + id);
-
 
     }
 
@@ -262,7 +261,7 @@ public class UserResource {
     @POST
     @Path("/auth")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response auth(User user){
+    public Response auth(User user) throws InternalServerErrorException, NotAuthorizedException {
 
 
         LogResource.writeLine("\nUSER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
