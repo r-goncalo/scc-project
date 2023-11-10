@@ -12,12 +12,11 @@ public class HouseDao {
     private String location;
     private String description;
     private List<String> photoIds;
-
     private double normalPrice;
     private double promotionPrice;
-    private String renterId;
+    private int monthWithDiscount;
 
-    public HouseDao(String id, String ownerId, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice, String renterId) {
+    public HouseDao(String id, String ownerId, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice, int monthWithDiscount) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -26,7 +25,12 @@ public class HouseDao {
         this.photoIds = photos;
         this.normalPrice = normalPrice;
         this.promotionPrice = promotionPrice;
-        this.renterId = renterId;
+        this.monthWithDiscount = monthWithDiscount;
+
+        // Month with discount must be between 1 and 12
+        if (monthWithDiscount < 1 || monthWithDiscount > 12) {
+            throw new IllegalArgumentException("Month with discount must be between 1 and 12");
+        }
     }
 
     public House toHouse(){
@@ -34,7 +38,7 @@ public class HouseDao {
     }
 
     public HouseDao(House house) {
-        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getNormalPrice(), house.getPromotionPrice(), house.getRenterId());
+        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getNormalPrice(), house.getPromotionPrice(), house.getMonthWithDiscount());
     }
 
     public HouseDao(){
@@ -81,7 +85,7 @@ public class HouseDao {
         return promotionPrice;
     }
 
-    public String getRenterID() {
-        return renterId;
+    public int getMonthWithDiscount() {
+        return monthWithDiscount;
     }
 }

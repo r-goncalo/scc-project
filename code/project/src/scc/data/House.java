@@ -5,37 +5,39 @@ import java.util.List;
 public class House {
     private String id;
     private String ownerId;
-    private String renterId;
     private String name;
     private String location;
     private String description;
     private List<String> photoIds;
     private double normalPrice;
     private double promotionPrice;
+    private int monthWithDiscount;
 
 
-    public House(String id, String ownerId, String renterId, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice) {
+    public House(String id, String ownerId, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice, int monthWithDiscount) {
         this.id = id;
         this.ownerId = ownerId;
-        this.renterId = renterId;
         this.name = name;
         this.location = location;
         this.description = description;
         this.photoIds = photos;
         this.normalPrice = normalPrice;
         this.promotionPrice = promotionPrice;
+        this.monthWithDiscount = monthWithDiscount;
+
+        // Month with discount must be between 1 and 12
+        if (monthWithDiscount < 1 || monthWithDiscount > 12) {
+            throw new IllegalArgumentException("Month with discount must be between 1 and 12");
+        }
+
     }
 
     public String getOwnerId() {
         return ownerId;
     }
 
-    public String getRenterId() {
-        return renterId;
-    }
-
     public House(HouseDao house) {
-        this(house.getId(), house.getOwnerId(), house.getRenterID(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getNormalPrice(), house.getPromotionPrice());
+        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getNormalPrice(), house.getPromotionPrice(), house.getMonthWithDiscount());
     }
 
     public House(){
@@ -67,5 +69,9 @@ public class House {
 
     public double getPromotionPrice() {
         return promotionPrice;
+    }
+
+    public int getMonthWithDiscount() {
+        return monthWithDiscount;
     }
 }
