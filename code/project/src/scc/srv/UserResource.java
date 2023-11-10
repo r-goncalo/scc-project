@@ -122,7 +122,7 @@ public class UserResource {
      *
      * @throws ForbiddenException if the session and pwd failed
      */
-    public User verifyUser(Cookie session, String id, String pwd) throws ForbiddenException{
+    public static User verifyUser(Cookie session, String id, String pwd) throws ForbiddenException, NotFoundException{
 
         try {
 
@@ -144,7 +144,7 @@ public class UserResource {
 
         //there is no session, using pwd
         if(pwd == null) {
-            LogResource.writeLine("    No registered password");
+            LogResource.writeLine("    No given password");
             throw new ForbiddenException("    session not authorized (wrong session or wrong pwd)");
         }
 
@@ -170,7 +170,7 @@ public class UserResource {
      *
      * @throws NotFoundException when can't retrieve user from cache or database
      */
-    public User getUser(String id) throws NotFoundException{
+    public static User getUser(String id) throws NotFoundException{
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
