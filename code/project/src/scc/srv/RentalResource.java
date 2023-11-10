@@ -32,7 +32,7 @@ public class RentalResource {
         String id = "0:" + System.currentTimeMillis();//todo mudar os ids
 
         //check if rental id already exists
-        if(db.getRentalByIdAndHOuse(houseId,id).iterator().hasNext())
+        if(db.getRentalByIdAndHouse(houseId,id).iterator().hasNext())
             throw new WebApplicationException("Rental already exists", Response.Status.CONFLICT);
 
         //confirm rental's houseid
@@ -72,7 +72,7 @@ public class RentalResource {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        CosmosPagedIterable<RentalDao> rentals = db.getRentalByIdAndHOuse(houseId, rentalId);
+        CosmosPagedIterable<RentalDao> rentals = db.getRentalByIdAndHouse(houseId, rentalId);
 
         if(rentals.iterator().hasNext() == false)
             throw new NotFoundException("Rental not found");

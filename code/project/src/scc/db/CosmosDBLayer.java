@@ -222,6 +222,11 @@ public class CosmosDBLayer {
 		return rentals.queryItems("SELECT * FROM rentals ", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
 
+	public CosmosPagedIterable<RentalDao> getRentalByIdAndHouse(String houseId,String rentalid) {
+		init();
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.id=\"" + rentalid + "\" AND rentals.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
+
 	/*
 	/////////////////// QUESTIONS /////////////
 	 */
