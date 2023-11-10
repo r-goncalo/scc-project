@@ -99,8 +99,28 @@ public class UserResource {
 
         LogResource.writeLine("\nUSER : GET USER : id = " + id + ", pwd = " + pwd);
 
+        User user = verifyUser(session, id, pwd); //this will cause an exception in case of failing
 
-        //using session
+        if(user == null)
+            user = getUser(id);
+
+        return user;
+
+
+    }
+
+    /**
+     *
+     * @param session
+     * @param id, id of user client is claiming to be
+     * @param pwd
+     *
+     * @return the user if it was getted during verification, null otherwise (session verification)
+     *
+     * @throws ForbiddenException if the session and pwd failed
+     */
+    public User verifyUser(Cookie session, String id, String pwd) throws ForbiddenException{
+
         try {
 
             boolean isSessionValid = RedisCache.isSessionOfUser(session, id);
@@ -108,10 +128,10 @@ public class UserResource {
             if(!isSessionValid) {
 
                 LogResource.writeLine("    session not authorized");
-                throw new ForbiddenException("    session not authorized (wrong session or wrong pwd compared to session)");
+                throw new ForbiddenException("    session not authorized");
             }
 
-            return getUser(id);
+            return null;
 
         } catch(NotAuthorizedException e){
 
@@ -137,10 +157,17 @@ public class UserResource {
 
         return user;
 
-
     }
 
-    public User getUser(String id){
+    /**
+     *
+     * @param id of the user to get
+     *
+     * @return the user
+     *
+     * @throws NotFoundException when can't retrieve user from cache or database
+     */
+    public User getUser(String id) throws NotFoundException{
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -162,12 +189,10 @@ public class UserResource {
 
             }
 
-
         } catch (Exception e) {
             LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
 
         }
-
 
         Iterator<UserDAO> dbUser = db.getUserById(id).iterator();
 
@@ -182,30 +207,15 @@ public class UserResource {
 
     @DELETE
     @Path("/{id}")
-    public void deleteUser(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
+    public void deleteUser(@CookieParam("scc:session") Cookie session, @PathParam("id") String id, @QueryParam("pwd") String pwd) {
 
         LogResource.writeLine("\nUSER : DELETE USER : id = " + id + ", pwd = " + pwd);
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
+        User user = verifyUser(session, id, pwd); //this will cause an exception in case of failing
 
-        //delete from database
-        CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
-
-        if(dbUser == null) {
-            LogResource.writeLine("    USER NOT IN COSMOS");
-            return;
-        }
-
-        UserDAO userDao = dbUser.iterator().next();
-
-        if(userDao.getPwd().equals(Hash.of(pwd))){
-
-            LogResource.writeLine("    hash(pwd) != <pwdInCosmos>");
-            throw new ForbiddenException();
-
-        }
 
         db.delUserById(id);
 
