@@ -58,6 +58,8 @@ public class MediaResource
 
 			// Upload contents from BinaryData (check documentation for other alternatives)
 			blob.upload(data);
+			// todo check if it already exists
+
 
 			System.out.println( "File updloaded : " + key);
 

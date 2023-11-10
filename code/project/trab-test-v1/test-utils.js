@@ -7,7 +7,8 @@ module.exports = {
     uploadImageBody,
     genNewUser,
     genNewUserReply,
-    
+    genNewHouse,
+    genNewHouseReply,
 }
 
 
@@ -25,11 +26,14 @@ const locations = [
 var imagesIds = []
 var images = []
 var users = []
+var houses = []
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
 var statsPrefix = [ ["/rest/media/","GET"],
 			["/rest/media","POST"],
-			["/rest/user/","GET"],
+		    ["/rest/user/","GET"],
+		    ["/rest/house/","POST"],
+		    ["/rest/house/","GET"],
 	]
 
 // Function used to compress statistics
@@ -54,21 +58,27 @@ function random( val){
 
 // Loads data about images from disk
 function loadData() {
-	var i
-	var basefile = "images/house."
-	// if( fs.existsSync( '/images')) 
-	// 	basefile = '/images/house.'
-	// else
-	// 	basefile =  'images/cats.'	
-	for( i = 1; i <= 40 ; i++) {
-		var img  = fs.readFileSync(basefile + i + '.jpg')
-		images.push( img)
-	}
-	var str;
-	if( fs.existsSync('users.data')) {
-		str = fs.readFileSync('users.data','utf8')
-		users = JSON.parse(str)
-	} 
+    var i
+    var basefile = "images/house."
+    // if( fs.existsSync( '/images')) 
+    // 	basefile = '/images/house.'
+    // else
+    // 	basefile =  'images/cats.'	
+    for( i = 1; i <= 40 ; i++) {
+	var img  = fs.readFileSync(basefile + i + '.jpg')
+	images.push( img)
+    }
+    var str;
+
+    if( fs.existsSync('users.data')) {
+	str = fs.readFileSync('users.data','utf8')
+	users = JSON.parse(str)
+    }
+
+    if( fs.existsSync('houses.data')) {
+	str = fs.readFileSync('houses.data','utf8')
+	houses = JSON.parse(str)
+    }
 }
 
 loadData();
@@ -105,7 +115,7 @@ function selectImageToDownload(context, events, done) {
 }
 
 /**
- * Select an image to download.
+ * Select an user to download.
  */
 function selectUser(context, events, done) {
 	if( userIds.length > 0) {
@@ -142,35 +152,25 @@ function genNewUserReply(requestParams, response, context, ee, next) {
 }
 
 
+function genNewHouse(context, events, done) {
+    context.vars.id= faker.location.streetAddress()
+    context.vars.ownerId= users[Math.floor(Math.random() * users.length)].id
+    context.vars.name= faker.location.streetAddress()
+    context.vars.location= faker.location.city() // todo usar locations array
+    context.vars.description= faker.lorem.sentence()
+    context.vars.photoIds= [faker.string.uuid(), faker.string.uuid(), faker.string.uuid()]
+    context.vars.normalPrice= faker.number.float({ min: 1000, max: 5000, precision: 0.01 })
+    context.vars.promotionPrice= faker.number.float({ min: 800, max: 1000, precision: 0.01 })
+    context.vars.monthWithDiscount= faker.number.int({ min: 1, max: 12 })
+    return done()
+}
 
-// function generateHouseData() {
-//     context.vars.id.id= faker.random.uuid()
-//     context.vars.id.ownerId= 
-//     context.vars.id.name= 
-//     context.vars.id.location= 
-//     context.vars.id.description=
-//     context.vars.id.photoIds=
-//     context.vars.id.normalPrice= faker.random.number({ min: 1000, max: 5000, precision: 0.01 })
-//     context.vars.id.promotionPrice= faker.random.number({ min: 800, max: 4500, precision: 0.01 }),
-//     context.vars.id.monthWithDiscount= faker.random.number({ min: 1, max: 12 }),
+function genNewHouseReply(requestParams, response, context, ee, next) {
+	if( response.statusCode >= 200 && response.statusCode < 300 && response.body.length > 0)  {
+		let h = JSON.parse( response.body)
+		houses.push(h)
+		fs.writeFileSync('houses.data', JSON.stringify(houses));
+	}
+    return next()
+}
 
-//     const house = {
-//     id: ,
-//     ownerId: faker.random.uuid(),
-//     renterId: faker.random.uuid(),
-//     name: faker.address.streetName(),
-//     location: faker.address.city(),
-//     description: faker.lorem.sentence(),
-//     photoIds: [faker.random.uuid(), faker.random.uuid(), faker.random.uuid()],
-//     normalPrice: 
-
-//     promotionPrice: 
-//     monthWithDiscount: 
-//     }
-
-
-
-//     return done()
-
-//   return JSON.stringify(house, null, 2);
-// };

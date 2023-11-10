@@ -13,7 +13,7 @@ function generateUserData() {
 }
 
 // Function to generate random house data
-function generateHouseData(ownerId, renterId) {
+function generateHouseData(ownerId) {
     return {
         id: faker.string.uuid(),
         ownerId: ownerId,
@@ -32,7 +32,7 @@ const user = generateUserData();
 const renter = generateUserData();
 
 // Generate an array of house objects with the user as the owner
-const houses = Array.from({ length: 10 }, () => generateHouseData(user.id,renter.id));
+const houses = Array.from({ length: 10 }, () => generateHouseData(user.id));
 
 
 
