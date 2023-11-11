@@ -13,6 +13,7 @@ public class MainApplication extends Application
 	public MainApplication() {
 
 		LogResource.writeLine("Starting app...");
+		LogResource.writeLine("    App startup: region: " + System.getenv("REGION_NAME"));
 
 		resources.add(ControlResource.class);
 		resources.add(LogResource.class);
@@ -21,7 +22,7 @@ public class MainApplication extends Application
 		singletons.add( new UserResource());
 		singletons.add( new HouseResource());
 
-		LogResource.writeLine("Resources added");
+		LogResource.writeLine("    App startup: resources added");
 
 
 

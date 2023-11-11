@@ -2,8 +2,6 @@ package scc.srv;
 
 
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Cookie;
@@ -12,7 +10,6 @@ import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
-import scc.data.HouseDao;
 import scc.data.Session;
 import scc.data.User;
 import scc.data.UserDAO;
@@ -20,7 +17,6 @@ import scc.db.CosmosDBLayer;
 import scc.utils.Hash;
 
 
-import java.io.NotActiveException;
 import java.util.*;
 
 /**
@@ -29,8 +25,7 @@ import java.util.*;
 @Path("/user") //this means the path will be /rest/user
 public class UserResource {
 
-    private static final int MAX_USERS_IN_CACHE = 5;
-
+    private static final int MAX_RECENT_USERS_IN_CACHE = 5;
     private static final String MOST_RECENT_USERS_REDIS_KEY = "mostRecentUsers";
 
     public UserResource (){}
@@ -69,10 +64,10 @@ public class UserResource {
 
             jedis.set("user:"+id, mapper.writeValueAsString(u)); //the index will be "user" + <that user's id>
 
-            Long cnt = jedis.lpush("MostRecentUsers", mapper.writeValueAsString(u));
+            Long cnt = jedis.lpush(MOST_RECENT_USERS_REDIS_KEY, mapper.writeValueAsString(u)); //puts user in list and returns the size of the list
 
-            if (cnt > MAX_USERS_IN_CACHE)
-                jedis.ltrim("MostRecentUsers", 0, MAX_USERS_IN_CACHE - 1);
+            if (cnt > MAX_RECENT_USERS_IN_CACHE)
+                jedis.ltrim(MOST_RECENT_USERS_REDIS_KEY, 0, MAX_RECENT_USERS_IN_CACHE - 1);
 
             jedis.incr("NumUsers");
 
@@ -321,18 +316,22 @@ public class UserResource {
 
         LogResource.writeLine("\nUSER : GET MOST RECENT USERS");
 
-        List<String> toReturn = new ArrayList<>();
-
-
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             List<String> res = jedis.lrange(MOST_RECENT_USERS_REDIS_KEY, 0, -1);
 
             if(res != null) {
 
-                LogResource.writeLine("    cache hit getting most recent users");
+                LogResource.writeLine("    cache hit getting most recent users\n    number of recent users: " + res.size());
 
-                return res;
+                List<String> toReturn = new ArrayList<>(res.size());
+
+                ObjectMapper mapper = new ObjectMapper();
+
+                for(String userString : res)
+                    toReturn.add(mapper.readValue(userString, UserDAO.class).getName());
+
+                return toReturn;
 
             }
 
