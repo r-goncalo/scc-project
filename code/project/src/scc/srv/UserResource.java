@@ -31,6 +31,8 @@ public class UserResource {
 
     private static final int MAX_USERS_IN_CACHE = 5;
 
+    private static final String MOST_RECENT_USERS_REDIS_KEY = "mostRecentUsers";
+
     public UserResource (){}
 
     /**
@@ -235,7 +237,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> list() {
 
-        LogResource.writeLine("USER : GET USERS");
+        LogResource.writeLine("\nUSER : GET USERS");
 
         List<String> toReturn = new ArrayList<>();
 
@@ -309,7 +311,39 @@ public class UserResource {
     }
 
 
+    /**
+     * Lists of most recent users
+     */
+    @GET
+    @Path("/recent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> mostRecentUsers() throws NotFoundException {
 
+        LogResource.writeLine("\nUSER : GET MOST RECENT USERS");
+
+        List<String> toReturn = new ArrayList<>();
+
+
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+
+            List<String> res = jedis.lrange(MOST_RECENT_USERS_REDIS_KEY, 0, -1);
+
+            if(res != null) {
+
+                LogResource.writeLine("    cache hit getting most recent users");
+
+                return res;
+
+            }
+
+        } catch (Exception e) {
+            LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
+
+        }
+
+        throw new NotFoundException("No recent users in cache");
+
+    }
 
 
 }
