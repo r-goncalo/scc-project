@@ -1,5 +1,5 @@
 config:
-  target: 'https://scc24appnortheurope4204.azurewebsites.net/rest'
+  target: 'https://scc24appwesteurope60519.azurewebsites.net/rest'
   plugins:
     metrics-by-endpoint:
       useOnlyRequestNames: true
