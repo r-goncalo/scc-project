@@ -36,7 +36,7 @@ public class HouseResource {
 
         // check if user ownerID exists
         if(db.getUserById(house.getOwnerId()).iterator().hasNext() == false)
-        	throw new NotFoundException("User not found");
+        	throw new WebApplicationException("User" +house.getOwnerId()+" not found", Response.Status.NOT_FOUND);
 
 
 

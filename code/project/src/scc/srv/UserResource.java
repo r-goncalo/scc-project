@@ -76,30 +76,6 @@ public class UserResource {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        ObjectMapper mapper = new ObjectMapper();
-
-        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
-
-            String res = jedis.get("user:"+id);
-
-            if(res != null) {
-
-                // How to convert string to object
-                UserDAO uread = mapper.readValue(res, UserDAO.class);
-
-                return uread.toUser();
-
-            }
-
-
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
         CosmosPagedIterable<UserDAO> dbUser = db.getUserById(id);
 
         UserDAO userDao = dbUser.iterator().next();
@@ -143,7 +119,6 @@ public class UserResource {
         }
         return toReturn;
     }
-
 
 
 

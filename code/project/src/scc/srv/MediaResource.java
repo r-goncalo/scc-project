@@ -45,7 +45,7 @@ public class MediaResource
 		String key = Hash.of(contents);
 
 		try {
-			BinaryData data = BinaryData.fromFile(java.nio.file.Path.of(key));
+			BinaryData data = BinaryData.fromBytes(contents);
 
 			// Get container client
 			BlobContainerClient containerClient = new BlobContainerClientBuilder()

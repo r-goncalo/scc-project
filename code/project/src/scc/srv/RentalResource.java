@@ -18,7 +18,7 @@ import java.util.Locale;
 
 //todo restrições (caso não haja casa ou user, não pode criar rental. Caso já haja rental, não se pode criar outro)
 
-@Path("/rest/house/{houseId}/rental") //todo checkar se valores entre {} são iguais aos do @pathparam
+@Path("/house/{houseId}/rental") //todo checkar se valores entre {} são iguais aos do @pathparam
 public class RentalResource {
 
     @POST
@@ -32,7 +32,7 @@ public class RentalResource {
         String id = "0:" + System.currentTimeMillis();//todo mudar os ids
 
         //check if rental id already exists
-        if(db.getRentalByIdAndHOuse(houseId,id).iterator().hasNext())
+        if(db.getrentalbyidandhouse(houseId,id).iterator().hasNext())
             throw new WebApplicationException("Rental already exists", Response.Status.CONFLICT);
 
         //confirm rental's houseid
@@ -45,8 +45,9 @@ public class RentalResource {
             throw new WebApplicationException("Rental date is already taken for the given house", Response.Status.CONFLICT);
 
         // confirm rental's user exists
-        if(!db.getUserById(rental.getUserId()).stream().iterator().hasNext())
-            throw new NotFoundException("Renter user does not exist"); //todo user not found exception
+        if(db.getUserById(rental.getUserId()).iterator().hasNext()==false)
+            throw new WebApplicationException("User not found", Response.Status.NOT_FOUND);
+
 
         Iterator<HouseDao> h = db.getHouseById(rental.getHouseId()).iterator();
         //todo confirm rental's house exists
@@ -72,7 +73,7 @@ public class RentalResource {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        CosmosPagedIterable<RentalDao> rentals = db.getRentalByIdAndHOuse(houseId, rentalId);
+        CosmosPagedIterable<RentalDao> rentals = db.getrentalbyidandhouse(houseId, rentalId);
 
         if(rentals.iterator().hasNext() == false)
             throw new NotFoundException("Rental not found");

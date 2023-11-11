@@ -75,6 +75,8 @@ function loadData() {
     }
     var str;
 
+    //isto pode estar a causar problemas quando rodo vários testes de novo
+
     if( fs.existsSync('users.data')) {
 	str = fs.readFileSync('users.data','utf8')
 	users = JSON.parse(str)
@@ -176,6 +178,11 @@ function genNewHouse(context, events, done) {
 }
 
 function genNewHouseReply(requestParams, response, context, ee, next) {
+//    console.error("House error")
+    console.error("StatusCode: " + response.statusCode)
+    console.error("body: " + response.body)
+
+
 	if( response.statusCode >= 200 && response.statusCode < 300 && response.body.length > 0)  {
 		let h = JSON.parse( response.body)
 		houses.push(h)
@@ -190,7 +197,7 @@ function genNewRental(context, events, done) {
     context.vars.id = faker.string.uuid();
     context.vars.houseId = house.id;
     context.vars.userId = users.sample().id; // Assuming users array is available
-    context.vars.day = faker.date.future({years: 1});
+    context.vars.day = "2023-11-11T12:30:00.000Z"
     context.vars.price = house.normalPrice;
 
     return done();

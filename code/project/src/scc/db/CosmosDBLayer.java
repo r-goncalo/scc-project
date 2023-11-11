@@ -59,7 +59,7 @@ public class CosmosDBLayer {
 		db = client.getDatabase(DB_NAME);
 		users = db.getContainer("users");
 		houses = db.getContainer("houses");
-		rentals = db.getContainer("rentals");
+		rentals = db.getContainer("rentals");//todo letra minuscula
 		questions = db.getContainer("questions");
 
 	}
@@ -86,7 +86,7 @@ public class CosmosDBLayer {
 		return rentals.createItem(rental);
 	}
 
-	public CosmosPagedIterable<RentalDao> getRentalByIdAndHOuse(String houseId,String rentalid) {
+	public CosmosPagedIterable<RentalDao> getrentalbyidandhouse(String houseId, String rentalid) {
 		init();
 		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.id=\"" + rentalid + "\" AND rentals.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
@@ -147,7 +147,8 @@ public class CosmosDBLayer {
 	
 	public CosmosPagedIterable<UserDAO> getUserById( String id) {
 		init();
-		return users.queryItems("SELECT * FROM users WHERE users.id=\"" + id + "\"", new CosmosQueryRequestOptions(), UserDAO.class);
+		return users.queryItems("SELECT * FROM users u WHERE u.id='" + id + "'", new CosmosQueryRequestOptions(), UserDAO.class);
+
 	}
 
 	public CosmosPagedIterable<UserDAO> getUsers() {
@@ -167,7 +168,7 @@ public class CosmosDBLayer {
 
 	public CosmosPagedIterable<HouseDao> getHouseById(String id) {
 		init();
-		return houses.queryItems("SELECT * FROM houses WHERE users.id=\"" + id + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+		return houses.queryItems("SELECT * FROM houses WHERE houses.id=\"" + id + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
 	}
 
 	//list all of a users house

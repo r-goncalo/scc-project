@@ -1,0 +1,32 @@
+config:
+  target: 'https://scc24appwesteurope188046.azurewebsites.net/rest'
+  plugins:
+    metrics-by-endpoint: {}
+  processor: "./test-utils.js"
+  variables:
+     metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
+  phases:
+  - name: "Create rentals"
+    duration: 1
+    arrivalCount: 1
+
+scenarios:
+  - name: 'Create rentals' # rentals not working :(
+    weight: 800
+    flow:
+      - loop:                            # let's create 50 users - loop ... count
+        - function: "genNewRental"
+        - post:
+            url: "/house/{{ houseId }}/rental"
+            headers:
+              Content-Type: application/json
+              Accept: application/json
+            json:
+              id: "{{ id }}"
+              houseId: "{{ houseId }}"
+              ownerId: "{{ ownerId }}"
+              renterId: "{{ renterId }}"
+              day: "{{ day }}"
+              price: "{{ price }}"
+            afterResponse: "genNewRentalReply"    # capture result and store in file
+        count: 10  
