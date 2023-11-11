@@ -14,7 +14,7 @@ import com.microsoft.azure.functions.*;
  * {Server_URL}/api/{route}
  * Complete URL appear when deploying functions.
  */
-public class HttpFunction {
+public class HttpFunction {/*
 
 	@FunctionName("http-info")
 	public HttpResponseMessage info(@HttpTrigger(name = "req", 
@@ -138,4 +138,4 @@ public class HttpFunction {
 				final ExecutionContext context) {
 		return request.createResponseBuilder(HttpStatus.OK).body(txt).build();
 	}
-}
+*/}
