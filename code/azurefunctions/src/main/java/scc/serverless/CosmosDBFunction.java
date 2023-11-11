@@ -19,19 +19,22 @@ public class CosmosDBFunction {
 
     @FunctionName("cosmosDBtest")
     public void updateMostRecentUsers(@CosmosDBTrigger(name = "cosmosTest",
-    										databaseName = "scc24db4204",
+    										databaseName = "scc2460519", // = DB_NAME
     										collectionName = "users",
-    										preferredLocations="North Europe",
+    										preferredLocations="West Europe",
     										createLeaseCollectionIfNotExists = true,
     										connectionStringSetting = "AzureCosmosDBConnection") 
         							String[] users,
         							final ExecutionContext context ) {
+
 		try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 			jedis.incr("cnt:cosmos");
+
 			for( String u : users) {
-				jedis.lpush("serverless::cosmos::users", u);
+				jedis.lpush("mostRecentUsers", u);
 			}
-			jedis.ltrim("serverless::cosmos::users", 0, 9);
+			jedis.ltrim("mostRecentUsers", 0, 9);
+
 		}
     }
 
