@@ -17,7 +17,7 @@
 		<functionAppName>sccfunwesteurope60519</functionAppName>
 		<functionAppRegion>westeurope</functionAppRegion>
 		<functionPricingTier>B1</functionPricingTier>
-		<functionResourceGroup>scc24-rg-northeurope-4204</functionResourceGroup>
+		<functionResourceGroup>scc24-rg-westeurope-60519</functionResourceGroup>
 	</properties>
 
 	<dependencies>

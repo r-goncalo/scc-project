@@ -25,7 +25,6 @@ import java.util.*;
 @Path("/user") //this means the path will be /rest/user
 public class UserResource {
 
-    private static final int MAX_RECENT_USERS_IN_CACHE = 5;
     private static final String MOST_RECENT_USERS_REDIS_KEY = "mostRecentUsers";
 
     public UserResource (){}
@@ -63,11 +62,6 @@ public class UserResource {
             ObjectMapper mapper = new ObjectMapper();
 
             jedis.set("user:"+id, mapper.writeValueAsString(u)); //the index will be "user" + <that user's id>
-
-            Long cnt = jedis.lpush(MOST_RECENT_USERS_REDIS_KEY, mapper.writeValueAsString(u)); //puts user in list and returns the size of the list
-
-            if (cnt > MAX_RECENT_USERS_IN_CACHE)
-                jedis.ltrim(MOST_RECENT_USERS_REDIS_KEY, 0, MAX_RECENT_USERS_IN_CACHE - 1);
 
             jedis.incr("NumUsers");
 

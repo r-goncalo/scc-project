@@ -17,6 +17,7 @@ public class CosmosDBFunction {
 	private static final String DB_KEY = System.getenv("COSMOSDB_KEY");
 	private static final String DB_NAME = System.getenv("COSMOSDB_DATABASE");
 
+	private static final int MAX_RECENT_USERS_IN_CACHE = 5;
 	private static final String MOST_RECENT_USERS_REDIS_KEY = "mostRecentUsers";
 
     @FunctionName("cosmosDBtest")
@@ -35,7 +36,7 @@ public class CosmosDBFunction {
 			for( String u : users) {
 				jedis.lpush(MOST_RECENT_USERS_REDIS_KEY, u);
 			}
-			jedis.ltrim(MOST_RECENT_USERS_REDIS_KEY, 0, 9);
+			jedis.ltrim(MOST_RECENT_USERS_REDIS_KEY, 0, MAX_RECENT_USERS_IN_CACHE - 1);
 
 		}
     }
