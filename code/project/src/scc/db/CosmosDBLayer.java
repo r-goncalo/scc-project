@@ -31,6 +31,10 @@ public class CosmosDBLayer {
 
 		LogResource.writeLine("    Creating Cosmos Database Client...");
 
+		LogResource.writeLine("        Connection url: " + CONNECTION_URL);
+		LogResource.writeLine("        Database key: " + DB_KEY);
+		LogResource.writeLine("        Database name: " + DB_NAME);
+
 		try {
 
 			CosmosClient client = new CosmosClientBuilder()
