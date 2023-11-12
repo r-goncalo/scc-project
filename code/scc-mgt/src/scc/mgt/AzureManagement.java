@@ -50,8 +50,11 @@ public class AzureManagement {
 	static final String[] BLOB_CONTAINERS = { "media" };	// TODO: Containers to add to the blob storage
 
 	static final String[] cosmosDBCollections= { "users", "houses", "rentals", "questions"};
+
 	static final Region[] REGIONS = new Region[] { Region.EUROPE_WEST}; // Define the regions to deploy resources here
-	
+	//Region.EUROPE_WEST.name() == westeurope
+
+
 	// Name of resoruce group for each region
 	static final String[] AZURE_RG_REGIONS = Arrays.stream(REGIONS)
 			.map(reg -> "scc24-rg-" + reg.name() + "-" + MY_SUFFIX).toArray(String[]::new);
