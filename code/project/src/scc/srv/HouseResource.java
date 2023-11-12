@@ -3,6 +3,7 @@ package scc.srv;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.Jedis;
@@ -19,47 +20,99 @@ import java.util.*;
 public class HouseResource {
 
 
-    private static final long MAX_USERS_IN_CACHE = 5;
+    private static final long MAX_RECENTE_HOUSES_IN_CACHE = 5;
+    public static final String HOUSES_REDIS_KEY = "houses";
+    public static final String MOST_RECENT_HOUSES_REDIS_KEY = "MostRecentHouses";
+    public static final String NUM_HOUSES = "NumHouses";
+    public static final String NUM_RECENT_HOUSES = "NumRecentHouses";
 
+    //new house given session cookie and house object
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static House newHouse(House house){
+    public static House newHouse(@CookieParam("session") Cookie session, House house){
+        LogResource.writeLine("New house: " + house);
 
-        Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-        String id = "0:" + System.currentTimeMillis();
+
+        // check if user ownerID exists
+        if(db.getUserById(house.getOwnerId()).iterator().hasNext() == false)
+            throw new WebApplicationException("User" +house.getOwnerId()+" not found", Response.Status.NOT_FOUND);
+
+        //check if owner is logged in with session cookie use the verify user method
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId());
+        if(isOwnerLoggedIn == false)
+            throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
+
+        //check if house id already exists please
+        if(db.getHouseById(house.getId()).iterator().hasNext())
+            throw new WebApplicationException("House already exists", Response.Status.CONFLICT);
+
 
         HouseDao h = new HouseDao(house);
         db.putHouse(h);
 
-        // check if user ownerID exists
-        if(db.getUserById(house.getOwnerId()).iterator().hasNext() == false)
-        	throw new WebApplicationException("User" +house.getOwnerId()+" not found", Response.Status.NOT_FOUND);
 
-
-
-
-        //we'll save the user in cache
+        //we'll save the house in cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            jedis.set("house:"+id, mapper.writeValueAsString(h)); //the index will be "user" + <that user's id>
+            jedis.set("house:"+house.getId(), mapper.writeValueAsString(house));
 
-            Long cnt = jedis.lpush("MostRecentHouses", mapper.writeValueAsString(h));
+            Long cnt = jedis.lpush(MOST_RECENT_HOUSES_REDIS_KEY, mapper.writeValueAsString(house));
 
-            if (cnt > MAX_USERS_IN_CACHE)
-                jedis.ltrim("MostRecentHouses", 0, MAX_USERS_IN_CACHE - 1);
+            if (cnt > MAX_RECENTE_HOUSES_IN_CACHE)
+                jedis.ltrim(MOST_RECENT_HOUSES_REDIS_KEY, 0, MAX_RECENTE_HOUSES_IN_CACHE - 1);
+            if (cnt < MAX_RECENTE_HOUSES_IN_CACHE)
+                jedis.incr(NUM_RECENT_HOUSES);
 
-            jedis.incr("NumHouses");
+            jedis.lpush(HOUSES_REDIS_KEY, mapper.writeValueAsString(h));
+            jedis.incr(NUM_HOUSES);
 
         } catch(Exception e) {
             e.printStackTrace();
         }
 
         return house;
+    }
+
+
+
+    //update house
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public static House updateHouse(@PathParam("id") String id, @CookieParam("session") Cookie session, House house){
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        //check if house exists
+        if(db.getHouseById(id).iterator().hasNext())
+            throw new WebApplicationException("House already exists", Response.Status.CONFLICT);
+
+        //check if id is the same as house's id
+        if(!id.equals(house.getId()))
+            throw new WebApplicationException("House id does not match", Response.Status.CONFLICT);
+
+        //check if owner is logged in
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId());
+        if(isOwnerLoggedIn == false)
+            throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
+
+        //update house
+        House ret = db.updateHouse(new HouseDao(house)).toHouse();
+
+        //update on redis
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+            ObjectMapper mapper = new ObjectMapper();
+            jedis.set("house:"+house.getId(), mapper.writeValueAsString(house));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return ret;
     }
 
     @GET
@@ -103,42 +156,78 @@ public class HouseResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> list() {
+    public List<House> listHouses() {
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+        List<House> toReturn = new ArrayList<>();
 
-        List<String> toReturn = new ArrayList<>();
+        //get all the houses from the redis
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+                List<String> lst = jedis.lrange(HOUSES_REDIS_KEY, 0, -1);
+                for( String s : lst){
+                    House h = mapper.readValue(s, House.class);
+                    toReturn.add(h);
+                }
+            }
+        } catch (Exception e){
+            LogResource.writeLine("Error getting houses from cache");
+            e.printStackTrace();
+        }
 
+        if(toReturn.isEmpty()) {
 
-        Iterable<HouseDao> houses =  CosmosDBLayer.getInstance().getAllHouses();
+            Iterable<HouseDao> houses = CosmosDBLayer.getInstance().getAllHouses();
 
-        for( HouseDao house : houses){
-            toReturn.add(house.getName());
+            for (HouseDao house : houses) {
+                toReturn.add(house.toHouse());
+            }
         }
         return toReturn;
     }
 
     @DELETE
     @Path("/house/{id}")
-    public void deleteHouse(@PathParam("id") String id, @QueryParam("pwd") String pwd) {
+    public Response deleteHouse(@PathParam("id") String id, @CookieParam("session") Cookie session) {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
+
+        //check if house exists
+        Iterator<HouseDao> iterator = db.getHouseById(id).iterator();
+        if(iterator.hasNext())
+            throw new WebApplicationException("House already exists", Response.Status.CONFLICT);
+        House house = iterator.next().toHouse();
+
+        //check if owner is logged in
+        String ownerId = iterator.next().getOwnerId();
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, ownerId);
+        if(isOwnerLoggedIn == false)
+            throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
+
         //delete from database
-        CosmosPagedIterable<HouseDao> dbHouse = db.getHouseById(id);
-
-        HouseDao houseDao = dbHouse.iterator().next();
-
-        db.delUserById(houseDao.getId());
-
+        db.delHouseById(id);
 
         //delete from cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
             jedis.del("house:" + id);
+
+            //delete from recent houses
+            ObjectMapper mapper = new ObjectMapper();
+            String houseString = mapper.writeValueAsString(house);
+            Long cnt = jedis.lrem(MOST_RECENT_HOUSES_REDIS_KEY, 0, houseString);
+            jedis.decrBy(NUM_RECENT_HOUSES, cnt);
+
+            //delete from houses
+            cnt = jedis.lrem(HOUSES_REDIS_KEY, 0, houseString);
+            jedis.decrBy(NUM_HOUSES, cnt);
+
         } catch (Exception e){
             e.printStackTrace();
         }
 
-
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @GET
@@ -161,9 +250,9 @@ public class HouseResource {
 
     //get all the houses in a given location and whithin a given time range from start to end
     @GET
-    @Path("/location/{location}/{start}/{end}")
+    @Path("/location/{location}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @PathParam("start") String start, @PathParam("end") String end) {
+    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @QueryParam("start") String start, @QueryParam("end") String end) {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();

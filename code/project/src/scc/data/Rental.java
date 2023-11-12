@@ -1,15 +1,13 @@
 package scc.data;
 
-import java.util.Date;
-
 public class Rental {
     private String id;
     private String houseId;
     private String userId;
-    private Date day;
+    private String day;
     private double price;
 
-    public Rental(String id, String houseId, String userId, Date day, double price) {
+    public Rental(String id, String houseId, String userId, String day, double price) {
         this.id = id;
         this.houseId = houseId;
         this.userId = userId;
@@ -26,7 +24,7 @@ public class Rental {
     }
 
     //getters
-    public Date getDay() {
+    public String getDay() {
         return day;
     }
 

@@ -1,7 +1,5 @@
 package scc.data;
 
-import java.util.Date;
-
 //Rental: Each rental should include information about the house being rented, the
 //user renting the house, the period and price of the rental.
 //make the Rental class
@@ -12,10 +10,10 @@ public class RentalDao {
     private String id;
     private String houseId;
     private String userId;
-    private Date day;
+    private String day;
     private double price;
 
-    public RentalDao(String id, String houseId, String userId, Date day, double price) {
+    public RentalDao(String id, String houseId, String userId, String day, double price) {
         this.id = id;
         this.houseId = houseId;
         this.userId = userId;
@@ -33,7 +31,7 @@ public class RentalDao {
 
 
     //getters
-    public Date getDay() {
+    public String getDay() {
         return day;
     }
 
@@ -56,5 +54,9 @@ public class RentalDao {
     //setters
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Rental toRental() {
+        return new Rental(this);
     }
 }

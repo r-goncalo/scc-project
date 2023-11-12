@@ -1,13 +1,18 @@
 package scc.cache;
 
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import scc.data.Session;
+import scc.srv.LogResource;
 
 public class RedisCache {
 
-	private static final String RedisHostname = "scc24cashe60519.redis.cache.windows.net";
-	private static final String RedisKey = "lMGJufUGIpFzrFEnZLOeelqmU2hMw96Q4AzCaG4CPJQ=";
-	
+	private static final String REDIS_HOST_NAME = System.getenv("REDIS_URL");
+	private static final String REDIS_KEY = System.getenv("REDIS_KEY");
 	private static JedisPool instance;
 	
 	public synchronized static JedisPool getCachePool() {
@@ -24,9 +29,55 @@ public class RedisCache {
 		poolConfig.setTestWhileIdle(true);
 		poolConfig.setNumTestsPerEvictionRun(3);
 		poolConfig.setBlockWhenExhausted(true);
-		instance = new JedisPool(poolConfig, RedisHostname, 6380, 1000, RedisKey, true);
+		instance = new JedisPool(poolConfig, REDIS_HOST_NAME, 6380, 1000, REDIS_KEY, true);
 
 		return instance;
 		
+	}
+
+
+	/*
+	///////////////////// SESSION ///////////////
+	*/
+
+	public static void putSession(Session session){
+
+		getCachePool().getResource().set("session=" + session.getUid(), session.getUserId());
+
+	}
+
+	/**
+	 *
+	 * @param session, the cookie sent by the client
+	 * @param id, the id of the user the client is claiming to be
+	 *
+	 * @return if user corresponding to session and id are the same, false otherwise
+	 *
+	 * @throws NotAuthorizedException if the session of the user is not initialized or there is no session of that user in cache
+	 */
+	public static boolean isSessionOfUser(Cookie session, String id) throws NotAuthorizedException {
+
+		if(session == null || session.getValue() == null) {
+			LogResource.writeLine("    cookie session invalid or non existent");
+			throw new WebApplicationException("cookie session invalid or non existent", Response.Status.UNAUTHORIZED);
+		}
+
+		String sessionUserId;
+
+		sessionUserId = getCachePool().getResource().get("session=" + session.getValue());
+
+		if (sessionUserId == null) {
+			LogResource.writeLine("    no cookie session in cache registered with value: " + session.getValue());
+			throw new WebApplicationException("cookie session invalid or non existent", Response.Status.UNAUTHORIZED);
+
+		}
+
+		if (!sessionUserId.equals(id)) {
+			LogResource.writeLine("    cookie session existent but with different id: " + id + " != " + sessionUserId);
+			return false;
+		}
+
+		return true;
+
 	}
 }

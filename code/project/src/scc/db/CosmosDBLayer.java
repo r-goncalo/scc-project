@@ -1,17 +1,15 @@
 package scc.db;
 
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.*;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
-
-import scc.data.*;
+import scc.data.HouseDao;
+import scc.data.QuestionDao;
+import scc.data.RentalDao;
+import scc.data.UserDAO;
 
 import java.util.Date;
 
@@ -65,12 +63,20 @@ public class CosmosDBLayer {
 	}
 
 	//make a function to get all the rentals in a given date for a given house id
-	public CosmosPagedIterable<RentalDao> getHouseRentalForDate(Date date, String houseId) {
+	public CosmosPagedIterable<RentalDao> getHouseRentalForDate(String date, String houseId) {
 		init();
 		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.houseId=\"" + houseId + "\" AND rentals.day=\"" + date.toString() + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
 
+	//update the owner if of a given house
+	public CosmosItemResponse<HouseDao> updateHouseOwner(String houseId, String ownerId) {
+		init();
+		CosmosPagedIterable<HouseDao> house = houses.queryItems("SELECT * FROM houses WHERE houses.id=\"" + houseId + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
 
+		HouseDao h = house.iterator().next();
+		h.setOwnerId(ownerId);
+		return houses.upsertItem(h);
+	}
 
 	//return CosmosItemResponse<RentalDao> with all the rentals in a given period from start to end.
 	// Use between in the sql query
@@ -134,12 +140,7 @@ public class CosmosDBLayer {
 		PartitionKey key = new PartitionKey(id);
 		return houses.deleteItem(id, key, new CosmosItemRequestOptions());
 	}
-	
-	public CosmosItemResponse<Object> delUser(UserDAO user) {
-		init();
-		return users.deleteItem(user, new CosmosItemRequestOptions());
-	}
-	
+
 	public CosmosItemResponse<UserDAO> putUser(UserDAO user) {
 		init();
 		return users.createItem(user);
@@ -215,5 +216,17 @@ public class CosmosDBLayer {
 
 	public CosmosPagedIterable<QuestionDao> getQuestionsForHouse(String houseId) {
 		return questions.queryItems("SELECT * FROM questions WHERE questions.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
+	}
+
+	public UserDAO updateUser(UserDAO userDAO) {
+		init();
+		CosmosItemResponse<UserDAO> response = users.upsertItem(userDAO);
+		return response.getItem();
+	}
+
+	public HouseDao updateHouse(HouseDao houseDao) {
+		init();
+		CosmosItemResponse<HouseDao> response = houses.upsertItem(houseDao);
+		return response.getItem();
 	}
 }

@@ -88,4 +88,10 @@ public class HouseDao {
     public int getMonthWithDiscount() {
         return monthWithDiscount;
     }
+
+    // setters
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 }

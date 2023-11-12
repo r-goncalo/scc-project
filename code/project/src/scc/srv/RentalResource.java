@@ -29,10 +29,9 @@ public class RentalResource {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-        String id = "0:" + System.currentTimeMillis();//todo mudar os ids
 
         //check if rental id already exists
-        if(db.getrentalbyidandhouse(houseId,id).iterator().hasNext())
+        if(db.getrentalbyidandhouse(houseId,rental.getId()).iterator().hasNext())
             throw new WebApplicationException("Rental already exists", Response.Status.CONFLICT);
 
         //confirm rental's houseid
@@ -59,9 +58,9 @@ public class RentalResource {
 
 
         RentalDao r = new RentalDao(rental);
-        db.putRental(r);
 
-        return rental;
+
+        return db.putRental(r).getItem().toRental();
     }
 
     //get a specific rental for a given houseid
