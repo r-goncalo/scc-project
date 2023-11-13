@@ -93,6 +93,11 @@ public class UserResource {
         
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
+        //check if user is logged in
+        boolean isLoggedIn = RedisCache.isSessionOfUser(session, id);
+        if(isLoggedIn == false)
+            throw new WebApplicationException("User not logged in", Response.Status.UNAUTHORIZED);
+
         //check if user exists
         if(db.getUserById(id).iterator().hasNext() == false)
             throw new NotFoundException("User not found");
@@ -101,10 +106,6 @@ public class UserResource {
         if(!id.equals(user.getId()))
             throw new WebApplicationException("User id does not match", Response.Status.CONFLICT);
 
-        //check if user is logged in
-        boolean isLoggedIn = RedisCache.isSessionOfUser(session, id);
-        if(isLoggedIn == false)
-            throw new WebApplicationException("User not logged in", Response.Status.UNAUTHORIZED);
 
         //update user
         User ret = db.updateUser(new UserDAO(user)).toUser();
@@ -129,14 +130,15 @@ public class UserResource {
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
         User user = getUser(id);
-        //check if user exists
-        if(user == null)
-            throw new NotFoundException("User not found");
-
         //check if user is logged in
         boolean isLoggedIn = RedisCache.isSessionOfUser(session, id);
         if(isLoggedIn == false)
             throw new WebApplicationException("User not logged in", Response.Status.UNAUTHORIZED);
+
+        //check if user exists
+        if(user == null)
+            throw new NotFoundException("User not found");
+
 
 
         //update user's houses with owner id "Deleted User"
@@ -248,8 +250,8 @@ public class UserResource {
                     .secure(false)
                     .httpOnly(true)
                     .build();
-            try {
 
+            try {
                 RedisCache.putSession(new Session(uid, userInDb.getId()));
             }catch(Exception e){
                 LogResource.writeLine("    Error saving session in cache: " + e.getClass() + ": " + e.getMessage());

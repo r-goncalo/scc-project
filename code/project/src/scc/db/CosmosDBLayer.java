@@ -57,7 +57,7 @@ public class CosmosDBLayer {
 		houses = db.getContainer("houses");
 		rentals = db.getContainer("rentals");//todo letra minuscula
 		questions = db.getContainer("questions");
-		availabilities = db.getContainer("availabilities");
+		availabilities = db.getContainer("availability"); //todo change to // availabilities = db.getContainer("availabilities");
 	}
 
 	//make a function to get all the rentals in a given date for a given house id

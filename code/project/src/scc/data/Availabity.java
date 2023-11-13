@@ -6,9 +6,9 @@ public class Availabity {
     private String fromDate;
     private String toDate;
     private double cost;
-    private boolean discount;
+    private double discount; //to compute final price, multiply cost by discount
 
-    public Availabity(String id, String houseId, String fromDate, String toDate, double cost, boolean discount) {
+    public Availabity(String id, String houseId, String fromDate, String toDate, double cost, double discount) {
         this.id = id;
         this.houseId = houseId;
         this.fromDate = fromDate;
@@ -45,7 +45,7 @@ public class Availabity {
         return cost;
     }
 
-    public boolean isDiscount() {
+    public double getDiscount() {
         return discount;
     }
 

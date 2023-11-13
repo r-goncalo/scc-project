@@ -31,19 +31,23 @@ public class HouseResource {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static House newHouse(@CookieParam("session") Cookie session, House house){
+    public static House newHouse(@CookieParam("scc:session") Cookie session, House house){
         LogResource.writeLine("New house: " + house);
 
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
         // check if user ownerID exists
-        if(db.getUserById(house.getOwnerId()).iterator().hasNext() == false)
-            throw new WebApplicationException("User" +house.getOwnerId()+" not found", Response.Status.NOT_FOUND);
+        if(db.getUserById(house.getOwnerId()).iterator().hasNext() == false) {
+            LogResource.writeLine("User not found");
+            throw new WebApplicationException("User" + house.getOwnerId() + " not found", Response.Status.NOT_FOUND);
+        }
 
         //check if owner is logged in with session cookie use the verify user method
-        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId());
-        if(isOwnerLoggedIn == false)
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId()); //todo autenticação a falhar a
+        if(isOwnerLoggedIn == false) {
+            LogResource.writeLine("Owner not logged in");
             throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
+        }
 
         HouseDao h = new HouseDao(house);
         UUID uniqueID = UUID.randomUUID();
@@ -82,21 +86,27 @@ public class HouseResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static House updateHouse(@PathParam("id") String id, @CookieParam("session") Cookie session, House house){
+    public static House updateHouse(@PathParam("id") String id, @CookieParam("scc:session") Cookie session, House house){
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        //check if house exists
-        if(db.getHouseById(id).iterator().hasNext())
-            throw new WebApplicationException("House already exists", Response.Status.CONFLICT);
+        //check if house doesn't exist
+        if(db.getHouseById(id).iterator().hasNext() == false) {
+            LogResource.writeLine("House not found");
+            throw new WebApplicationException("House not found", Response.Status.NOT_FOUND);
+        }
 
         //check if id is the same as house's id
-        if(!id.equals(house.getId()))
+        if(!id.equals(house.getId())) {
+            LogResource.writeLine("House id does not match");
             throw new WebApplicationException("House id does not match", Response.Status.CONFLICT);
+        }
 
         //check if owner is logged in
         boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId());
-        if(isOwnerLoggedIn == false)
+        if(isOwnerLoggedIn == false) {
+            LogResource.writeLine("Owner not logged in");
             throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
+        }
 
         //update house
         House ret = db.updateHouse(new HouseDao(house)).toHouse();
@@ -185,7 +195,7 @@ public class HouseResource {
 
     @DELETE
     @Path("/house/{id}")
-    public Response deleteHouse(@PathParam("id") String id, @CookieParam("session") Cookie session) {
+    public Response deleteHouse(@PathParam("id") String id, @CookieParam("scc:session") Cookie session) {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
@@ -277,23 +287,27 @@ public class HouseResource {
 
     //post availability
     @POST
-    @Path("/{id}/availability")
+    @Path("/{id}/available")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Availabity newAvailability(@CookieParam("scc:session") Cookie session, @PathParam("id") String houseId, Availabity availabity ) throws ParseException {
+    public static Availabity newAvailability(@CookieParam("scc:session") Cookie session, @PathParam("id") String houseId, Availabity availabity ) throws ParseException {
+        LogResource.writeLine("New availability: " + availabity);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
         //check if house exists
         Iterator<HouseDao> houseIter = db.getHouseById(houseId).iterator();
-        if(houseIter.hasNext() == false)
+        if(houseIter.hasNext() == false) {
+            LogResource.writeLine("House not found");
             throw new WebApplicationException("House not found", Response.Status.NOT_FOUND);
+        }
 
         // check if owner is logged in
         String ownerid = houseIter.next().getOwnerId();
         boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, ownerid);
-        if(isOwnerLoggedIn == false)
+        if(isOwnerLoggedIn == false) {
+            LogResource.writeLine("Owner not logged in");
             throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
-
+        }
 
         //first get list of availabilities for the house
         CosmosPagedIterable<AvailabityDao> availabilities = db.getAvailabilitiesForHouse(houseId);
@@ -309,18 +323,17 @@ public class HouseResource {
             Date aEnd = dateFormat.parse(a.getToDate());
             // check if start and end does not intersect aStart and aEnd
             if (start.compareTo(aStart) >= 0 && start.compareTo(aEnd) <= 0) {
+                LogResource.writeLine("Availability date is already taken for the given house");
                 throw new WebApplicationException("Availability date is already taken for the given house", Response.Status.CONFLICT);
             }
 
         }
 
-
         // put availability in db
+        availabity.setId(UUID.randomUUID().toString());
         AvailabityDao a = new AvailabityDao(availabity);
-        UUID uniqueID = UUID.randomUUID();
-        a.setId(uniqueID.toString());
         db.putAvailability(a);
-        availabity.setId(uniqueID.toString());
+
 
         //put availability in cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {

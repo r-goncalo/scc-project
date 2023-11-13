@@ -1,21 +1,19 @@
 package scc.srv;
 
 import com.azure.cosmos.util.CosmosPagedIterable;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.ServiceUnavailableException;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import scc.cache.RedisCache;
 import scc.data.HouseDao;
 import scc.data.Question;
 import scc.data.QuestionDao;
+import scc.data.UserDAO;
 import scc.db.CosmosDBLayer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,7 +28,7 @@ public class QuestionResource {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static Question newQuestion(@PathParam("houseId") String houseId, Question question) {
+    public static Question newQuestion(@CookieParam("scc:session") Cookie session, @PathParam("houseId") String houseId, Question question) {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -38,12 +36,18 @@ public class QuestionResource {
         CosmosPagedIterable<HouseDao> h = db.getHouseById(houseId);
 
         //check if user exists
-        if (db.getUserById(question.getUserId()).iterator().hasNext() == false)
+        Iterator<UserDAO> userIter = db.getUserById(question.getUserId()).iterator();
+        if (userIter.hasNext() == false)
             throw new NotFoundException("User not found");
 
         //check if house exists
         if(h.iterator().hasNext() == false)
             throw new NotFoundException("House not found");
+        //check if user is logged in
+        boolean isLoggedIn = RedisCache.isSessionOfUser(session, userIter.next().getId());
+        if(isLoggedIn == false)
+            throw new WebApplicationException("User not logged in", Response.Status.UNAUTHORIZED);
+
 
         if (q.getReplyToId() != null) {
 

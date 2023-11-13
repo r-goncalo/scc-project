@@ -8,7 +8,7 @@ public class AvailabityDao {
     private String fromDate;
     private String toDate;
     private double cost;
-    private boolean discount;
+    private double discount;
 
     public String getId() {
         return id;
@@ -18,7 +18,7 @@ public class AvailabityDao {
         return houseId;
     }
 
-    public AvailabityDao(String id, String houseId, String fromDate, String toDate, double cost, boolean discount) {
+    public AvailabityDao(String id, String houseId, String fromDate, String toDate, double cost, double discount) {
         this.id = id;
         this.houseId = houseId;
         this.fromDate = fromDate;
@@ -28,7 +28,7 @@ public class AvailabityDao {
     }
 
     public AvailabityDao(Availabity availabity) {
-        this(availabity.getId(), availabity.getHouseId(), availabity.getFromDate(), availabity.getToDate(), availabity.getCost(), availabity.isDiscount());
+        this(availabity.getId(), availabity.getHouseId(), availabity.getFromDate(), availabity.getToDate(), availabity.getCost(), availabity.getDiscount());
     }
 
     public AvailabityDao() {
@@ -47,7 +47,7 @@ public class AvailabityDao {
         return cost;
     }
 
-    public boolean isDiscount() {
+    public double isDiscount() {
         return discount;
     }
 

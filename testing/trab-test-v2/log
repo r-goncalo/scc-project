@@ -1,0 +1,4247 @@
+2023-11-13T21:00:49.556Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json"
+  },
+  "json": {
+    "id": "Leif.West",
+    "name": "Leif West",
+    "pwd": "ouiAjHeK6GwWNJh",
+    "photoId": null
+  }
+}
+2023-11-13T21:00:49.558Z http:response {
+  "content-length": "76",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:49 GMT",
+  "set-cookie": [
+    "ARRAffinity=cb28b33bdba2c7bbaf59c993cae149b357bc807b61bcb168ca5ba6b0ca5c3e20;Path=/;HttpOnly;Secure;Domain=scc24appwesteurope188046.azurewebsites.net",
+    "ARRAffinitySameSite=cb28b33bdba2c7bbaf59c993cae149b357bc807b61bcb168ca5ba6b0ca5c3e20;Path=/;HttpOnly;SameSite=None;Secure;Domain=scc24appwesteurope188046.azurewebsites.net"
+  ]
+}
+2023-11-13T21:00:49.558Z http:response "{\"id\":\"Leif.West\",\"name\":\"Leif West\",\"pwd\":\"ouiAjHeK6GwWNJh\",\"photoId\":null}"
+http:response status:
+200
+Body:
+{"id":"Leif.West","name":"Leif West","pwd":"ouiAjHeK6GwWNJh","photoId":null}
+2023-11-13T21:00:49.834Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user/auth",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json"
+  },
+  "json": {
+    "user": "Leif.West",
+    "pwd": "ouiAjHeK6GwWNJh"
+  }
+}
+2023-11-13T21:00:49.834Z http:response {
+  "content-length": "0",
+  "date": "Mon, 13 Nov 2023 21:00:49 GMT",
+  "set-cookie": [
+    "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  ]
+}
+2023-11-13T21:00:49.834Z http:response ""
+http:response status:
+200
+Body:
+
+2023-11-13T21:00:50.138Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "addo demitto",
+    "location": "Braga",
+    "description": "Absorbeo solus blandior beneficium vulgus una conservo repellendus deficio. Basium cresco deprimo delectatio vestigium strues defessus adfectus. Assentator iste depromo decipio auctor totus decerno uredo.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:50.139Z http:response {
+  "content-length": "343",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:49 GMT"
+}
+2023-11-13T21:00:50.139Z http:response "{\"id\":\"94dd5f80-c0e3-407b-981f-2bee9948bad1\",\"ownerId\":\"Leif.West\",\"name\":\"addo demitto\",\"location\":\"Braga\",\"description\":\"Absorbeo solus blandior beneficium vulgus una conservo repellendus deficio. Basium cresco deprimo delectatio vestigium strues defessus adfectus. Assentator iste depromo decipio auctor totus decerno uredo.\",\"photoIds\":[]}"
+2023-11-13T21:00:50.144Z http captures and matches:
+2023-11-13T21:00:50.146Z http {}
+2023-11-13T21:00:50.148Z http {
+  houseid: {
+    value: '94dd5f80-c0e3-407b-981f-2bee9948bad1',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"94dd5f80-c0e3-407b-981f-2bee9948bad1","ownerId":"Leif.West","name":"addo demitto","location":"Braga","description":"Absorbeo solus blandior beneficium vulgus una conservo repellendus deficio. Basium cresco deprimo delectatio vestigium strues defessus adfectus. Assentator iste depromo decipio auctor totus decerno uredo.","photoIds":[]}
+2023-11-13T21:00:50.445Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/94dd5f80-c0e3-407b-981f-2bee9948bad1/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "94dd5f80-c0e3-407b-981f-2bee9948bad1",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 224,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:50.445Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:49 GMT"
+}
+2023-11-13T21:00:50.445Z http:response "{\"id\":\"3b75262a-fe10-4705-be02-70746c376649\",\"houseId\":\"94dd5f80-c0e3-407b-981f-2bee9948bad1\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":224.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"3b75262a-fe10-4705-be02-70746c376649","houseId":"94dd5f80-c0e3-407b-981f-2bee9948bad1","fromDate":"12-2023","toDate":"12-2024","cost":224.0,"discount":0.0}
+2023-11-13T21:00:50.716Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "amplitudo aurum",
+    "location": "Leiria",
+    "description": "Cognatus dedico concido ademptio demulceo depraedor damno condico acsi. Harum curso derideo substantia ver. Adipiscor angustus arca eaque.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:50.717Z http:response {
+  "content-length": "281",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:50 GMT"
+}
+2023-11-13T21:00:50.717Z http:response "{\"id\":\"a99d5e05-c28f-4664-bc0f-b8c1d3e8f299\",\"ownerId\":\"Leif.West\",\"name\":\"amplitudo aurum\",\"location\":\"Leiria\",\"description\":\"Cognatus dedico concido ademptio demulceo depraedor damno condico acsi. Harum curso derideo substantia ver. Adipiscor angustus arca eaque.\",\"photoIds\":[]}"
+2023-11-13T21:00:50.717Z http captures and matches:
+2023-11-13T21:00:50.717Z http {}
+2023-11-13T21:00:50.718Z http {
+  houseid: {
+    value: 'a99d5e05-c28f-4664-bc0f-b8c1d3e8f299',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"a99d5e05-c28f-4664-bc0f-b8c1d3e8f299","ownerId":"Leif.West","name":"amplitudo aurum","location":"Leiria","description":"Cognatus dedico concido ademptio demulceo depraedor damno condico acsi. Harum curso derideo substantia ver. Adipiscor angustus arca eaque.","photoIds":[]}
+2023-11-13T21:00:50.871Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/a99d5e05-c28f-4664-bc0f-b8c1d3e8f299/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "a99d5e05-c28f-4664-bc0f-b8c1d3e8f299",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 649,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:50.872Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:50 GMT"
+}
+2023-11-13T21:00:50.872Z http:response "{\"id\":\"77089409-041f-45ae-9b94-744267092b23\",\"houseId\":\"a99d5e05-c28f-4664-bc0f-b8c1d3e8f299\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":649.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"77089409-041f-45ae-9b94-744267092b23","houseId":"a99d5e05-c28f-4664-bc0f-b8c1d3e8f299","fromDate":"12-2023","toDate":"12-2024","cost":649.0,"discount":0.0}
+2023-11-13T21:00:51.029Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "paens",
+    "location": "Madeira",
+    "description": "Artificiose aqua decretum conqueror admoveo atavus. Valde solium cerno dedecor consequuntur accusantium verbera. Ver hic allatus cupiditas.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:51.029Z http:response {
+  "content-length": "273",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:50 GMT"
+}
+2023-11-13T21:00:51.029Z http:response "{\"id\":\"422e9fb8-7175-4f3e-9492-caaff7b21377\",\"ownerId\":\"Leif.West\",\"name\":\"paens\",\"location\":\"Madeira\",\"description\":\"Artificiose aqua decretum conqueror admoveo atavus. Valde solium cerno dedecor consequuntur accusantium verbera. Ver hic allatus cupiditas.\",\"photoIds\":[]}"
+2023-11-13T21:00:51.029Z http captures and matches:
+2023-11-13T21:00:51.030Z http {}
+2023-11-13T21:00:51.030Z http {
+  houseid: {
+    value: '422e9fb8-7175-4f3e-9492-caaff7b21377',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"422e9fb8-7175-4f3e-9492-caaff7b21377","ownerId":"Leif.West","name":"paens","location":"Madeira","description":"Artificiose aqua decretum conqueror admoveo atavus. Valde solium cerno dedecor consequuntur accusantium verbera. Ver hic allatus cupiditas.","photoIds":[]}
+2023-11-13T21:00:51.199Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/422e9fb8-7175-4f3e-9492-caaff7b21377/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "422e9fb8-7175-4f3e-9492-caaff7b21377",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 456,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:51.199Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:50 GMT"
+}
+2023-11-13T21:00:51.199Z http:response "{\"id\":\"01f73c99-ba34-49c3-bbba-ab24ff0ca4a7\",\"houseId\":\"422e9fb8-7175-4f3e-9492-caaff7b21377\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":456.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"01f73c99-ba34-49c3-bbba-ab24ff0ca4a7","houseId":"422e9fb8-7175-4f3e-9492-caaff7b21377","fromDate":"12-2023","toDate":"12-2024","cost":456.0,"discount":0.0}
+2023-11-13T21:00:51.442Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "tonsor tempore",
+    "location": "Braga",
+    "description": "Virtus accusator architecto animus argumentum aer porro vobis cariosus uterque. Laudantium vivo adnuo doloremque cultellus. Utor volva rerum velut titulus auxilium quo.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:51.443Z http:response {
+  "content-length": "309",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:50 GMT"
+}
+2023-11-13T21:00:51.443Z http:response "{\"id\":\"b093bfac-0c9a-483e-950a-adac280860e5\",\"ownerId\":\"Leif.West\",\"name\":\"tonsor tempore\",\"location\":\"Braga\",\"description\":\"Virtus accusator architecto animus argumentum aer porro vobis cariosus uterque. Laudantium vivo adnuo doloremque cultellus. Utor volva rerum velut titulus auxilium quo.\",\"photoIds\":[]}"
+2023-11-13T21:00:51.443Z http captures and matches:
+2023-11-13T21:00:51.444Z http {}
+2023-11-13T21:00:51.444Z http {
+  houseid: {
+    value: 'b093bfac-0c9a-483e-950a-adac280860e5',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"b093bfac-0c9a-483e-950a-adac280860e5","ownerId":"Leif.West","name":"tonsor tempore","location":"Braga","description":"Virtus accusator architecto animus argumentum aer porro vobis cariosus uterque. Laudantium vivo adnuo doloremque cultellus. Utor volva rerum velut titulus auxilium quo.","photoIds":[]}
+2023-11-13T21:00:51.710Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/b093bfac-0c9a-483e-950a-adac280860e5/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "b093bfac-0c9a-483e-950a-adac280860e5",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 599,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:51.711Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:51 GMT"
+}
+2023-11-13T21:00:51.711Z http:response "{\"id\":\"b19a6906-51f8-40a7-978b-d9564500e2ca\",\"houseId\":\"b093bfac-0c9a-483e-950a-adac280860e5\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":599.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"b19a6906-51f8-40a7-978b-d9564500e2ca","houseId":"b093bfac-0c9a-483e-950a-adac280860e5","fromDate":"12-2023","toDate":"12-2024","cost":599.0,"discount":0.0}
+2023-11-13T21:00:51.938Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "vetus theatrum",
+    "location": "Aveiro",
+    "description": "Cetera id defendo sopor aggero usus. Excepturi admoneo atavus. Tremo defungo articulus deputo pauci arcesso tempus vinculum conforto architecto.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:51.938Z http:response {
+  "content-length": "286",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:51 GMT"
+}
+2023-11-13T21:00:51.938Z http:response "{\"id\":\"00f6f327-be52-4d41-bbad-9d28c8903eb2\",\"ownerId\":\"Leif.West\",\"name\":\"vetus theatrum\",\"location\":\"Aveiro\",\"description\":\"Cetera id defendo sopor aggero usus. Excepturi admoneo atavus. Tremo defungo articulus deputo pauci arcesso tempus vinculum conforto architecto.\",\"photoIds\":[]}"
+2023-11-13T21:00:51.939Z http captures and matches:
+2023-11-13T21:00:51.939Z http {}
+2023-11-13T21:00:51.940Z http {
+  houseid: {
+    value: '00f6f327-be52-4d41-bbad-9d28c8903eb2',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"00f6f327-be52-4d41-bbad-9d28c8903eb2","ownerId":"Leif.West","name":"vetus theatrum","location":"Aveiro","description":"Cetera id defendo sopor aggero usus. Excepturi admoneo atavus. Tremo defungo articulus deputo pauci arcesso tempus vinculum conforto architecto.","photoIds":[]}
+2023-11-13T21:00:52.158Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/00f6f327-be52-4d41-bbad-9d28c8903eb2/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "00f6f327-be52-4d41-bbad-9d28c8903eb2",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 400,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:52.159Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:51 GMT"
+}
+2023-11-13T21:00:52.159Z http:response "{\"id\":\"9b5e732e-f47c-43fe-86c0-3e6cfedc3a65\",\"houseId\":\"00f6f327-be52-4d41-bbad-9d28c8903eb2\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":400.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"9b5e732e-f47c-43fe-86c0-3e6cfedc3a65","houseId":"00f6f327-be52-4d41-bbad-9d28c8903eb2","fromDate":"12-2023","toDate":"12-2024","cost":400.0,"discount":0.0}
+2023-11-13T21:00:52.539Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "arbustum aedificium acer",
+    "location": "Braga",
+    "description": "Urbanus damnatio truculenter calcar sit molestiae comedo conforto textilis soleo. Subseco cibus synagoga tener averto currus. Vado comparo decerno alo vita in suasoria confugo.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:52.539Z http:response {
+  "content-length": "327",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:51 GMT"
+}
+2023-11-13T21:00:52.539Z http:response "{\"id\":\"4ac3c788-701c-41e8-8323-5f49c93bf2db\",\"ownerId\":\"Leif.West\",\"name\":\"arbustum aedificium acer\",\"location\":\"Braga\",\"description\":\"Urbanus damnatio truculenter calcar sit molestiae comedo conforto textilis soleo. Subseco cibus synagoga tener averto currus. Vado comparo decerno alo vita in suasoria confugo.\",\"photoIds\":[]}"
+2023-11-13T21:00:52.540Z http captures and matches:
+2023-11-13T21:00:52.540Z http {}
+2023-11-13T21:00:52.540Z http {
+  houseid: {
+    value: '4ac3c788-701c-41e8-8323-5f49c93bf2db',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"4ac3c788-701c-41e8-8323-5f49c93bf2db","ownerId":"Leif.West","name":"arbustum aedificium acer","location":"Braga","description":"Urbanus damnatio truculenter calcar sit molestiae comedo conforto textilis soleo. Subseco cibus synagoga tener averto currus. Vado comparo decerno alo vita in suasoria confugo.","photoIds":[]}
+2023-11-13T21:00:52.837Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/4ac3c788-701c-41e8-8323-5f49c93bf2db/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "4ac3c788-701c-41e8-8323-5f49c93bf2db",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 392,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:52.837Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:52 GMT"
+}
+2023-11-13T21:00:52.837Z http:response "{\"id\":\"819ff7a4-75f6-4aab-9b06-7d602068d515\",\"houseId\":\"4ac3c788-701c-41e8-8323-5f49c93bf2db\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":392.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"819ff7a4-75f6-4aab-9b06-7d602068d515","houseId":"4ac3c788-701c-41e8-8323-5f49c93bf2db","fromDate":"12-2023","toDate":"12-2024","cost":392.0,"discount":0.0}
+2023-11-13T21:00:53.062Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "tutamen autem",
+    "location": "Azores",
+    "description": "Absens desparatus virga denego ex adimpleo suscipit saepe. Cognatus decor tubineus curvo armarium tertius adulatio vir. Apud cornu id cubitum corrupti incidunt comptus videlicet animus.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:53.062Z http:response {
+  "content-length": "326",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:52 GMT"
+}
+2023-11-13T21:00:53.062Z http:response "{\"id\":\"03b116fd-324e-4a40-94d8-df57eb4b33a0\",\"ownerId\":\"Leif.West\",\"name\":\"tutamen autem\",\"location\":\"Azores\",\"description\":\"Absens desparatus virga denego ex adimpleo suscipit saepe. Cognatus decor tubineus curvo armarium tertius adulatio vir. Apud cornu id cubitum corrupti incidunt comptus videlicet animus.\",\"photoIds\":[]}"
+2023-11-13T21:00:53.062Z http captures and matches:
+2023-11-13T21:00:53.063Z http {}
+2023-11-13T21:00:53.063Z http {
+  houseid: {
+    value: '03b116fd-324e-4a40-94d8-df57eb4b33a0',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"03b116fd-324e-4a40-94d8-df57eb4b33a0","ownerId":"Leif.West","name":"tutamen autem","location":"Azores","description":"Absens desparatus virga denego ex adimpleo suscipit saepe. Cognatus decor tubineus curvo armarium tertius adulatio vir. Apud cornu id cubitum corrupti incidunt comptus videlicet animus.","photoIds":[]}
+2023-11-13T21:00:53.235Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/03b116fd-324e-4a40-94d8-df57eb4b33a0/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "03b116fd-324e-4a40-94d8-df57eb4b33a0",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 444,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:53.235Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:52 GMT"
+}
+2023-11-13T21:00:53.235Z http:response "{\"id\":\"cf83bca7-6cec-445b-b4b4-798c4dd3dfe1\",\"houseId\":\"03b116fd-324e-4a40-94d8-df57eb4b33a0\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":444.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"cf83bca7-6cec-445b-b4b4-798c4dd3dfe1","houseId":"03b116fd-324e-4a40-94d8-df57eb4b33a0","fromDate":"12-2023","toDate":"12-2024","cost":444.0,"discount":0.0}
+2023-11-13T21:00:53.372Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "deduco vespillo",
+    "location": "Algarve",
+    "description": "Perspiciatis trado aperiam aestus. Amo appono appositus asperiores vulticulus stillicidium deputo. Stabilis urbs dedecor avaritia corrumpo neque demonstro molestias.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:53.372Z http:response {
+  "content-length": "309",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:52 GMT"
+}
+2023-11-13T21:00:53.372Z http:response "{\"id\":\"9511b0d1-c06a-4133-98ae-dfa2b752a207\",\"ownerId\":\"Leif.West\",\"name\":\"deduco vespillo\",\"location\":\"Algarve\",\"description\":\"Perspiciatis trado aperiam aestus. Amo appono appositus asperiores vulticulus stillicidium deputo. Stabilis urbs dedecor avaritia corrumpo neque demonstro molestias.\",\"photoIds\":[]}"
+2023-11-13T21:00:53.372Z http captures and matches:
+2023-11-13T21:00:53.372Z http {}
+2023-11-13T21:00:53.373Z http {
+  houseid: {
+    value: '9511b0d1-c06a-4133-98ae-dfa2b752a207',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"9511b0d1-c06a-4133-98ae-dfa2b752a207","ownerId":"Leif.West","name":"deduco vespillo","location":"Algarve","description":"Perspiciatis trado aperiam aestus. Amo appono appositus asperiores vulticulus stillicidium deputo. Stabilis urbs dedecor avaritia corrumpo neque demonstro molestias.","photoIds":[]}
+2023-11-13T21:00:53.515Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/9511b0d1-c06a-4133-98ae-dfa2b752a207/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "9511b0d1-c06a-4133-98ae-dfa2b752a207",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 503,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:53.515Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:52 GMT"
+}
+2023-11-13T21:00:53.515Z http:response "{\"id\":\"e8db690b-af24-49e9-afd1-a3b68b83d793\",\"houseId\":\"9511b0d1-c06a-4133-98ae-dfa2b752a207\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":503.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"e8db690b-af24-49e9-afd1-a3b68b83d793","houseId":"9511b0d1-c06a-4133-98ae-dfa2b752a207","fromDate":"12-2023","toDate":"12-2024","cost":503.0,"discount":0.0}
+2023-11-13T21:00:53.684Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "reprehenderit vita abscido",
+    "location": "Porto",
+    "description": "Usitas termes aureus undique corrigo caecus vallum commemoro consequatur absum. Trepide venia unde ventus derelinquo cumque pax molestias molestias cruentus. Coadunatio adficio laboriosam tendo est vito abscido aggero.",
+    "ownerId": "Leif.West",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:53.685Z http:response {
+  "content-length": "371",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:52 GMT"
+}
+2023-11-13T21:00:53.685Z http:response "{\"id\":\"4137902b-fd72-48dd-b131-6b8b49b5a6cb\",\"ownerId\":\"Leif.West\",\"name\":\"reprehenderit vita abscido\",\"location\":\"Porto\",\"description\":\"Usitas termes aureus undique corrigo caecus vallum commemoro consequatur absum. Trepide venia unde ventus derelinquo cumque pax molestias molestias cruentus. Coadunatio adficio laboriosam tendo est vito abscido aggero.\",\"photoIds\":[]}"
+2023-11-13T21:00:53.685Z http captures and matches:
+2023-11-13T21:00:53.685Z http {}
+2023-11-13T21:00:53.686Z http {
+  houseid: {
+    value: '4137902b-fd72-48dd-b131-6b8b49b5a6cb',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"4137902b-fd72-48dd-b131-6b8b49b5a6cb","ownerId":"Leif.West","name":"reprehenderit vita abscido","location":"Porto","description":"Usitas termes aureus undique corrigo caecus vallum commemoro consequatur absum. Trepide venia unde ventus derelinquo cumque pax molestias molestias cruentus. Coadunatio adficio laboriosam tendo est vito abscido aggero.","photoIds":[]}
+2023-11-13T21:00:54.001Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/4137902b-fd72-48dd-b131-6b8b49b5a6cb/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=5ce2c730-1fb6-41f5-9e5c-3bebfe3a8eb4;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "4137902b-fd72-48dd-b131-6b8b49b5a6cb",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 285,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:54.001Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:53 GMT"
+}
+2023-11-13T21:00:54.001Z http:response "{\"id\":\"2b6fb466-3a79-4ef4-b4b8-639213f2009c\",\"houseId\":\"4137902b-fd72-48dd-b131-6b8b49b5a6cb\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":285.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"2b6fb466-3a79-4ef4-b4b8-639213f2009c","houseId":"4137902b-fd72-48dd-b131-6b8b49b5a6cb","fromDate":"12-2023","toDate":"12-2024","cost":285.0,"discount":0.0}
+2023-11-13T21:00:54.180Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json"
+  },
+  "json": {
+    "id": "Camilla.Hand-DuBuque",
+    "name": "Camilla Hand-DuBuque",
+    "pwd": "T7Oh0v3i7s7t8ch",
+    "photoId": null
+  }
+}
+2023-11-13T21:00:54.180Z http:response {
+  "content-length": "98",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:53 GMT"
+}
+2023-11-13T21:00:54.180Z http:response "{\"id\":\"Camilla.Hand-DuBuque\",\"name\":\"Camilla Hand-DuBuque\",\"pwd\":\"T7Oh0v3i7s7t8ch\",\"photoId\":null}"
+http:response status:
+200
+Body:
+{"id":"Camilla.Hand-DuBuque","name":"Camilla Hand-DuBuque","pwd":"T7Oh0v3i7s7t8ch","photoId":null}
+2023-11-13T21:00:54.293Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user/auth",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json"
+  },
+  "json": {
+    "user": "Camilla.Hand-DuBuque",
+    "pwd": "T7Oh0v3i7s7t8ch"
+  }
+}
+2023-11-13T21:00:54.293Z http:response {
+  "content-length": "0",
+  "date": "Mon, 13 Nov 2023 21:00:53 GMT",
+  "set-cookie": [
+    "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  ]
+}
+2023-11-13T21:00:54.293Z http:response ""
+http:response status:
+200
+Body:
+
+2023-11-13T21:00:54.669Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "synagoga atrox",
+    "location": "Aveiro",
+    "description": "Arcesso voluptatum earum animadverto carbo spero neque appositus. Ustulo amitto quae adipisci degenero adflicto cilicium antepono depraedor. Truculenter tot appositus theologus acerbitas ago.",
+    "ownerId": "Camilla.Hand-DuBuque",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:54.669Z http:response {
+  "content-length": "344",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:53 GMT"
+}
+2023-11-13T21:00:54.670Z http:response "{\"id\":\"6c9bbd33-b968-429d-86cf-5ee52603fdd0\",\"ownerId\":\"Camilla.Hand-DuBuque\",\"name\":\"synagoga atrox\",\"location\":\"Aveiro\",\"description\":\"Arcesso voluptatum earum animadverto carbo spero neque appositus. Ustulo amitto quae adipisci degenero adflicto cilicium antepono depraedor. Truculenter tot appositus theologus acerbitas ago.\",\"photoIds\":[]}"
+2023-11-13T21:00:54.670Z http captures and matches:
+2023-11-13T21:00:54.671Z http {}
+2023-11-13T21:00:54.671Z http {
+  houseid: {
+    value: '6c9bbd33-b968-429d-86cf-5ee52603fdd0',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"6c9bbd33-b968-429d-86cf-5ee52603fdd0","ownerId":"Camilla.Hand-DuBuque","name":"synagoga atrox","location":"Aveiro","description":"Arcesso voluptatum earum animadverto carbo spero neque appositus. Ustulo amitto quae adipisci degenero adflicto cilicium antepono depraedor. Truculenter tot appositus theologus acerbitas ago.","photoIds":[]}
+2023-11-13T21:00:54.868Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/6c9bbd33-b968-429d-86cf-5ee52603fdd0/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "6c9bbd33-b968-429d-86cf-5ee52603fdd0",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 509,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:54.869Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:53 GMT"
+}
+2023-11-13T21:00:54.869Z http:response "{\"id\":\"40570ef4-391e-4830-a651-b26525ef3245\",\"houseId\":\"6c9bbd33-b968-429d-86cf-5ee52603fdd0\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":509.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"40570ef4-391e-4830-a651-b26525ef3245","houseId":"6c9bbd33-b968-429d-86cf-5ee52603fdd0","fromDate":"12-2023","toDate":"12-2024","cost":509.0,"discount":0.0}
+2023-11-13T21:00:55.158Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "curis suppono",
+    "location": "Azores",
+    "description": "Dolor strues vado voluptatem ullam credo articulus aduro coniecto. Textus spes tersus. Quam vigilo inflammatio.",
+    "ownerId": "Camilla.Hand-DuBuque",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:55.158Z http:response {
+  "content-length": "263",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:55 GMT"
+}
+2023-11-13T21:00:55.158Z http:response "{\"id\":\"a53f9cbe-d04d-4b44-a893-4d772d1a8d42\",\"ownerId\":\"Camilla.Hand-DuBuque\",\"name\":\"curis suppono\",\"location\":\"Azores\",\"description\":\"Dolor strues vado voluptatem ullam credo articulus aduro coniecto. Textus spes tersus. Quam vigilo inflammatio.\",\"photoIds\":[]}"
+2023-11-13T21:00:55.160Z http captures and matches:
+2023-11-13T21:00:55.160Z http {}
+2023-11-13T21:00:55.160Z http {
+  houseid: {
+    value: 'a53f9cbe-d04d-4b44-a893-4d772d1a8d42',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"a53f9cbe-d04d-4b44-a893-4d772d1a8d42","ownerId":"Camilla.Hand-DuBuque","name":"curis suppono","location":"Azores","description":"Dolor strues vado voluptatem ullam credo articulus aduro coniecto. Textus spes tersus. Quam vigilo inflammatio.","photoIds":[]}
+2023-11-13T21:00:55.339Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/a53f9cbe-d04d-4b44-a893-4d772d1a8d42/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "a53f9cbe-d04d-4b44-a893-4d772d1a8d42",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 633,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:55.340Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:55 GMT"
+}
+2023-11-13T21:00:55.340Z http:response "{\"id\":\"a3b68987-753e-46e5-af18-6665547f382f\",\"houseId\":\"a53f9cbe-d04d-4b44-a893-4d772d1a8d42\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":633.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"a3b68987-753e-46e5-af18-6665547f382f","houseId":"a53f9cbe-d04d-4b44-a893-4d772d1a8d42","fromDate":"12-2023","toDate":"12-2024","cost":633.0,"discount":0.0}
+2023-11-13T21:00:55.548Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "abscido conscendo dolores",
+    "location": "Madeira",
+    "description": "In ceno sui decor absum charisma coerceo eligendi vesco vulnero. Administratio decumbo corpus. Corroboro laboriosam stultus tamen bonus.",
+    "ownerId": "Camilla.Hand-DuBuque",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:55.548Z http:response {
+  "content-length": "301",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:55 GMT"
+}
+2023-11-13T21:00:55.548Z http:response "{\"id\":\"bbc73d0c-077a-4d0c-9f33-51c8ef21daa9\",\"ownerId\":\"Camilla.Hand-DuBuque\",\"name\":\"abscido conscendo dolores\",\"location\":\"Madeira\",\"description\":\"In ceno sui decor absum charisma coerceo eligendi vesco vulnero. Administratio decumbo corpus. Corroboro laboriosam stultus tamen bonus.\",\"photoIds\":[]}"
+2023-11-13T21:00:55.548Z http captures and matches:
+2023-11-13T21:00:55.548Z http {}
+2023-11-13T21:00:55.548Z http {
+  houseid: {
+    value: 'bbc73d0c-077a-4d0c-9f33-51c8ef21daa9',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"bbc73d0c-077a-4d0c-9f33-51c8ef21daa9","ownerId":"Camilla.Hand-DuBuque","name":"abscido conscendo dolores","location":"Madeira","description":"In ceno sui decor absum charisma coerceo eligendi vesco vulnero. Administratio decumbo corpus. Corroboro laboriosam stultus tamen bonus.","photoIds":[]}
+2023-11-13T21:00:55.684Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/bbc73d0c-077a-4d0c-9f33-51c8ef21daa9/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "bbc73d0c-077a-4d0c-9f33-51c8ef21daa9",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 656,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:55.684Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:55 GMT"
+}
+2023-11-13T21:00:55.684Z http:response "{\"id\":\"b76fd5fe-8e8c-4237-a1b9-3cd2d4b18d20\",\"houseId\":\"bbc73d0c-077a-4d0c-9f33-51c8ef21daa9\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":656.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"b76fd5fe-8e8c-4237-a1b9-3cd2d4b18d20","houseId":"bbc73d0c-077a-4d0c-9f33-51c8ef21daa9","fromDate":"12-2023","toDate":"12-2024","cost":656.0,"discount":0.0}
+2023-11-13T21:00:55.821Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "virtus",
+    "location": "Aveiro",
+    "description": "Ultio celebrer reiciendis aggero ulterius. Ullus sordeo blandior contigo concido ager voluptatum cubicularis itaque bestia. Audeo veritatis occaecati truculenter celer damnatio adipiscor cedo vado.",
+    "ownerId": "Camilla.Hand-DuBuque",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:55.821Z http:response {
+  "content-length": "342",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:55 GMT"
+}
+2023-11-13T21:00:55.821Z http:response "{\"id\":\"403ac252-1859-48c4-acce-b3e5d5c16087\",\"ownerId\":\"Camilla.Hand-DuBuque\",\"name\":\"virtus\",\"location\":\"Aveiro\",\"description\":\"Ultio celebrer reiciendis aggero ulterius. Ullus sordeo blandior contigo concido ager voluptatum cubicularis itaque bestia. Audeo veritatis occaecati truculenter celer damnatio adipiscor cedo vado.\",\"photoIds\":[]}"
+2023-11-13T21:00:55.821Z http captures and matches:
+2023-11-13T21:00:55.822Z http {}
+2023-11-13T21:00:55.822Z http {
+  houseid: {
+    value: '403ac252-1859-48c4-acce-b3e5d5c16087',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"403ac252-1859-48c4-acce-b3e5d5c16087","ownerId":"Camilla.Hand-DuBuque","name":"virtus","location":"Aveiro","description":"Ultio celebrer reiciendis aggero ulterius. Ullus sordeo blandior contigo concido ager voluptatum cubicularis itaque bestia. Audeo veritatis occaecati truculenter celer damnatio adipiscor cedo vado.","photoIds":[]}
+2023-11-13T21:00:56.081Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/403ac252-1859-48c4-acce-b3e5d5c16087/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "403ac252-1859-48c4-acce-b3e5d5c16087",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 496,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:56.082Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:55 GMT"
+}
+2023-11-13T21:00:56.082Z http:response "{\"id\":\"f591c8c5-20ef-4fdd-885b-b163fff93ac9\",\"houseId\":\"403ac252-1859-48c4-acce-b3e5d5c16087\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":496.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"f591c8c5-20ef-4fdd-885b-b163fff93ac9","houseId":"403ac252-1859-48c4-acce-b3e5d5c16087","fromDate":"12-2023","toDate":"12-2024","cost":496.0,"discount":0.0}
+2023-11-13T21:00:56.362Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "aduro correptius",
+    "location": "Azores",
+    "description": "Velut defungo vix arcus comparo colligo sit. Canonicus caelum tenax veritas valde utpote. Vere decens temeritas contabesco.",
+    "ownerId": "Camilla.Hand-DuBuque",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:56.362Z http:response {
+  "content-length": "278",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:56 GMT"
+}
+2023-11-13T21:00:56.362Z http:response "{\"id\":\"5b7dea2b-ca48-4ea7-ab48-30053f01c2d7\",\"ownerId\":\"Camilla.Hand-DuBuque\",\"name\":\"aduro correptius\",\"location\":\"Azores\",\"description\":\"Velut defungo vix arcus comparo colligo sit. Canonicus caelum tenax veritas valde utpote. Vere decens temeritas contabesco.\",\"photoIds\":[]}"
+2023-11-13T21:00:56.363Z http captures and matches:
+2023-11-13T21:00:56.363Z http {}
+2023-11-13T21:00:56.363Z http {
+  houseid: {
+    value: '5b7dea2b-ca48-4ea7-ab48-30053f01c2d7',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"5b7dea2b-ca48-4ea7-ab48-30053f01c2d7","ownerId":"Camilla.Hand-DuBuque","name":"aduro correptius","location":"Azores","description":"Velut defungo vix arcus comparo colligo sit. Canonicus caelum tenax veritas valde utpote. Vere decens temeritas contabesco.","photoIds":[]}
+2023-11-13T21:00:56.525Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/5b7dea2b-ca48-4ea7-ab48-30053f01c2d7/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "5b7dea2b-ca48-4ea7-ab48-30053f01c2d7",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 245,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:56.525Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:56 GMT"
+}
+2023-11-13T21:00:56.525Z http:response "{\"id\":\"9354ee94-4429-49a5-8163-8f7d568ca966\",\"houseId\":\"5b7dea2b-ca48-4ea7-ab48-30053f01c2d7\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":245.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"9354ee94-4429-49a5-8163-8f7d568ca966","houseId":"5b7dea2b-ca48-4ea7-ab48-30053f01c2d7","fromDate":"12-2023","toDate":"12-2024","cost":245.0,"discount":0.0}
+2023-11-13T21:00:56.721Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "aegre",
+    "location": "Algarve",
+    "description": "Tam adflicto casus distinctio adsum depraedor creator. Ipsum sublime delectus. Summopere molestias termes.",
+    "ownerId": "Camilla.Hand-DuBuque",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:56.721Z http:response {
+  "content-length": "251",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:56 GMT"
+}
+2023-11-13T21:00:56.721Z http:response "{\"id\":\"e9c9a8dc-a001-4048-84fd-c0f484cebda4\",\"ownerId\":\"Camilla.Hand-DuBuque\",\"name\":\"aegre\",\"location\":\"Algarve\",\"description\":\"Tam adflicto casus distinctio adsum depraedor creator. Ipsum sublime delectus. Summopere molestias termes.\",\"photoIds\":[]}"
+2023-11-13T21:00:56.722Z http captures and matches:
+2023-11-13T21:00:56.722Z http {}
+2023-11-13T21:00:56.722Z http {
+  houseid: {
+    value: 'e9c9a8dc-a001-4048-84fd-c0f484cebda4',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"e9c9a8dc-a001-4048-84fd-c0f484cebda4","ownerId":"Camilla.Hand-DuBuque","name":"aegre","location":"Algarve","description":"Tam adflicto casus distinctio adsum depraedor creator. Ipsum sublime delectus. Summopere molestias termes.","photoIds":[]}
+2023-11-13T21:00:56.939Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/e9c9a8dc-a001-4048-84fd-c0f484cebda4/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "e9c9a8dc-a001-4048-84fd-c0f484cebda4",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 507,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:56.939Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:56 GMT"
+}
+2023-11-13T21:00:56.939Z http:response "{\"id\":\"9037d8e9-a477-41c1-8f5a-215590823dee\",\"houseId\":\"e9c9a8dc-a001-4048-84fd-c0f484cebda4\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":507.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"9037d8e9-a477-41c1-8f5a-215590823dee","houseId":"e9c9a8dc-a001-4048-84fd-c0f484cebda4","fromDate":"12-2023","toDate":"12-2024","cost":507.0,"discount":0.0}
+2023-11-13T21:00:57.159Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "crebro cui",
+    "location": "Algarve",
+    "description": "Laboriosam praesentium arbor summa. Agnosco bis aperio tempore terminatio curto fugiat. Creator cohibeo adamo versus thalassinus tametsi curvo debitis strues admiratio.",
+    "ownerId": "Camilla.Hand-DuBuque",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:57.159Z http:response {
+  "content-length": "318",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:56 GMT"
+}
+2023-11-13T21:00:57.159Z http:response "{\"id\":\"c4f8d34e-1cb4-4cf9-975b-766d920ee101\",\"ownerId\":\"Camilla.Hand-DuBuque\",\"name\":\"crebro cui\",\"location\":\"Algarve\",\"description\":\"Laboriosam praesentium arbor summa. Agnosco bis aperio tempore terminatio curto fugiat. Creator cohibeo adamo versus thalassinus tametsi curvo debitis strues admiratio.\",\"photoIds\":[]}"
+2023-11-13T21:00:57.159Z http captures and matches:
+2023-11-13T21:00:57.159Z http {}
+2023-11-13T21:00:57.159Z http {
+  houseid: {
+    value: 'c4f8d34e-1cb4-4cf9-975b-766d920ee101',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"c4f8d34e-1cb4-4cf9-975b-766d920ee101","ownerId":"Camilla.Hand-DuBuque","name":"crebro cui","location":"Algarve","description":"Laboriosam praesentium arbor summa. Agnosco bis aperio tempore terminatio curto fugiat. Creator cohibeo adamo versus thalassinus tametsi curvo debitis strues admiratio.","photoIds":[]}
+2023-11-13T21:00:57.420Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/c4f8d34e-1cb4-4cf9-975b-766d920ee101/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "c4f8d34e-1cb4-4cf9-975b-766d920ee101",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 225,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:57.420Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:56 GMT"
+}
+2023-11-13T21:00:57.420Z http:response "{\"id\":\"be695399-ae33-455f-b744-be5a894c2a95\",\"houseId\":\"c4f8d34e-1cb4-4cf9-975b-766d920ee101\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":225.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"be695399-ae33-455f-b744-be5a894c2a95","houseId":"c4f8d34e-1cb4-4cf9-975b-766d920ee101","fromDate":"12-2023","toDate":"12-2024","cost":225.0,"discount":0.0}
+2023-11-13T21:00:57.687Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "barba deputo aro",
+    "location": "Aveiro",
+    "description": "Aut alienus vorago quod voluptas. Laboriosam cultura tollo argentum voluntarius comburo tondeo. Catena alveus acies accedo amet.",
+    "ownerId": "Camilla.Hand-DuBuque",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:57.687Z http:response {
+  "content-length": "283",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:57 GMT"
+}
+2023-11-13T21:00:57.687Z http:response "{\"id\":\"c2c031a8-6bed-4a72-b4d4-5b094f9cc488\",\"ownerId\":\"Camilla.Hand-DuBuque\",\"name\":\"barba deputo aro\",\"location\":\"Aveiro\",\"description\":\"Aut alienus vorago quod voluptas. Laboriosam cultura tollo argentum voluntarius comburo tondeo. Catena alveus acies accedo amet.\",\"photoIds\":[]}"
+2023-11-13T21:00:57.688Z http captures and matches:
+2023-11-13T21:00:57.688Z http {}
+2023-11-13T21:00:57.688Z http {
+  houseid: {
+    value: 'c2c031a8-6bed-4a72-b4d4-5b094f9cc488',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"c2c031a8-6bed-4a72-b4d4-5b094f9cc488","ownerId":"Camilla.Hand-DuBuque","name":"barba deputo aro","location":"Aveiro","description":"Aut alienus vorago quod voluptas. Laboriosam cultura tollo argentum voluntarius comburo tondeo. Catena alveus acies accedo amet.","photoIds":[]}
+2023-11-13T21:00:57.885Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/c2c031a8-6bed-4a72-b4d4-5b094f9cc488/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=88e77a3b-377e-4cd0-bba0-fbecea4d7037;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "c2c031a8-6bed-4a72-b4d4-5b094f9cc488",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 333,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:57.886Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:57 GMT"
+}
+2023-11-13T21:00:57.886Z http:response "{\"id\":\"eff990e2-c71c-405e-a57d-3c98a60336f9\",\"houseId\":\"c2c031a8-6bed-4a72-b4d4-5b094f9cc488\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":333.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"eff990e2-c71c-405e-a57d-3c98a60336f9","houseId":"c2c031a8-6bed-4a72-b4d4-5b094f9cc488","fromDate":"12-2023","toDate":"12-2024","cost":333.0,"discount":0.0}
+2023-11-13T21:00:58.048Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json"
+  },
+  "json": {
+    "id": "Tre.Kihn",
+    "name": "Tre Kihn",
+    "pwd": "uyN2zs9uRyyYb5_",
+    "photoId": null
+  }
+}
+2023-11-13T21:00:58.049Z http:response {
+  "content-length": "74",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:57 GMT"
+}
+2023-11-13T21:00:58.049Z http:response "{\"id\":\"Tre.Kihn\",\"name\":\"Tre Kihn\",\"pwd\":\"uyN2zs9uRyyYb5_\",\"photoId\":null}"
+http:response status:
+200
+Body:
+{"id":"Tre.Kihn","name":"Tre Kihn","pwd":"uyN2zs9uRyyYb5_","photoId":null}
+2023-11-13T21:00:58.153Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user/auth",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json"
+  },
+  "json": {
+    "user": "Tre.Kihn",
+    "pwd": "uyN2zs9uRyyYb5_"
+  }
+}
+2023-11-13T21:00:58.153Z http:response {
+  "content-length": "0",
+  "date": "Mon, 13 Nov 2023 21:00:57 GMT",
+  "set-cookie": [
+    "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  ]
+}
+2023-11-13T21:00:58.153Z http:response ""
+http:response status:
+200
+Body:
+
+2023-11-13T21:00:58.330Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "ipsam correptius",
+    "location": "Coimbra",
+    "description": "Coerceo vado adsidue coruscus. Denuo commemoro curatio varius curiositas aperiam artificiose. Aliquid caute coma pariatur patior adopto totus defessus subito dolore.",
+    "ownerId": "Tre.Kihn",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:58.330Z http:response {
+  "content-length": "309",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:57 GMT"
+}
+2023-11-13T21:00:58.330Z http:response "{\"id\":\"c76e6b07-b9a8-49f5-ab1d-878e09476f4d\",\"ownerId\":\"Tre.Kihn\",\"name\":\"ipsam correptius\",\"location\":\"Coimbra\",\"description\":\"Coerceo vado adsidue coruscus. Denuo commemoro curatio varius curiositas aperiam artificiose. Aliquid caute coma pariatur patior adopto totus defessus subito dolore.\",\"photoIds\":[]}"
+2023-11-13T21:00:58.330Z http captures and matches:
+2023-11-13T21:00:58.330Z http {}
+2023-11-13T21:00:58.331Z http {
+  houseid: {
+    value: 'c76e6b07-b9a8-49f5-ab1d-878e09476f4d',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"c76e6b07-b9a8-49f5-ab1d-878e09476f4d","ownerId":"Tre.Kihn","name":"ipsam correptius","location":"Coimbra","description":"Coerceo vado adsidue coruscus. Denuo commemoro curatio varius curiositas aperiam artificiose. Aliquid caute coma pariatur patior adopto totus defessus subito dolore.","photoIds":[]}
+2023-11-13T21:00:58.519Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/c76e6b07-b9a8-49f5-ab1d-878e09476f4d/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "c76e6b07-b9a8-49f5-ab1d-878e09476f4d",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 346,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:58.519Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:57 GMT"
+}
+2023-11-13T21:00:58.519Z http:response "{\"id\":\"2d98ef0e-5ca7-484a-b4ab-f6ecd5f80957\",\"houseId\":\"c76e6b07-b9a8-49f5-ab1d-878e09476f4d\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":346.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"2d98ef0e-5ca7-484a-b4ab-f6ecd5f80957","houseId":"c76e6b07-b9a8-49f5-ab1d-878e09476f4d","fromDate":"12-2023","toDate":"12-2024","cost":346.0,"discount":0.0}
+2023-11-13T21:00:58.738Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "tametsi",
+    "location": "Leiria",
+    "description": "Repellat repellat aut auctus venustas tibi arbor. Statua vaco caveo solium creber sunt summopere. Ascit atavus cras spoliatio sonitus acies.",
+    "ownerId": "Tre.Kihn",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:58.738Z http:response {
+  "content-length": "274",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:58 GMT"
+}
+2023-11-13T21:00:58.738Z http:response "{\"id\":\"13568e26-74c4-44c6-b069-cdab4669bc13\",\"ownerId\":\"Tre.Kihn\",\"name\":\"tametsi\",\"location\":\"Leiria\",\"description\":\"Repellat repellat aut auctus venustas tibi arbor. Statua vaco caveo solium creber sunt summopere. Ascit atavus cras spoliatio sonitus acies.\",\"photoIds\":[]}"
+2023-11-13T21:00:58.738Z http captures and matches:
+2023-11-13T21:00:58.738Z http {}
+2023-11-13T21:00:58.738Z http {
+  houseid: {
+    value: '13568e26-74c4-44c6-b069-cdab4669bc13',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"13568e26-74c4-44c6-b069-cdab4669bc13","ownerId":"Tre.Kihn","name":"tametsi","location":"Leiria","description":"Repellat repellat aut auctus venustas tibi arbor. Statua vaco caveo solium creber sunt summopere. Ascit atavus cras spoliatio sonitus acies.","photoIds":[]}
+2023-11-13T21:00:58.947Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/13568e26-74c4-44c6-b069-cdab4669bc13/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "13568e26-74c4-44c6-b069-cdab4669bc13",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 667,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:58.947Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:58 GMT"
+}
+2023-11-13T21:00:58.947Z http:response "{\"id\":\"c044ad86-fc68-4faa-87c3-8ad7f4facb80\",\"houseId\":\"13568e26-74c4-44c6-b069-cdab4669bc13\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":667.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"c044ad86-fc68-4faa-87c3-8ad7f4facb80","houseId":"13568e26-74c4-44c6-b069-cdab4669bc13","fromDate":"12-2023","toDate":"12-2024","cost":667.0,"discount":0.0}
+2023-11-13T21:00:59.202Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "decet caritas",
+    "location": "Leiria",
+    "description": "Arguo vix collum virga coma ait torrens demens rem sollicito. Summa denique inventore clam triduana virgo cubitum triumphus ago. Turba triduana apparatus terebro.",
+    "ownerId": "Tre.Kihn",
+    "photoIds": []
+  }
+}
+2023-11-13T21:00:59.202Z http:response {
+  "content-length": "302",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:58 GMT"
+}
+2023-11-13T21:00:59.202Z http:response "{\"id\":\"efb9765f-66c4-4811-a244-ee4cc003238a\",\"ownerId\":\"Tre.Kihn\",\"name\":\"decet caritas\",\"location\":\"Leiria\",\"description\":\"Arguo vix collum virga coma ait torrens demens rem sollicito. Summa denique inventore clam triduana virgo cubitum triumphus ago. Turba triduana apparatus terebro.\",\"photoIds\":[]}"
+2023-11-13T21:00:59.202Z http captures and matches:
+2023-11-13T21:00:59.202Z http {}
+2023-11-13T21:00:59.203Z http {
+  houseid: {
+    value: 'efb9765f-66c4-4811-a244-ee4cc003238a',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"efb9765f-66c4-4811-a244-ee4cc003238a","ownerId":"Tre.Kihn","name":"decet caritas","location":"Leiria","description":"Arguo vix collum virga coma ait torrens demens rem sollicito. Summa denique inventore clam triduana virgo cubitum triumphus ago. Turba triduana apparatus terebro.","photoIds":[]}
+2023-11-13T21:00:59.886Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/efb9765f-66c4-4811-a244-ee4cc003238a/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "efb9765f-66c4-4811-a244-ee4cc003238a",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 476,
+    "discount": 0
+  }
+}
+2023-11-13T21:00:59.886Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:59 GMT"
+}
+2023-11-13T21:00:59.886Z http:response "{\"id\":\"338ad6a2-14dc-4aa2-b332-2285e26255a5\",\"houseId\":\"efb9765f-66c4-4811-a244-ee4cc003238a\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":476.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"338ad6a2-14dc-4aa2-b332-2285e26255a5","houseId":"efb9765f-66c4-4811-a244-ee4cc003238a","fromDate":"12-2023","toDate":"12-2024","cost":476.0,"discount":0.0}
+2023-11-13T21:01:00.155Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "ascit sustineo",
+    "location": "Porto",
+    "description": "Molestiae vere bestia adhaero uter laboriosam. Voluptatibus desolo asper. Dolorum timidus turbo vulgus ustilo cotidie.",
+    "ownerId": "Tre.Kihn",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:00.156Z http:response {
+  "content-length": "258",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:59 GMT"
+}
+2023-11-13T21:01:00.156Z http:response "{\"id\":\"6dc3b50a-300a-4290-8994-ea46b21d2544\",\"ownerId\":\"Tre.Kihn\",\"name\":\"ascit sustineo\",\"location\":\"Porto\",\"description\":\"Molestiae vere bestia adhaero uter laboriosam. Voluptatibus desolo asper. Dolorum timidus turbo vulgus ustilo cotidie.\",\"photoIds\":[]}"
+2023-11-13T21:01:00.156Z http captures and matches:
+2023-11-13T21:01:00.156Z http {}
+2023-11-13T21:01:00.156Z http {
+  houseid: {
+    value: '6dc3b50a-300a-4290-8994-ea46b21d2544',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"6dc3b50a-300a-4290-8994-ea46b21d2544","ownerId":"Tre.Kihn","name":"ascit sustineo","location":"Porto","description":"Molestiae vere bestia adhaero uter laboriosam. Voluptatibus desolo asper. Dolorum timidus turbo vulgus ustilo cotidie.","photoIds":[]}
+2023-11-13T21:01:00.399Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/6dc3b50a-300a-4290-8994-ea46b21d2544/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "6dc3b50a-300a-4290-8994-ea46b21d2544",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 552,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:00.399Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:59 GMT"
+}
+2023-11-13T21:01:00.399Z http:response "{\"id\":\"aab23bda-d308-49ec-a017-8b7fb3ac8a7c\",\"houseId\":\"6dc3b50a-300a-4290-8994-ea46b21d2544\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":552.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"aab23bda-d308-49ec-a017-8b7fb3ac8a7c","houseId":"6dc3b50a-300a-4290-8994-ea46b21d2544","fromDate":"12-2023","toDate":"12-2024","cost":552.0,"discount":0.0}
+2023-11-13T21:01:00.635Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "id cresco nisi",
+    "location": "Porto",
+    "description": "Cruciamentum utrum video cuius adversus. Temptatio vesica sophismata avarus vobis beatae volaticus aegrus valetudo aggredior. Sub tergiversatio totidem coepi quam curriculum verto capto constans credo.",
+    "ownerId": "Tre.Kihn",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:00.635Z http:response {
+  "content-length": "341",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:00:59 GMT"
+}
+2023-11-13T21:01:00.635Z http:response "{\"id\":\"d414f637-3f22-4143-b4bf-0a0f106e7353\",\"ownerId\":\"Tre.Kihn\",\"name\":\"id cresco nisi\",\"location\":\"Porto\",\"description\":\"Cruciamentum utrum video cuius adversus. Temptatio vesica sophismata avarus vobis beatae volaticus aegrus valetudo aggredior. Sub tergiversatio totidem coepi quam curriculum verto capto constans credo.\",\"photoIds\":[]}"
+2023-11-13T21:01:00.635Z http captures and matches:
+2023-11-13T21:01:00.636Z http {}
+2023-11-13T21:01:00.636Z http {
+  houseid: {
+    value: 'd414f637-3f22-4143-b4bf-0a0f106e7353',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"d414f637-3f22-4143-b4bf-0a0f106e7353","ownerId":"Tre.Kihn","name":"id cresco nisi","location":"Porto","description":"Cruciamentum utrum video cuius adversus. Temptatio vesica sophismata avarus vobis beatae volaticus aegrus valetudo aggredior. Sub tergiversatio totidem coepi quam curriculum verto capto constans credo.","photoIds":[]}
+2023-11-13T21:01:00.911Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/d414f637-3f22-4143-b4bf-0a0f106e7353/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "d414f637-3f22-4143-b4bf-0a0f106e7353",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 383,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:00.911Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:00 GMT"
+}
+2023-11-13T21:01:00.911Z http:response "{\"id\":\"7fe49561-bedb-4051-bb4d-8ac007ce5bc0\",\"houseId\":\"d414f637-3f22-4143-b4bf-0a0f106e7353\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":383.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"7fe49561-bedb-4051-bb4d-8ac007ce5bc0","houseId":"d414f637-3f22-4143-b4bf-0a0f106e7353","fromDate":"12-2023","toDate":"12-2024","cost":383.0,"discount":0.0}
+2023-11-13T21:01:01.040Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "cruentus textilis admiratio",
+    "location": "Madeira",
+    "description": "Timor deprecator coepi vinitor depraedor ratione advenio turpis agnitio. Amiculum verumtamen nostrum antiquus tot barba. Vilitas temptatio celer adfectus.",
+    "ownerId": "Tre.Kihn",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:01.040Z http:response {
+  "content-length": "309",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:00 GMT"
+}
+2023-11-13T21:01:01.040Z http:response "{\"id\":\"9cde2871-4cf1-4269-b4cd-db27bdc7fa24\",\"ownerId\":\"Tre.Kihn\",\"name\":\"cruentus textilis admiratio\",\"location\":\"Madeira\",\"description\":\"Timor deprecator coepi vinitor depraedor ratione advenio turpis agnitio. Amiculum verumtamen nostrum antiquus tot barba. Vilitas temptatio celer adfectus.\",\"photoIds\":[]}"
+2023-11-13T21:01:01.040Z http captures and matches:
+2023-11-13T21:01:01.040Z http {}
+2023-11-13T21:01:01.040Z http {
+  houseid: {
+    value: '9cde2871-4cf1-4269-b4cd-db27bdc7fa24',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"9cde2871-4cf1-4269-b4cd-db27bdc7fa24","ownerId":"Tre.Kihn","name":"cruentus textilis admiratio","location":"Madeira","description":"Timor deprecator coepi vinitor depraedor ratione advenio turpis agnitio. Amiculum verumtamen nostrum antiquus tot barba. Vilitas temptatio celer adfectus.","photoIds":[]}
+2023-11-13T21:01:01.213Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/9cde2871-4cf1-4269-b4cd-db27bdc7fa24/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=11bec884-d630-45b9-884b-90aa243a34e2;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "9cde2871-4cf1-4269-b4cd-db27bdc7fa24",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 652,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:01.214Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:00 GMT"
+}
+2023-11-13T21:01:01.214Z http:response "{\"id\":\"52bcf9a1-fdfe-427e-95cf-1c677ce6f511\",\"houseId\":\"9cde2871-4cf1-4269-b4cd-db27bdc7fa24\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":652.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"52bcf9a1-fdfe-427e-95cf-1c677ce6f511","houseId":"9cde2871-4cf1-4269-b4cd-db27bdc7fa24","fromDate":"12-2023","toDate":"12-2024","cost":652.0,"discount":0.0}
+2023-11-13T21:01:01.415Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json"
+  },
+  "json": {
+    "id": "Imani.Swaniawski",
+    "name": "Imani Swaniawski",
+    "pwd": "_ZMz27IyOpps7AG",
+    "photoId": null
+  }
+}
+2023-11-13T21:01:01.415Z http:response {
+  "content-length": "90",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:00 GMT"
+}
+2023-11-13T21:01:01.415Z http:response "{\"id\":\"Imani.Swaniawski\",\"name\":\"Imani Swaniawski\",\"pwd\":\"_ZMz27IyOpps7AG\",\"photoId\":null}"
+http:response status:
+200
+Body:
+{"id":"Imani.Swaniawski","name":"Imani Swaniawski","pwd":"_ZMz27IyOpps7AG","photoId":null}
+2023-11-13T21:01:01.516Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user/auth",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json"
+  },
+  "json": {
+    "user": "Imani.Swaniawski",
+    "pwd": "_ZMz27IyOpps7AG"
+  }
+}
+2023-11-13T21:01:01.517Z http:response {
+  "content-length": "0",
+  "date": "Mon, 13 Nov 2023 21:01:00 GMT",
+  "set-cookie": [
+    "scc:session=eb78ec39-fb9d-425f-8820-6df28cc723bf;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  ]
+}
+2023-11-13T21:01:01.517Z http:response ""
+http:response status:
+200
+Body:
+
+2023-11-13T21:01:01.708Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=eb78ec39-fb9d-425f-8820-6df28cc723bf;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "illum timor comptus",
+    "location": "Braga",
+    "description": "Quasi fugit amplus amet aiunt tristis decerno ventosus venustas explicabo. Repudiandae patior catena vilicus mollitia cohaero vilicus ceno crur. Utor conturbo averto fugit pecco aestivus vero.",
+    "ownerId": "Imani.Swaniawski",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:01.708Z http:response {
+  "content-length": "345",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:00 GMT"
+}
+2023-11-13T21:01:01.708Z http:response "{\"id\":\"6b77711e-ac9d-46b6-849a-6ac953beec3e\",\"ownerId\":\"Imani.Swaniawski\",\"name\":\"illum timor comptus\",\"location\":\"Braga\",\"description\":\"Quasi fugit amplus amet aiunt tristis decerno ventosus venustas explicabo. Repudiandae patior catena vilicus mollitia cohaero vilicus ceno crur. Utor conturbo averto fugit pecco aestivus vero.\",\"photoIds\":[]}"
+2023-11-13T21:01:01.708Z http captures and matches:
+2023-11-13T21:01:01.708Z http {}
+2023-11-13T21:01:01.708Z http {
+  houseid: {
+    value: '6b77711e-ac9d-46b6-849a-6ac953beec3e',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"6b77711e-ac9d-46b6-849a-6ac953beec3e","ownerId":"Imani.Swaniawski","name":"illum timor comptus","location":"Braga","description":"Quasi fugit amplus amet aiunt tristis decerno ventosus venustas explicabo. Repudiandae patior catena vilicus mollitia cohaero vilicus ceno crur. Utor conturbo averto fugit pecco aestivus vero.","photoIds":[]}
+2023-11-13T21:01:01.908Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/6b77711e-ac9d-46b6-849a-6ac953beec3e/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=eb78ec39-fb9d-425f-8820-6df28cc723bf;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "6b77711e-ac9d-46b6-849a-6ac953beec3e",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 550,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:01.909Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:00 GMT"
+}
+2023-11-13T21:01:01.909Z http:response "{\"id\":\"ceb7940c-ea6b-4f67-a698-62bd01b6a9b4\",\"houseId\":\"6b77711e-ac9d-46b6-849a-6ac953beec3e\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":550.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"ceb7940c-ea6b-4f67-a698-62bd01b6a9b4","houseId":"6b77711e-ac9d-46b6-849a-6ac953beec3e","fromDate":"12-2023","toDate":"12-2024","cost":550.0,"discount":0.0}
+2023-11-13T21:01:02.090Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=eb78ec39-fb9d-425f-8820-6df28cc723bf;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "pauci sit suus",
+    "location": "Evora",
+    "description": "Sursum deputo cresco sursum spectaculum. Sublime cumque excepturi tantum magni aurum voluptatibus. Cruciamentum paens terra minima amicitia deserunt.",
+    "ownerId": "Imani.Swaniawski",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:02.090Z http:response {
+  "content-length": "297",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:02 GMT"
+}
+2023-11-13T21:01:02.090Z http:response "{\"id\":\"ae72330f-e5f1-4a17-a125-d96b56fbd269\",\"ownerId\":\"Imani.Swaniawski\",\"name\":\"pauci sit suus\",\"location\":\"Evora\",\"description\":\"Sursum deputo cresco sursum spectaculum. Sublime cumque excepturi tantum magni aurum voluptatibus. Cruciamentum paens terra minima amicitia deserunt.\",\"photoIds\":[]}"
+2023-11-13T21:01:02.091Z http captures and matches:
+2023-11-13T21:01:02.091Z http {}
+2023-11-13T21:01:02.091Z http {
+  houseid: {
+    value: 'ae72330f-e5f1-4a17-a125-d96b56fbd269',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"ae72330f-e5f1-4a17-a125-d96b56fbd269","ownerId":"Imani.Swaniawski","name":"pauci sit suus","location":"Evora","description":"Sursum deputo cresco sursum spectaculum. Sublime cumque excepturi tantum magni aurum voluptatibus. Cruciamentum paens terra minima amicitia deserunt.","photoIds":[]}
+2023-11-13T21:01:02.333Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/ae72330f-e5f1-4a17-a125-d96b56fbd269/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=eb78ec39-fb9d-425f-8820-6df28cc723bf;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "ae72330f-e5f1-4a17-a125-d96b56fbd269",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 364,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:02.333Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:02 GMT"
+}
+2023-11-13T21:01:02.333Z http:response "{\"id\":\"937fb5b7-959e-43c8-8da6-f8f7d85d7715\",\"houseId\":\"ae72330f-e5f1-4a17-a125-d96b56fbd269\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":364.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"937fb5b7-959e-43c8-8da6-f8f7d85d7715","houseId":"ae72330f-e5f1-4a17-a125-d96b56fbd269","fromDate":"12-2023","toDate":"12-2024","cost":364.0,"discount":0.0}
+2023-11-13T21:01:02.511Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=eb78ec39-fb9d-425f-8820-6df28cc723bf;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "quae taedium",
+    "location": "Lisbon",
+    "description": "Ipsum utrimque arceo commemoro magnam carcer tempus. Aetas cattus apto voluptatibus vitiosus alter depereo ver vinitor deorsum. Validus crebro truculenter condico bis utrum suscipit caterva.",
+    "ownerId": "Imani.Swaniawski",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:02.512Z http:response {
+  "content-length": "337",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:02 GMT"
+}
+2023-11-13T21:01:02.512Z http:response "{\"id\":\"0fef9fa5-7ac4-49b7-8c98-d9521058490a\",\"ownerId\":\"Imani.Swaniawski\",\"name\":\"quae taedium\",\"location\":\"Lisbon\",\"description\":\"Ipsum utrimque arceo commemoro magnam carcer tempus. Aetas cattus apto voluptatibus vitiosus alter depereo ver vinitor deorsum. Validus crebro truculenter condico bis utrum suscipit caterva.\",\"photoIds\":[]}"
+2023-11-13T21:01:02.512Z http captures and matches:
+2023-11-13T21:01:02.512Z http {}
+2023-11-13T21:01:02.512Z http {
+  houseid: {
+    value: '0fef9fa5-7ac4-49b7-8c98-d9521058490a',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"0fef9fa5-7ac4-49b7-8c98-d9521058490a","ownerId":"Imani.Swaniawski","name":"quae taedium","location":"Lisbon","description":"Ipsum utrimque arceo commemoro magnam carcer tempus. Aetas cattus apto voluptatibus vitiosus alter depereo ver vinitor deorsum. Validus crebro truculenter condico bis utrum suscipit caterva.","photoIds":[]}
+2023-11-13T21:01:02.696Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/0fef9fa5-7ac4-49b7-8c98-d9521058490a/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=eb78ec39-fb9d-425f-8820-6df28cc723bf;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "0fef9fa5-7ac4-49b7-8c98-d9521058490a",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 676,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:02.696Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:02 GMT"
+}
+2023-11-13T21:01:02.696Z http:response "{\"id\":\"8586585a-d49d-4d87-97e8-5f6d8e48237e\",\"houseId\":\"0fef9fa5-7ac4-49b7-8c98-d9521058490a\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":676.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"8586585a-d49d-4d87-97e8-5f6d8e48237e","houseId":"0fef9fa5-7ac4-49b7-8c98-d9521058490a","fromDate":"12-2023","toDate":"12-2024","cost":676.0,"discount":0.0}
+2023-11-13T21:01:02.884Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json"
+  },
+  "json": {
+    "id": "Luigi.Gorczany",
+    "name": "Luigi Gorczany",
+    "pwd": "pfCM49HcbdW0FxG",
+    "photoId": null
+  }
+}
+2023-11-13T21:01:02.885Z http:response {
+  "content-length": "86",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:02 GMT"
+}
+2023-11-13T21:01:02.885Z http:response "{\"id\":\"Luigi.Gorczany\",\"name\":\"Luigi Gorczany\",\"pwd\":\"pfCM49HcbdW0FxG\",\"photoId\":null}"
+http:response status:
+200
+Body:
+{"id":"Luigi.Gorczany","name":"Luigi Gorczany","pwd":"pfCM49HcbdW0FxG","photoId":null}
+2023-11-13T21:01:02.969Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user/auth",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json"
+  },
+  "json": {
+    "user": "Luigi.Gorczany",
+    "pwd": "pfCM49HcbdW0FxG"
+  }
+}
+2023-11-13T21:01:02.969Z http:response {
+  "content-length": "0",
+  "date": "Mon, 13 Nov 2023 21:01:02 GMT",
+  "set-cookie": [
+    "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  ]
+}
+2023-11-13T21:01:02.969Z http:response ""
+http:response status:
+200
+Body:
+
+2023-11-13T21:01:03.180Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "abundans caste",
+    "location": "Porto",
+    "description": "Voluptates comis utrimque certus ceno ratione asperiores cupressus arcus aduro. Arcus candidus canis tego ascisco. Vomica curiositas caecus aperte ante trepide autem vita.",
+    "ownerId": "Luigi.Gorczany",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:03.181Z http:response {
+  "content-length": "317",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:03 GMT"
+}
+2023-11-13T21:01:03.181Z http:response "{\"id\":\"0d4f262d-cc7e-433a-8476-c313975748f7\",\"ownerId\":\"Luigi.Gorczany\",\"name\":\"abundans caste\",\"location\":\"Porto\",\"description\":\"Voluptates comis utrimque certus ceno ratione asperiores cupressus arcus aduro. Arcus candidus canis tego ascisco. Vomica curiositas caecus aperte ante trepide autem vita.\",\"photoIds\":[]}"
+2023-11-13T21:01:03.181Z http captures and matches:
+2023-11-13T21:01:03.181Z http {}
+2023-11-13T21:01:03.181Z http {
+  houseid: {
+    value: '0d4f262d-cc7e-433a-8476-c313975748f7',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"0d4f262d-cc7e-433a-8476-c313975748f7","ownerId":"Luigi.Gorczany","name":"abundans caste","location":"Porto","description":"Voluptates comis utrimque certus ceno ratione asperiores cupressus arcus aduro. Arcus candidus canis tego ascisco. Vomica curiositas caecus aperte ante trepide autem vita.","photoIds":[]}
+2023-11-13T21:01:03.390Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/0d4f262d-cc7e-433a-8476-c313975748f7/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "0d4f262d-cc7e-433a-8476-c313975748f7",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 522,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:03.390Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:03 GMT"
+}
+2023-11-13T21:01:03.390Z http:response "{\"id\":\"7ac17df1-e6ec-41c2-98b5-60411e20ffb8\",\"houseId\":\"0d4f262d-cc7e-433a-8476-c313975748f7\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":522.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"7ac17df1-e6ec-41c2-98b5-60411e20ffb8","houseId":"0d4f262d-cc7e-433a-8476-c313975748f7","fromDate":"12-2023","toDate":"12-2024","cost":522.0,"discount":0.0}
+2023-11-13T21:01:03.565Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "victus",
+    "location": "Porto",
+    "description": "Calcar assentator capto nulla. Nihil super vitae temptatio allatus alias demonstro denuncio porro aliquid. Iusto delicate adinventitias ullus aeternus usque commemoro vestigium demergo terreo.",
+    "ownerId": "Luigi.Gorczany",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:03.565Z http:response {
+  "content-length": "330",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:03 GMT"
+}
+2023-11-13T21:01:03.565Z http:response "{\"id\":\"029a5298-27ec-4b03-b768-2cae2fd1974a\",\"ownerId\":\"Luigi.Gorczany\",\"name\":\"victus\",\"location\":\"Porto\",\"description\":\"Calcar assentator capto nulla. Nihil super vitae temptatio allatus alias demonstro denuncio porro aliquid. Iusto delicate adinventitias ullus aeternus usque commemoro vestigium demergo terreo.\",\"photoIds\":[]}"
+2023-11-13T21:01:03.565Z http captures and matches:
+2023-11-13T21:01:03.565Z http {}
+2023-11-13T21:01:03.566Z http {
+  houseid: {
+    value: '029a5298-27ec-4b03-b768-2cae2fd1974a',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"029a5298-27ec-4b03-b768-2cae2fd1974a","ownerId":"Luigi.Gorczany","name":"victus","location":"Porto","description":"Calcar assentator capto nulla. Nihil super vitae temptatio allatus alias demonstro denuncio porro aliquid. Iusto delicate adinventitias ullus aeternus usque commemoro vestigium demergo terreo.","photoIds":[]}
+2023-11-13T21:01:03.804Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/029a5298-27ec-4b03-b768-2cae2fd1974a/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "029a5298-27ec-4b03-b768-2cae2fd1974a",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 661,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:03.804Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:03 GMT"
+}
+2023-11-13T21:01:03.804Z http:response "{\"id\":\"b295fea0-64da-4055-8f8d-beebc0adba4a\",\"houseId\":\"029a5298-27ec-4b03-b768-2cae2fd1974a\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":661.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"b295fea0-64da-4055-8f8d-beebc0adba4a","houseId":"029a5298-27ec-4b03-b768-2cae2fd1974a","fromDate":"12-2023","toDate":"12-2024","cost":661.0,"discount":0.0}
+2023-11-13T21:01:03.988Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "acidus",
+    "location": "Leiria",
+    "description": "Sequi id audeo ceno. Color desipio solutio vilicus curis taceo aperio spoliatio doloremque solitudo. Velit termes ut aegrus.",
+    "ownerId": "Luigi.Gorczany",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:03.988Z http:response {
+  "content-length": "263",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:03 GMT"
+}
+2023-11-13T21:01:03.988Z http:response "{\"id\":\"bfe6eb23-9e0c-4966-a551-ecb6c7f3f261\",\"ownerId\":\"Luigi.Gorczany\",\"name\":\"acidus\",\"location\":\"Leiria\",\"description\":\"Sequi id audeo ceno. Color desipio solutio vilicus curis taceo aperio spoliatio doloremque solitudo. Velit termes ut aegrus.\",\"photoIds\":[]}"
+2023-11-13T21:01:03.989Z http captures and matches:
+2023-11-13T21:01:03.989Z http {}
+2023-11-13T21:01:03.989Z http {
+  houseid: {
+    value: 'bfe6eb23-9e0c-4966-a551-ecb6c7f3f261',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"bfe6eb23-9e0c-4966-a551-ecb6c7f3f261","ownerId":"Luigi.Gorczany","name":"acidus","location":"Leiria","description":"Sequi id audeo ceno. Color desipio solutio vilicus curis taceo aperio spoliatio doloremque solitudo. Velit termes ut aegrus.","photoIds":[]}
+2023-11-13T21:01:04.223Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/bfe6eb23-9e0c-4966-a551-ecb6c7f3f261/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "bfe6eb23-9e0c-4966-a551-ecb6c7f3f261",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 553,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:04.224Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:04 GMT"
+}
+2023-11-13T21:01:04.224Z http:response "{\"id\":\"4a0b174a-cf16-424f-857c-0350970e4284\",\"houseId\":\"bfe6eb23-9e0c-4966-a551-ecb6c7f3f261\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":553.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"4a0b174a-cf16-424f-857c-0350970e4284","houseId":"bfe6eb23-9e0c-4966-a551-ecb6c7f3f261","fromDate":"12-2023","toDate":"12-2024","cost":553.0,"discount":0.0}
+2023-11-13T21:01:04.643Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "defluo clam canonicus",
+    "location": "Madeira",
+    "description": "Atavus volup pauci teneo. Atavus perferendis absque. Taedium speciosus eum deduco sum cauda sto defaeco.",
+    "ownerId": "Luigi.Gorczany",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:04.643Z http:response {
+  "content-length": "259",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:04 GMT"
+}
+2023-11-13T21:01:04.643Z http:response "{\"id\":\"3fdd6498-8146-4ce9-ae65-3c99efaee1d5\",\"ownerId\":\"Luigi.Gorczany\",\"name\":\"defluo clam canonicus\",\"location\":\"Madeira\",\"description\":\"Atavus volup pauci teneo. Atavus perferendis absque. Taedium speciosus eum deduco sum cauda sto defaeco.\",\"photoIds\":[]}"
+2023-11-13T21:01:04.643Z http captures and matches:
+2023-11-13T21:01:04.643Z http {}
+2023-11-13T21:01:04.643Z http {
+  houseid: {
+    value: '3fdd6498-8146-4ce9-ae65-3c99efaee1d5',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"3fdd6498-8146-4ce9-ae65-3c99efaee1d5","ownerId":"Luigi.Gorczany","name":"defluo clam canonicus","location":"Madeira","description":"Atavus volup pauci teneo. Atavus perferendis absque. Taedium speciosus eum deduco sum cauda sto defaeco.","photoIds":[]}
+2023-11-13T21:01:04.982Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/3fdd6498-8146-4ce9-ae65-3c99efaee1d5/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=3d99dbd3-2f5e-468c-9557-23bc62e80d06;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "3fdd6498-8146-4ce9-ae65-3c99efaee1d5",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 356,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:04.983Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:04 GMT"
+}
+2023-11-13T21:01:04.983Z http:response "{\"id\":\"ab97aff1-9399-437b-b8c9-26f5ef875fc9\",\"houseId\":\"3fdd6498-8146-4ce9-ae65-3c99efaee1d5\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":356.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"ab97aff1-9399-437b-b8c9-26f5ef875fc9","houseId":"3fdd6498-8146-4ce9-ae65-3c99efaee1d5","fromDate":"12-2023","toDate":"12-2024","cost":356.0,"discount":0.0}
+2023-11-13T21:01:05.309Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json"
+  },
+  "json": {
+    "id": "Alejandrin.Tillman",
+    "name": "Alejandrin Tillman",
+    "pwd": "9kvprrWql2ZhvLp",
+    "photoId": null
+  }
+}
+2023-11-13T21:01:05.309Z http:response {
+  "content-length": "94",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:04 GMT"
+}
+2023-11-13T21:01:05.309Z http:response "{\"id\":\"Alejandrin.Tillman\",\"name\":\"Alejandrin Tillman\",\"pwd\":\"9kvprrWql2ZhvLp\",\"photoId\":null}"
+http:response status:
+200
+Body:
+{"id":"Alejandrin.Tillman","name":"Alejandrin Tillman","pwd":"9kvprrWql2ZhvLp","photoId":null}
+2023-11-13T21:01:05.647Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user/auth",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json"
+  },
+  "json": {
+    "user": "Alejandrin.Tillman",
+    "pwd": "9kvprrWql2ZhvLp"
+  }
+}
+2023-11-13T21:01:05.647Z http:response {
+  "content-length": "0",
+  "date": "Mon, 13 Nov 2023 21:01:05 GMT",
+  "set-cookie": [
+    "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  ]
+}
+2023-11-13T21:01:05.647Z http:response ""
+http:response status:
+200
+Body:
+
+2023-11-13T21:01:05.858Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "validus laudantium adstringo",
+    "location": "Aveiro",
+    "description": "Facilis atqui sponte contabesco defaeco sub vigilo. Accedo adstringo ter vivo angulus. Vinculum conventus ventus tabgo totidem.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:05.858Z http:response {
+  "content-length": "292",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:05 GMT"
+}
+2023-11-13T21:01:05.858Z http:response "{\"id\":\"80cb9b57-54d3-458c-8999-a2e13aaa0e00\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"validus laudantium adstringo\",\"location\":\"Aveiro\",\"description\":\"Facilis atqui sponte contabesco defaeco sub vigilo. Accedo adstringo ter vivo angulus. Vinculum conventus ventus tabgo totidem.\",\"photoIds\":[]}"
+2023-11-13T21:01:05.858Z http captures and matches:
+2023-11-13T21:01:05.858Z http {}
+2023-11-13T21:01:05.859Z http {
+  houseid: {
+    value: '80cb9b57-54d3-458c-8999-a2e13aaa0e00',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"80cb9b57-54d3-458c-8999-a2e13aaa0e00","ownerId":"Alejandrin.Tillman","name":"validus laudantium adstringo","location":"Aveiro","description":"Facilis atqui sponte contabesco defaeco sub vigilo. Accedo adstringo ter vivo angulus. Vinculum conventus ventus tabgo totidem.","photoIds":[]}
+2023-11-13T21:01:06.034Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/80cb9b57-54d3-458c-8999-a2e13aaa0e00/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "80cb9b57-54d3-458c-8999-a2e13aaa0e00",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 663,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:06.034Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:05 GMT"
+}
+2023-11-13T21:01:06.034Z http:response "{\"id\":\"078f6495-5602-44a5-8105-01eaf6cd525d\",\"houseId\":\"80cb9b57-54d3-458c-8999-a2e13aaa0e00\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":663.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"078f6495-5602-44a5-8105-01eaf6cd525d","houseId":"80cb9b57-54d3-458c-8999-a2e13aaa0e00","fromDate":"12-2023","toDate":"12-2024","cost":663.0,"discount":0.0}
+2023-11-13T21:01:06.216Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "adamo",
+    "location": "Azores",
+    "description": "Vinitor pauper vesica. Suadeo cattus beatae aliqua peccatus. Dens cornu deludo.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:06.216Z http:response {
+  "content-length": "221",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:05 GMT"
+}
+2023-11-13T21:01:06.216Z http:response "{\"id\":\"649586af-0c77-4b15-bbdb-db0504dc1e31\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"adamo\",\"location\":\"Azores\",\"description\":\"Vinitor pauper vesica. Suadeo cattus beatae aliqua peccatus. Dens cornu deludo.\",\"photoIds\":[]}"
+2023-11-13T21:01:06.217Z http captures and matches:
+2023-11-13T21:01:06.217Z http {}
+2023-11-13T21:01:06.217Z http {
+  houseid: {
+    value: '649586af-0c77-4b15-bbdb-db0504dc1e31',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"649586af-0c77-4b15-bbdb-db0504dc1e31","ownerId":"Alejandrin.Tillman","name":"adamo","location":"Azores","description":"Vinitor pauper vesica. Suadeo cattus beatae aliqua peccatus. Dens cornu deludo.","photoIds":[]}
+2023-11-13T21:01:06.355Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/649586af-0c77-4b15-bbdb-db0504dc1e31/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "649586af-0c77-4b15-bbdb-db0504dc1e31",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 576,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:06.355Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:05 GMT"
+}
+2023-11-13T21:01:06.355Z http:response "{\"id\":\"469344ae-0147-45dc-8c71-486d0b46277f\",\"houseId\":\"649586af-0c77-4b15-bbdb-db0504dc1e31\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":576.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"469344ae-0147-45dc-8c71-486d0b46277f","houseId":"649586af-0c77-4b15-bbdb-db0504dc1e31","fromDate":"12-2023","toDate":"12-2024","cost":576.0,"discount":0.0}
+2023-11-13T21:01:06.475Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "tendo",
+    "location": "Lisbon",
+    "description": "Crastinus conqueror totidem culpo. Vicinus cunctatio numquam credo comminor undique. Adfectus uxor vitiosus.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:06.475Z http:response {
+  "content-length": "250",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:06 GMT"
+}
+2023-11-13T21:01:06.475Z http:response "{\"id\":\"71a92181-8832-4bfa-86f8-9049635f0c05\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"tendo\",\"location\":\"Lisbon\",\"description\":\"Crastinus conqueror totidem culpo. Vicinus cunctatio numquam credo comminor undique. Adfectus uxor vitiosus.\",\"photoIds\":[]}"
+2023-11-13T21:01:06.476Z http captures and matches:
+2023-11-13T21:01:06.476Z http {}
+2023-11-13T21:01:06.476Z http {
+  houseid: {
+    value: '71a92181-8832-4bfa-86f8-9049635f0c05',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"71a92181-8832-4bfa-86f8-9049635f0c05","ownerId":"Alejandrin.Tillman","name":"tendo","location":"Lisbon","description":"Crastinus conqueror totidem culpo. Vicinus cunctatio numquam credo comminor undique. Adfectus uxor vitiosus.","photoIds":[]}
+2023-11-13T21:01:06.682Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/71a92181-8832-4bfa-86f8-9049635f0c05/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "71a92181-8832-4bfa-86f8-9049635f0c05",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 679,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:06.682Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:06 GMT"
+}
+2023-11-13T21:01:06.682Z http:response "{\"id\":\"a0e25614-d323-4535-8229-d90927e2c777\",\"houseId\":\"71a92181-8832-4bfa-86f8-9049635f0c05\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":679.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"a0e25614-d323-4535-8229-d90927e2c777","houseId":"71a92181-8832-4bfa-86f8-9049635f0c05","fromDate":"12-2023","toDate":"12-2024","cost":679.0,"discount":0.0}
+2023-11-13T21:01:06.904Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "adhaero",
+    "location": "Porto",
+    "description": "Demum cito magni acerbitas deripio antea cibo aestivus virgo totus. Laudantium depopulo vergo comburo catena demum subito ad canonicus. Crapula appono spiritus vehemens corporis desino tantillus sufficio compono exercitationem.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:06.904Z http:response {
+  "content-length": "370",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:06 GMT"
+}
+2023-11-13T21:01:06.904Z http:response "{\"id\":\"7cae3859-e096-4c09-83ef-51ed3797ca7f\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"adhaero\",\"location\":\"Porto\",\"description\":\"Demum cito magni acerbitas deripio antea cibo aestivus virgo totus. Laudantium depopulo vergo comburo catena demum subito ad canonicus. Crapula appono spiritus vehemens corporis desino tantillus sufficio compono exercitationem.\",\"photoIds\":[]}"
+2023-11-13T21:01:06.905Z http captures and matches:
+2023-11-13T21:01:06.905Z http {}
+2023-11-13T21:01:06.905Z http {
+  houseid: {
+    value: '7cae3859-e096-4c09-83ef-51ed3797ca7f',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"7cae3859-e096-4c09-83ef-51ed3797ca7f","ownerId":"Alejandrin.Tillman","name":"adhaero","location":"Porto","description":"Demum cito magni acerbitas deripio antea cibo aestivus virgo totus. Laudantium depopulo vergo comburo catena demum subito ad canonicus. Crapula appono spiritus vehemens corporis desino tantillus sufficio compono exercitationem.","photoIds":[]}
+2023-11-13T21:01:07.182Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/7cae3859-e096-4c09-83ef-51ed3797ca7f/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "7cae3859-e096-4c09-83ef-51ed3797ca7f",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 332,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:07.182Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:06 GMT"
+}
+2023-11-13T21:01:07.182Z http:response "{\"id\":\"941ce476-dbdc-4215-83f5-712db43a573f\",\"houseId\":\"7cae3859-e096-4c09-83ef-51ed3797ca7f\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":332.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"941ce476-dbdc-4215-83f5-712db43a573f","houseId":"7cae3859-e096-4c09-83ef-51ed3797ca7f","fromDate":"12-2023","toDate":"12-2024","cost":332.0,"discount":0.0}
+2023-11-13T21:01:07.604Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "cras aqua defetiscor",
+    "location": "Braga",
+    "description": "Xiphias celo uter solus terra. Uter umbra aeneus suppellex xiphias derelinquo adinventitias tamdiu. Voro damno ex defero dens.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:07.605Z http:response {
+  "content-length": "282",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:06 GMT"
+}
+2023-11-13T21:01:07.605Z http:response "{\"id\":\"f6b609d8-6bce-41da-bb48-7792389f45e3\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"cras aqua defetiscor\",\"location\":\"Braga\",\"description\":\"Xiphias celo uter solus terra. Uter umbra aeneus suppellex xiphias derelinquo adinventitias tamdiu. Voro damno ex defero dens.\",\"photoIds\":[]}"
+2023-11-13T21:01:07.605Z http captures and matches:
+2023-11-13T21:01:07.605Z http {}
+2023-11-13T21:01:07.605Z http {
+  houseid: {
+    value: 'f6b609d8-6bce-41da-bb48-7792389f45e3',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"f6b609d8-6bce-41da-bb48-7792389f45e3","ownerId":"Alejandrin.Tillman","name":"cras aqua defetiscor","location":"Braga","description":"Xiphias celo uter solus terra. Uter umbra aeneus suppellex xiphias derelinquo adinventitias tamdiu. Voro damno ex defero dens.","photoIds":[]}
+2023-11-13T21:01:07.902Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/f6b609d8-6bce-41da-bb48-7792389f45e3/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "f6b609d8-6bce-41da-bb48-7792389f45e3",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 333,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:07.902Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:07 GMT"
+}
+2023-11-13T21:01:07.902Z http:response "{\"id\":\"57614e2b-8328-44de-adc4-e1c1b46176de\",\"houseId\":\"f6b609d8-6bce-41da-bb48-7792389f45e3\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":333.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"57614e2b-8328-44de-adc4-e1c1b46176de","houseId":"f6b609d8-6bce-41da-bb48-7792389f45e3","fromDate":"12-2023","toDate":"12-2024","cost":333.0,"discount":0.0}
+2023-11-13T21:01:08.094Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "depraedor",
+    "location": "Leiria",
+    "description": "Caries subvenio pectus cimentarius bellum. Adficio certus beatae corrumpo sublime cunae. Stips delego currus tertius nesciunt.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:08.094Z http:response {
+  "content-length": "272",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:07 GMT"
+}
+2023-11-13T21:01:08.094Z http:response "{\"id\":\"f6a5e4cb-b8b1-4bb6-9899-7a1e52dab6cf\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"depraedor\",\"location\":\"Leiria\",\"description\":\"Caries subvenio pectus cimentarius bellum. Adficio certus beatae corrumpo sublime cunae. Stips delego currus tertius nesciunt.\",\"photoIds\":[]}"
+2023-11-13T21:01:08.095Z http captures and matches:
+2023-11-13T21:01:08.095Z http {}
+2023-11-13T21:01:08.095Z http {
+  houseid: {
+    value: 'f6a5e4cb-b8b1-4bb6-9899-7a1e52dab6cf',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"f6a5e4cb-b8b1-4bb6-9899-7a1e52dab6cf","ownerId":"Alejandrin.Tillman","name":"depraedor","location":"Leiria","description":"Caries subvenio pectus cimentarius bellum. Adficio certus beatae corrumpo sublime cunae. Stips delego currus tertius nesciunt.","photoIds":[]}
+2023-11-13T21:01:08.354Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/f6a5e4cb-b8b1-4bb6-9899-7a1e52dab6cf/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "f6a5e4cb-b8b1-4bb6-9899-7a1e52dab6cf",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 380,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:08.354Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:07 GMT"
+}
+2023-11-13T21:01:08.354Z http:response "{\"id\":\"284fb16f-019d-4265-b25c-32007923df6c\",\"houseId\":\"f6a5e4cb-b8b1-4bb6-9899-7a1e52dab6cf\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":380.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"284fb16f-019d-4265-b25c-32007923df6c","houseId":"f6a5e4cb-b8b1-4bb6-9899-7a1e52dab6cf","fromDate":"12-2023","toDate":"12-2024","cost":380.0,"discount":0.0}
+2023-11-13T21:01:08.549Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "copiose",
+    "location": "Lisbon",
+    "description": "Arguo vulgaris utilis desparatus speciosus. Molestias adsidue crux aro desparatus. Spectaculum clibanus quia conculco.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:08.549Z http:response {
+  "content-length": "262",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:07 GMT"
+}
+2023-11-13T21:01:08.549Z http:response "{\"id\":\"6c1e41ea-2b16-47f8-b546-3ab71abb4953\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"copiose\",\"location\":\"Lisbon\",\"description\":\"Arguo vulgaris utilis desparatus speciosus. Molestias adsidue crux aro desparatus. Spectaculum clibanus quia conculco.\",\"photoIds\":[]}"
+2023-11-13T21:01:08.549Z http captures and matches:
+2023-11-13T21:01:08.550Z http {}
+2023-11-13T21:01:08.550Z http {
+  houseid: {
+    value: '6c1e41ea-2b16-47f8-b546-3ab71abb4953',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"6c1e41ea-2b16-47f8-b546-3ab71abb4953","ownerId":"Alejandrin.Tillman","name":"copiose","location":"Lisbon","description":"Arguo vulgaris utilis desparatus speciosus. Molestias adsidue crux aro desparatus. Spectaculum clibanus quia conculco.","photoIds":[]}
+2023-11-13T21:01:08.781Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/6c1e41ea-2b16-47f8-b546-3ab71abb4953/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "6c1e41ea-2b16-47f8-b546-3ab71abb4953",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 203,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:08.781Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:07 GMT"
+}
+2023-11-13T21:01:08.781Z http:response "{\"id\":\"eccb885a-e93b-44f4-91fa-5e66970f55e0\",\"houseId\":\"6c1e41ea-2b16-47f8-b546-3ab71abb4953\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":203.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"eccb885a-e93b-44f4-91fa-5e66970f55e0","houseId":"6c1e41ea-2b16-47f8-b546-3ab71abb4953","fromDate":"12-2023","toDate":"12-2024","cost":203.0,"discount":0.0}
+2023-11-13T21:01:09.087Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "asperiores substantia",
+    "location": "Braga",
+    "description": "Volaticus ipsa curriculum minima. Tamisium desipio curo voluptatibus voco tot vinum benigne. Tergeo suggero ait sustineo.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:09.087Z http:response {
+  "content-length": "278",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:08 GMT"
+}
+2023-11-13T21:01:09.087Z http:response "{\"id\":\"5811d2f0-9182-4d9a-95f8-1ecdab25b23f\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"asperiores substantia\",\"location\":\"Braga\",\"description\":\"Volaticus ipsa curriculum minima. Tamisium desipio curo voluptatibus voco tot vinum benigne. Tergeo suggero ait sustineo.\",\"photoIds\":[]}"
+2023-11-13T21:01:09.088Z http captures and matches:
+2023-11-13T21:01:09.088Z http {}
+2023-11-13T21:01:09.088Z http {
+  houseid: {
+    value: '5811d2f0-9182-4d9a-95f8-1ecdab25b23f',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"5811d2f0-9182-4d9a-95f8-1ecdab25b23f","ownerId":"Alejandrin.Tillman","name":"asperiores substantia","location":"Braga","description":"Volaticus ipsa curriculum minima. Tamisium desipio curo voluptatibus voco tot vinum benigne. Tergeo suggero ait sustineo.","photoIds":[]}
+2023-11-13T21:01:09.410Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/5811d2f0-9182-4d9a-95f8-1ecdab25b23f/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "5811d2f0-9182-4d9a-95f8-1ecdab25b23f",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 408,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:09.410Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:08 GMT"
+}
+2023-11-13T21:01:09.410Z http:response "{\"id\":\"9d5b0e5f-dff4-4a38-8cd1-54ed2ce34faa\",\"houseId\":\"5811d2f0-9182-4d9a-95f8-1ecdab25b23f\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":408.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"9d5b0e5f-dff4-4a38-8cd1-54ed2ce34faa","houseId":"5811d2f0-9182-4d9a-95f8-1ecdab25b23f","fromDate":"12-2023","toDate":"12-2024","cost":408.0,"discount":0.0}
+2023-11-13T21:01:09.629Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "depulso",
+    "location": "Porto",
+    "description": "Appono defungo suspendo agnitio animi tres arcesso articulus iste. Concedo absque creo vilicus torqueo. Coruscus callide admiratio valetudo curia amplexus deporto rerum coaegresco.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:09.629Z http:response {
+  "content-length": "323",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:08 GMT"
+}
+2023-11-13T21:01:09.629Z http:response "{\"id\":\"6bd8e0a7-685e-4e0e-81ac-ff053d988226\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"depulso\",\"location\":\"Porto\",\"description\":\"Appono defungo suspendo agnitio animi tres arcesso articulus iste. Concedo absque creo vilicus torqueo. Coruscus callide admiratio valetudo curia amplexus deporto rerum coaegresco.\",\"photoIds\":[]}"
+2023-11-13T21:01:09.630Z http captures and matches:
+2023-11-13T21:01:09.630Z http {}
+2023-11-13T21:01:09.630Z http {
+  houseid: {
+    value: '6bd8e0a7-685e-4e0e-81ac-ff053d988226',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"6bd8e0a7-685e-4e0e-81ac-ff053d988226","ownerId":"Alejandrin.Tillman","name":"depulso","location":"Porto","description":"Appono defungo suspendo agnitio animi tres arcesso articulus iste. Concedo absque creo vilicus torqueo. Coruscus callide admiratio valetudo curia amplexus deporto rerum coaegresco.","photoIds":[]}
+2023-11-13T21:01:09.896Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/6bd8e0a7-685e-4e0e-81ac-ff053d988226/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "6bd8e0a7-685e-4e0e-81ac-ff053d988226",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 538,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:09.896Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:08 GMT"
+}
+2023-11-13T21:01:09.896Z http:response "{\"id\":\"3dc97691-4a94-44eb-8ed5-2fb54caf4ac3\",\"houseId\":\"6bd8e0a7-685e-4e0e-81ac-ff053d988226\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":538.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"3dc97691-4a94-44eb-8ed5-2fb54caf4ac3","houseId":"6bd8e0a7-685e-4e0e-81ac-ff053d988226","fromDate":"12-2023","toDate":"12-2024","cost":538.0,"discount":0.0}
+2023-11-13T21:01:10.123Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "maxime",
+    "location": "Porto",
+    "description": "Animi provident abundans cotidie super. Tollo velut confero stillicidium cariosus socius stillicidium suadeo eum subnecto. Acidus carus conventus appositus tremo suspendo alienus tantum dicta.",
+    "ownerId": "Alejandrin.Tillman",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:10.123Z http:response {
+  "content-length": "334",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:09 GMT"
+}
+2023-11-13T21:01:10.123Z http:response "{\"id\":\"e47ade64-d96b-4989-bc18-d003dd385458\",\"ownerId\":\"Alejandrin.Tillman\",\"name\":\"maxime\",\"location\":\"Porto\",\"description\":\"Animi provident abundans cotidie super. Tollo velut confero stillicidium cariosus socius stillicidium suadeo eum subnecto. Acidus carus conventus appositus tremo suspendo alienus tantum dicta.\",\"photoIds\":[]}"
+2023-11-13T21:01:10.123Z http captures and matches:
+2023-11-13T21:01:10.123Z http {}
+2023-11-13T21:01:10.123Z http {
+  houseid: {
+    value: 'e47ade64-d96b-4989-bc18-d003dd385458',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"e47ade64-d96b-4989-bc18-d003dd385458","ownerId":"Alejandrin.Tillman","name":"maxime","location":"Porto","description":"Animi provident abundans cotidie super. Tollo velut confero stillicidium cariosus socius stillicidium suadeo eum subnecto. Acidus carus conventus appositus tremo suspendo alienus tantum dicta.","photoIds":[]}
+2023-11-13T21:01:10.469Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/e47ade64-d96b-4989-bc18-d003dd385458/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a5ea0260-46f9-48d9-b653-5a65151560c1;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "e47ade64-d96b-4989-bc18-d003dd385458",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 532,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:10.469Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:09 GMT"
+}
+2023-11-13T21:01:10.469Z http:response "{\"id\":\"1a7e31a2-9eb4-4d2e-8711-629cd6e5cd3a\",\"houseId\":\"e47ade64-d96b-4989-bc18-d003dd385458\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":532.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"1a7e31a2-9eb4-4d2e-8711-629cd6e5cd3a","houseId":"e47ade64-d96b-4989-bc18-d003dd385458","fromDate":"12-2023","toDate":"12-2024","cost":532.0,"discount":0.0}
+2023-11-13T21:01:10.758Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json"
+  },
+  "json": {
+    "id": "Dulce.Schiller",
+    "name": "Dulce Schiller",
+    "pwd": "zXcBwXGafJt6EQx",
+    "photoId": null
+  }
+}
+2023-11-13T21:01:10.758Z http:response {
+  "content-length": "86",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:09 GMT"
+}
+2023-11-13T21:01:10.759Z http:response "{\"id\":\"Dulce.Schiller\",\"name\":\"Dulce Schiller\",\"pwd\":\"zXcBwXGafJt6EQx\",\"photoId\":null}"
+http:response status:
+200
+Body:
+{"id":"Dulce.Schiller","name":"Dulce Schiller","pwd":"zXcBwXGafJt6EQx","photoId":null}
+2023-11-13T21:01:11.031Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/user/auth",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json"
+  },
+  "json": {
+    "user": "Dulce.Schiller",
+    "pwd": "zXcBwXGafJt6EQx"
+  }
+}
+2023-11-13T21:01:11.032Z http:response {
+  "content-length": "0",
+  "date": "Mon, 13 Nov 2023 21:01:09 GMT",
+  "set-cookie": [
+    "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  ]
+}
+2023-11-13T21:01:11.032Z http:response ""
+http:response status:
+200
+Body:
+
+2023-11-13T21:01:11.463Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "nemo acies damnatio",
+    "location": "Leiria",
+    "description": "Defero comitatus angelus calamitas sordeo. Vir caput commemoro nisi ustulo pax blandior cruentus quo theca. Demonstro tabgo eaque sono pauper censura delibero.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:11.463Z http:response {
+  "content-length": "311",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:11 GMT"
+}
+2023-11-13T21:01:11.463Z http:response "{\"id\":\"a61bdc2d-d4a4-4509-8ce1-96f88599bf6e\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"nemo acies damnatio\",\"location\":\"Leiria\",\"description\":\"Defero comitatus angelus calamitas sordeo. Vir caput commemoro nisi ustulo pax blandior cruentus quo theca. Demonstro tabgo eaque sono pauper censura delibero.\",\"photoIds\":[]}"
+2023-11-13T21:01:11.463Z http captures and matches:
+2023-11-13T21:01:11.463Z http {}
+2023-11-13T21:01:11.464Z http {
+  houseid: {
+    value: 'a61bdc2d-d4a4-4509-8ce1-96f88599bf6e',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"a61bdc2d-d4a4-4509-8ce1-96f88599bf6e","ownerId":"Dulce.Schiller","name":"nemo acies damnatio","location":"Leiria","description":"Defero comitatus angelus calamitas sordeo. Vir caput commemoro nisi ustulo pax blandior cruentus quo theca. Demonstro tabgo eaque sono pauper censura delibero.","photoIds":[]}
+2023-11-13T21:01:11.653Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/a61bdc2d-d4a4-4509-8ce1-96f88599bf6e/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "a61bdc2d-d4a4-4509-8ce1-96f88599bf6e",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 665,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:11.654Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:11 GMT"
+}
+2023-11-13T21:01:11.654Z http:response "{\"id\":\"f9c6caad-91f8-4b3f-8179-8e1e6b05a13a\",\"houseId\":\"a61bdc2d-d4a4-4509-8ce1-96f88599bf6e\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":665.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"f9c6caad-91f8-4b3f-8179-8e1e6b05a13a","houseId":"a61bdc2d-d4a4-4509-8ce1-96f88599bf6e","fromDate":"12-2023","toDate":"12-2024","cost":665.0,"discount":0.0}
+2023-11-13T21:01:11.778Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "attero quis viduo",
+    "location": "Algarve",
+    "description": "Taedium compello crux. Amita contabesco ipsum vestrum terror temptatio cotidie. Amita commodo patrocinor alo delectus somnus ustilo arbustum.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:11.778Z http:response {
+  "content-length": "292",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:11 GMT"
+}
+2023-11-13T21:01:11.778Z http:response "{\"id\":\"2174db53-47e5-4fa6-a7c6-67e50c8761aa\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"attero quis viduo\",\"location\":\"Algarve\",\"description\":\"Taedium compello crux. Amita contabesco ipsum vestrum terror temptatio cotidie. Amita commodo patrocinor alo delectus somnus ustilo arbustum.\",\"photoIds\":[]}"
+2023-11-13T21:01:11.778Z http captures and matches:
+2023-11-13T21:01:11.779Z http {}
+2023-11-13T21:01:11.779Z http {
+  houseid: {
+    value: '2174db53-47e5-4fa6-a7c6-67e50c8761aa',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"2174db53-47e5-4fa6-a7c6-67e50c8761aa","ownerId":"Dulce.Schiller","name":"attero quis viduo","location":"Algarve","description":"Taedium compello crux. Amita contabesco ipsum vestrum terror temptatio cotidie. Amita commodo patrocinor alo delectus somnus ustilo arbustum.","photoIds":[]}
+2023-11-13T21:01:11.921Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/2174db53-47e5-4fa6-a7c6-67e50c8761aa/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "2174db53-47e5-4fa6-a7c6-67e50c8761aa",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 449,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:11.921Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:11 GMT"
+}
+2023-11-13T21:01:11.921Z http:response "{\"id\":\"3dba4fcf-7681-4232-bfb9-a11ee8789dc9\",\"houseId\":\"2174db53-47e5-4fa6-a7c6-67e50c8761aa\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":449.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"3dba4fcf-7681-4232-bfb9-a11ee8789dc9","houseId":"2174db53-47e5-4fa6-a7c6-67e50c8761aa","fromDate":"12-2023","toDate":"12-2024","cost":449.0,"discount":0.0}
+2023-11-13T21:01:12.087Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "tametsi",
+    "location": "Madeira",
+    "description": "Repudiandae tego caries viridis iusto dolorem decens quos spiritus. Vallum vomito stillicidium cruciamentum. Velum arcus adstringo tergo videlicet.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:12.087Z http:response {
+  "content-length": "288",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:11 GMT"
+}
+2023-11-13T21:01:12.087Z http:response "{\"id\":\"9f890f64-159d-49ed-b6a7-27365f35285c\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"tametsi\",\"location\":\"Madeira\",\"description\":\"Repudiandae tego caries viridis iusto dolorem decens quos spiritus. Vallum vomito stillicidium cruciamentum. Velum arcus adstringo tergo videlicet.\",\"photoIds\":[]}"
+2023-11-13T21:01:12.087Z http captures and matches:
+2023-11-13T21:01:12.087Z http {}
+2023-11-13T21:01:12.087Z http {
+  houseid: {
+    value: '9f890f64-159d-49ed-b6a7-27365f35285c',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"9f890f64-159d-49ed-b6a7-27365f35285c","ownerId":"Dulce.Schiller","name":"tametsi","location":"Madeira","description":"Repudiandae tego caries viridis iusto dolorem decens quos spiritus. Vallum vomito stillicidium cruciamentum. Velum arcus adstringo tergo videlicet.","photoIds":[]}
+2023-11-13T21:01:12.292Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/9f890f64-159d-49ed-b6a7-27365f35285c/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "9f890f64-159d-49ed-b6a7-27365f35285c",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 606,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:12.293Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:11 GMT"
+}
+2023-11-13T21:01:12.293Z http:response "{\"id\":\"eb820c4e-e391-4ad2-8013-b9c5cd860286\",\"houseId\":\"9f890f64-159d-49ed-b6a7-27365f35285c\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":606.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"eb820c4e-e391-4ad2-8013-b9c5cd860286","houseId":"9f890f64-159d-49ed-b6a7-27365f35285c","fromDate":"12-2023","toDate":"12-2024","cost":606.0,"discount":0.0}
+2023-11-13T21:01:12.530Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "torrens adulescens",
+    "location": "Lisbon",
+    "description": "Cibus repellat demitto bellum decumbo coma repellat verbera audio unde. Aperiam sui audacia quas via temporibus stipes arcesso tantillus eaque. Degusto vindico agnosco voco cervus deripio ambitus temptatio deripio.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:12.530Z http:response {
+  "content-length": "365",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:12 GMT"
+}
+2023-11-13T21:01:12.530Z http:response "{\"id\":\"8f1b8666-6b56-4532-885b-22755ccf4a0f\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"torrens adulescens\",\"location\":\"Lisbon\",\"description\":\"Cibus repellat demitto bellum decumbo coma repellat verbera audio unde. Aperiam sui audacia quas via temporibus stipes arcesso tantillus eaque. Degusto vindico agnosco voco cervus deripio ambitus temptatio deripio.\",\"photoIds\":[]}"
+2023-11-13T21:01:12.531Z http captures and matches:
+2023-11-13T21:01:12.531Z http {}
+2023-11-13T21:01:12.531Z http {
+  houseid: {
+    value: '8f1b8666-6b56-4532-885b-22755ccf4a0f',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"8f1b8666-6b56-4532-885b-22755ccf4a0f","ownerId":"Dulce.Schiller","name":"torrens adulescens","location":"Lisbon","description":"Cibus repellat demitto bellum decumbo coma repellat verbera audio unde. Aperiam sui audacia quas via temporibus stipes arcesso tantillus eaque. Degusto vindico agnosco voco cervus deripio ambitus temptatio deripio.","photoIds":[]}
+2023-11-13T21:01:12.762Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/8f1b8666-6b56-4532-885b-22755ccf4a0f/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "8f1b8666-6b56-4532-885b-22755ccf4a0f",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 359,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:12.762Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:12 GMT"
+}
+2023-11-13T21:01:12.762Z http:response "{\"id\":\"51bee48d-776c-4ac4-afc3-bef409233bd7\",\"houseId\":\"8f1b8666-6b56-4532-885b-22755ccf4a0f\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":359.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"51bee48d-776c-4ac4-afc3-bef409233bd7","houseId":"8f1b8666-6b56-4532-885b-22755ccf4a0f","fromDate":"12-2023","toDate":"12-2024","cost":359.0,"discount":0.0}
+2023-11-13T21:01:12.976Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "infit ipsum",
+    "location": "Porto",
+    "description": "Cohors cervus tubineus velum deleniti coaegresco approbo cunae volutabrum caveo. Vesco atqui asperiores corona cohibeo. Terga suggero comburo tempore acidus explicabo.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:12.977Z http:response {
+  "content-length": "310",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:12 GMT"
+}
+2023-11-13T21:01:12.977Z http:response "{\"id\":\"47f286f7-dad7-43e3-aaec-993b611cc5bf\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"infit ipsum\",\"location\":\"Porto\",\"description\":\"Cohors cervus tubineus velum deleniti coaegresco approbo cunae volutabrum caveo. Vesco atqui asperiores corona cohibeo. Terga suggero comburo tempore acidus explicabo.\",\"photoIds\":[]}"
+2023-11-13T21:01:12.977Z http captures and matches:
+2023-11-13T21:01:12.977Z http {}
+2023-11-13T21:01:12.977Z http {
+  houseid: {
+    value: '47f286f7-dad7-43e3-aaec-993b611cc5bf',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"47f286f7-dad7-43e3-aaec-993b611cc5bf","ownerId":"Dulce.Schiller","name":"infit ipsum","location":"Porto","description":"Cohors cervus tubineus velum deleniti coaegresco approbo cunae volutabrum caveo. Vesco atqui asperiores corona cohibeo. Terga suggero comburo tempore acidus explicabo.","photoIds":[]}
+2023-11-13T21:01:13.267Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/47f286f7-dad7-43e3-aaec-993b611cc5bf/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "47f286f7-dad7-43e3-aaec-993b611cc5bf",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 553,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:13.267Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:12 GMT"
+}
+2023-11-13T21:01:13.267Z http:response "{\"id\":\"ca3813b2-d7aa-4721-baa6-3985b8b80e65\",\"houseId\":\"47f286f7-dad7-43e3-aaec-993b611cc5bf\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":553.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"ca3813b2-d7aa-4721-baa6-3985b8b80e65","houseId":"47f286f7-dad7-43e3-aaec-993b611cc5bf","fromDate":"12-2023","toDate":"12-2024","cost":553.0,"discount":0.0}
+2023-11-13T21:01:13.490Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "conor vesica",
+    "location": "Leiria",
+    "description": "Cito vociferor laudantium amita comprehendo clamo. Demitto confugo thorax expedita aer. Tabesco cedo quod coniuratio.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:13.490Z http:response {
+  "content-length": "262",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:12 GMT"
+}
+2023-11-13T21:01:13.490Z http:response "{\"id\":\"aaf30ff7-76b9-47dd-8e1c-36430171611c\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"conor vesica\",\"location\":\"Leiria\",\"description\":\"Cito vociferor laudantium amita comprehendo clamo. Demitto confugo thorax expedita aer. Tabesco cedo quod coniuratio.\",\"photoIds\":[]}"
+2023-11-13T21:01:13.490Z http captures and matches:
+2023-11-13T21:01:13.490Z http {}
+2023-11-13T21:01:13.490Z http {
+  houseid: {
+    value: 'aaf30ff7-76b9-47dd-8e1c-36430171611c',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"aaf30ff7-76b9-47dd-8e1c-36430171611c","ownerId":"Dulce.Schiller","name":"conor vesica","location":"Leiria","description":"Cito vociferor laudantium amita comprehendo clamo. Demitto confugo thorax expedita aer. Tabesco cedo quod coniuratio.","photoIds":[]}
+2023-11-13T21:01:13.809Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/aaf30ff7-76b9-47dd-8e1c-36430171611c/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "aaf30ff7-76b9-47dd-8e1c-36430171611c",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 629,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:13.809Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:13 GMT"
+}
+2023-11-13T21:01:13.809Z http:response "{\"id\":\"beb31a57-418f-4a24-8a2e-41c32c1b98e3\",\"houseId\":\"aaf30ff7-76b9-47dd-8e1c-36430171611c\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":629.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"beb31a57-418f-4a24-8a2e-41c32c1b98e3","houseId":"aaf30ff7-76b9-47dd-8e1c-36430171611c","fromDate":"12-2023","toDate":"12-2024","cost":629.0,"discount":0.0}
+2023-11-13T21:01:14.112Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "carmen strenuus",
+    "location": "Braga",
+    "description": "Cornu solio adiuvo verus articulus. Totus custodia strues ocer thesis compono amita adfectus curiositas. Amaritudo avarus unus tripudio deprecator commemoro patria tenax velut.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:14.112Z http:response {
+  "content-length": "323",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:13 GMT"
+}
+2023-11-13T21:01:14.112Z http:response "{\"id\":\"114b0460-4cbe-4c7e-9dae-da7808457812\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"carmen strenuus\",\"location\":\"Braga\",\"description\":\"Cornu solio adiuvo verus articulus. Totus custodia strues ocer thesis compono amita adfectus curiositas. Amaritudo avarus unus tripudio deprecator commemoro patria tenax velut.\",\"photoIds\":[]}"
+2023-11-13T21:01:14.112Z http captures and matches:
+2023-11-13T21:01:14.113Z http {}
+2023-11-13T21:01:14.113Z http {
+  houseid: {
+    value: '114b0460-4cbe-4c7e-9dae-da7808457812',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"114b0460-4cbe-4c7e-9dae-da7808457812","ownerId":"Dulce.Schiller","name":"carmen strenuus","location":"Braga","description":"Cornu solio adiuvo verus articulus. Totus custodia strues ocer thesis compono amita adfectus curiositas. Amaritudo avarus unus tripudio deprecator commemoro patria tenax velut.","photoIds":[]}
+2023-11-13T21:01:14.412Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/114b0460-4cbe-4c7e-9dae-da7808457812/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "114b0460-4cbe-4c7e-9dae-da7808457812",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 489,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:14.412Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:13 GMT"
+}
+2023-11-13T21:01:14.412Z http:response "{\"id\":\"fdd8c48b-ebb5-4e24-b2ea-76946797c7b4\",\"houseId\":\"114b0460-4cbe-4c7e-9dae-da7808457812\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":489.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"fdd8c48b-ebb5-4e24-b2ea-76946797c7b4","houseId":"114b0460-4cbe-4c7e-9dae-da7808457812","fromDate":"12-2023","toDate":"12-2024","cost":489.0,"discount":0.0}
+2023-11-13T21:01:14.660Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "inventore",
+    "location": "Braga",
+    "description": "Avaritia valens caecus certe maiores earum suggero canto votum. Calculus decor aedificium. Curiositas civitas uredo decerno usitas benigne eos non.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:14.660Z http:response {
+  "content-length": "288",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:13 GMT"
+}
+2023-11-13T21:01:14.660Z http:response "{\"id\":\"15a2bf4f-e053-4938-b90d-1f7fd1a3fcd7\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"inventore\",\"location\":\"Braga\",\"description\":\"Avaritia valens caecus certe maiores earum suggero canto votum. Calculus decor aedificium. Curiositas civitas uredo decerno usitas benigne eos non.\",\"photoIds\":[]}"
+2023-11-13T21:01:14.661Z http captures and matches:
+2023-11-13T21:01:14.661Z http {}
+2023-11-13T21:01:14.661Z http {
+  houseid: {
+    value: '15a2bf4f-e053-4938-b90d-1f7fd1a3fcd7',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"15a2bf4f-e053-4938-b90d-1f7fd1a3fcd7","ownerId":"Dulce.Schiller","name":"inventore","location":"Braga","description":"Avaritia valens caecus certe maiores earum suggero canto votum. Calculus decor aedificium. Curiositas civitas uredo decerno usitas benigne eos non.","photoIds":[]}
+2023-11-13T21:01:15.141Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/15a2bf4f-e053-4938-b90d-1f7fd1a3fcd7/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "15a2bf4f-e053-4938-b90d-1f7fd1a3fcd7",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 589,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:15.142Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:14 GMT"
+}
+2023-11-13T21:01:15.142Z http:response "{\"id\":\"8f3547b9-7383-4bb8-84c8-47ee726e37d2\",\"houseId\":\"15a2bf4f-e053-4938-b90d-1f7fd1a3fcd7\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":589.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"8f3547b9-7383-4bb8-84c8-47ee726e37d2","houseId":"15a2bf4f-e053-4938-b90d-1f7fd1a3fcd7","fromDate":"12-2023","toDate":"12-2024","cost":589.0,"discount":0.0}
+2023-11-13T21:01:15.268Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "sufficio capto",
+    "location": "Azores",
+    "description": "Vero avarus itaque consectetur antiquus cognomen corroboro facilis caritas. Debilito territo trucido surgo suffragium clam. Aro arto truculenter stella antea.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:15.268Z http:response {
+  "content-length": "305",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:14 GMT"
+}
+2023-11-13T21:01:15.268Z http:response "{\"id\":\"c93aadd8-5bb2-4376-bc18-74f4f7e455e3\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"sufficio capto\",\"location\":\"Azores\",\"description\":\"Vero avarus itaque consectetur antiquus cognomen corroboro facilis caritas. Debilito territo trucido surgo suffragium clam. Aro arto truculenter stella antea.\",\"photoIds\":[]}"
+2023-11-13T21:01:15.268Z http captures and matches:
+2023-11-13T21:01:15.268Z http {}
+2023-11-13T21:01:15.268Z http {
+  houseid: {
+    value: 'c93aadd8-5bb2-4376-bc18-74f4f7e455e3',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"c93aadd8-5bb2-4376-bc18-74f4f7e455e3","ownerId":"Dulce.Schiller","name":"sufficio capto","location":"Azores","description":"Vero avarus itaque consectetur antiquus cognomen corroboro facilis caritas. Debilito territo trucido surgo suffragium clam. Aro arto truculenter stella antea.","photoIds":[]}
+2023-11-13T21:01:15.404Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/c93aadd8-5bb2-4376-bc18-74f4f7e455e3/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "c93aadd8-5bb2-4376-bc18-74f4f7e455e3",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 661,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:15.404Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:14 GMT"
+}
+2023-11-13T21:01:15.404Z http:response "{\"id\":\"8846fad9-7a0c-4e76-aa00-8ad6274c693b\",\"houseId\":\"c93aadd8-5bb2-4376-bc18-74f4f7e455e3\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":661.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"8846fad9-7a0c-4e76-aa00-8ad6274c693b","houseId":"c93aadd8-5bb2-4376-bc18-74f4f7e455e3","fromDate":"12-2023","toDate":"12-2024","cost":661.0,"discount":0.0}
+2023-11-13T21:01:15.524Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "auxilium",
+    "location": "Evora",
+    "description": "Careo accusator cupiditas creator sufficio bonus tripudio aqua cenaculum velociter. Stella super adfectus deleniti quaerat aveho suppellex auditor caries temeritas. Quas correptius aurum succurro cuppedia.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:15.524Z http:response {
+  "content-length": "345",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:14 GMT"
+}
+2023-11-13T21:01:15.524Z http:response "{\"id\":\"149df909-533d-4cbc-a1b2-535b7468e7f4\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"auxilium\",\"location\":\"Evora\",\"description\":\"Careo accusator cupiditas creator sufficio bonus tripudio aqua cenaculum velociter. Stella super adfectus deleniti quaerat aveho suppellex auditor caries temeritas. Quas correptius aurum succurro cuppedia.\",\"photoIds\":[]}"
+2023-11-13T21:01:15.524Z http captures and matches:
+2023-11-13T21:01:15.524Z http {}
+2023-11-13T21:01:15.524Z http {
+  houseid: {
+    value: '149df909-533d-4cbc-a1b2-535b7468e7f4',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"149df909-533d-4cbc-a1b2-535b7468e7f4","ownerId":"Dulce.Schiller","name":"auxilium","location":"Evora","description":"Careo accusator cupiditas creator sufficio bonus tripudio aqua cenaculum velociter. Stella super adfectus deleniti quaerat aveho suppellex auditor caries temeritas. Quas correptius aurum succurro cuppedia.","photoIds":[]}
+2023-11-13T21:01:15.672Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/149df909-533d-4cbc-a1b2-535b7468e7f4/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "149df909-533d-4cbc-a1b2-535b7468e7f4",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 454,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:15.672Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:14 GMT"
+}
+2023-11-13T21:01:15.672Z http:response "{\"id\":\"acfc15c8-c775-4e1f-bd07-ed31d883f380\",\"houseId\":\"149df909-533d-4cbc-a1b2-535b7468e7f4\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":454.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"acfc15c8-c775-4e1f-bd07-ed31d883f380","houseId":"149df909-533d-4cbc-a1b2-535b7468e7f4","fromDate":"12-2023","toDate":"12-2024","cost":454.0,"discount":0.0}
+2023-11-13T21:01:16.445Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "vorago cupressus tamdiu",
+    "location": "Leiria",
+    "description": "Aveho dedico sumptus suscipit aptus. Adeptio adimpleo addo. Claudeo tergo vulnus stillicidium.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:16.445Z http:response {
+  "content-length": "250",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:15 GMT"
+}
+2023-11-13T21:01:16.445Z http:response "{\"id\":\"b39ef8ea-3722-4d58-90b8-08f903b44c03\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"vorago cupressus tamdiu\",\"location\":\"Leiria\",\"description\":\"Aveho dedico sumptus suscipit aptus. Adeptio adimpleo addo. Claudeo tergo vulnus stillicidium.\",\"photoIds\":[]}"
+2023-11-13T21:01:16.445Z http captures and matches:
+2023-11-13T21:01:16.445Z http {}
+2023-11-13T21:01:16.445Z http {
+  houseid: {
+    value: 'b39ef8ea-3722-4d58-90b8-08f903b44c03',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"b39ef8ea-3722-4d58-90b8-08f903b44c03","ownerId":"Dulce.Schiller","name":"vorago cupressus tamdiu","location":"Leiria","description":"Aveho dedico sumptus suscipit aptus. Adeptio adimpleo addo. Claudeo tergo vulnus stillicidium.","photoIds":[]}
+2023-11-13T21:01:16.600Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/b39ef8ea-3722-4d58-90b8-08f903b44c03/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "b39ef8ea-3722-4d58-90b8-08f903b44c03",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 527,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:16.600Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:15 GMT"
+}
+2023-11-13T21:01:16.600Z http:response "{\"id\":\"9df5e96d-3372-4dca-9f4f-27cfde1d8ae7\",\"houseId\":\"b39ef8ea-3722-4d58-90b8-08f903b44c03\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":527.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"9df5e96d-3372-4dca-9f4f-27cfde1d8ae7","houseId":"b39ef8ea-3722-4d58-90b8-08f903b44c03","fromDate":"12-2023","toDate":"12-2024","cost":527.0,"discount":0.0}
+2023-11-13T21:01:16.724Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "tripudio",
+    "location": "Algarve",
+    "description": "Ventus artificiose termes capillus tantum vesper adeo voco tardus sodalitas. Suus tergiversatio spiritus solio auctor sortitus uberrime tertius. Vergo maiores testimonium vetus debilito crux.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:16.724Z http:response {
+  "content-length": "333",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:15 GMT"
+}
+2023-11-13T21:01:16.724Z http:response "{\"id\":\"9ec087b0-2a4b-4548-813a-5a520ae30d9d\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"tripudio\",\"location\":\"Algarve\",\"description\":\"Ventus artificiose termes capillus tantum vesper adeo voco tardus sodalitas. Suus tergiversatio spiritus solio auctor sortitus uberrime tertius. Vergo maiores testimonium vetus debilito crux.\",\"photoIds\":[]}"
+2023-11-13T21:01:16.724Z http captures and matches:
+2023-11-13T21:01:16.724Z http {}
+2023-11-13T21:01:16.725Z http {
+  houseid: {
+    value: '9ec087b0-2a4b-4548-813a-5a520ae30d9d',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"9ec087b0-2a4b-4548-813a-5a520ae30d9d","ownerId":"Dulce.Schiller","name":"tripudio","location":"Algarve","description":"Ventus artificiose termes capillus tantum vesper adeo voco tardus sodalitas. Suus tergiversatio spiritus solio auctor sortitus uberrime tertius. Vergo maiores testimonium vetus debilito crux.","photoIds":[]}
+2023-11-13T21:01:16.841Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/9ec087b0-2a4b-4548-813a-5a520ae30d9d/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "9ec087b0-2a4b-4548-813a-5a520ae30d9d",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 469,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:16.841Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:15 GMT"
+}
+2023-11-13T21:01:16.841Z http:response "{\"id\":\"97be2cb6-1bd1-4571-93b0-b09532a0a8fb\",\"houseId\":\"9ec087b0-2a4b-4548-813a-5a520ae30d9d\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":469.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"97be2cb6-1bd1-4571-93b0-b09532a0a8fb","houseId":"9ec087b0-2a4b-4548-813a-5a520ae30d9d","fromDate":"12-2023","toDate":"12-2024","cost":469.0,"discount":0.0}
+2023-11-13T21:01:17.001Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "molestias aiunt",
+    "location": "Evora",
+    "description": "Aspicio voro vigilo capio pel abstergo vulticulus provident constans capto. Cumque necessitatibus corpus umerus accendo venio. Deinde cernuus constans cenaculum aptus sufficio.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:17.002Z http:response {
+  "content-length": "323",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:15 GMT"
+}
+2023-11-13T21:01:17.002Z http:response "{\"id\":\"e4aa9c7b-9c02-4e6a-9e80-cc111bd8d898\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"molestias aiunt\",\"location\":\"Evora\",\"description\":\"Aspicio voro vigilo capio pel abstergo vulticulus provident constans capto. Cumque necessitatibus corpus umerus accendo venio. Deinde cernuus constans cenaculum aptus sufficio.\",\"photoIds\":[]}"
+2023-11-13T21:01:17.002Z http captures and matches:
+2023-11-13T21:01:17.002Z http {}
+2023-11-13T21:01:17.002Z http {
+  houseid: {
+    value: 'e4aa9c7b-9c02-4e6a-9e80-cc111bd8d898',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"e4aa9c7b-9c02-4e6a-9e80-cc111bd8d898","ownerId":"Dulce.Schiller","name":"molestias aiunt","location":"Evora","description":"Aspicio voro vigilo capio pel abstergo vulticulus provident constans capto. Cumque necessitatibus corpus umerus accendo venio. Deinde cernuus constans cenaculum aptus sufficio.","photoIds":[]}
+2023-11-13T21:01:17.120Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/e4aa9c7b-9c02-4e6a-9e80-cc111bd8d898/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "e4aa9c7b-9c02-4e6a-9e80-cc111bd8d898",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 373,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:17.120Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:17 GMT"
+}
+2023-11-13T21:01:17.120Z http:response "{\"id\":\"00276f7a-5ede-4234-8fa3-a9b2086cda71\",\"houseId\":\"e4aa9c7b-9c02-4e6a-9e80-cc111bd8d898\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":373.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"00276f7a-5ede-4234-8fa3-a9b2086cda71","houseId":"e4aa9c7b-9c02-4e6a-9e80-cc111bd8d898","fromDate":"12-2023","toDate":"12-2024","cost":373.0,"discount":0.0}
+2023-11-13T21:01:17.236Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "veniam avaritia iusto",
+    "location": "Leiria",
+    "description": "Crur ascit thema tener aetas. Aiunt ullus capto. Aliquid suffoco cattus adipiscor soleo vesica ipsa utpote circumvenio blandior.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:17.236Z http:response {
+  "content-length": "282",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:17 GMT"
+}
+2023-11-13T21:01:17.236Z http:response "{\"id\":\"83abb0df-d374-4de2-8c68-3be1a3d51793\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"veniam avaritia iusto\",\"location\":\"Leiria\",\"description\":\"Crur ascit thema tener aetas. Aiunt ullus capto. Aliquid suffoco cattus adipiscor soleo vesica ipsa utpote circumvenio blandior.\",\"photoIds\":[]}"
+2023-11-13T21:01:17.237Z http captures and matches:
+2023-11-13T21:01:17.237Z http {}
+2023-11-13T21:01:17.237Z http {
+  houseid: {
+    value: '83abb0df-d374-4de2-8c68-3be1a3d51793',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"83abb0df-d374-4de2-8c68-3be1a3d51793","ownerId":"Dulce.Schiller","name":"veniam avaritia iusto","location":"Leiria","description":"Crur ascit thema tener aetas. Aiunt ullus capto. Aliquid suffoco cattus adipiscor soleo vesica ipsa utpote circumvenio blandior.","photoIds":[]}
+2023-11-13T21:01:17.709Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/83abb0df-d374-4de2-8c68-3be1a3d51793/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "83abb0df-d374-4de2-8c68-3be1a3d51793",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 233,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:17.709Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:17 GMT"
+}
+2023-11-13T21:01:17.709Z http:response "{\"id\":\"3935c3c8-9c06-4c3c-a96e-724cc48b2752\",\"houseId\":\"83abb0df-d374-4de2-8c68-3be1a3d51793\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":233.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"3935c3c8-9c06-4c3c-a96e-724cc48b2752","houseId":"83abb0df-d374-4de2-8c68-3be1a3d51793","fromDate":"12-2023","toDate":"12-2024","cost":233.0,"discount":0.0}
+2023-11-13T21:01:18.536Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "vilicus",
+    "location": "Lisbon",
+    "description": "Valens sophismata carbo copia beatus carus. Ustulo vilis terebro vallum infit animus strues atrocitas ciminatio. Accusamus absum demo titulus at tabernus vitium esse.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:18.537Z http:response {
+  "content-length": "306",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:17 GMT"
+}
+2023-11-13T21:01:18.537Z http:response "{\"id\":\"1224c73c-62b5-445e-864d-d32e406d8179\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"vilicus\",\"location\":\"Lisbon\",\"description\":\"Valens sophismata carbo copia beatus carus. Ustulo vilis terebro vallum infit animus strues atrocitas ciminatio. Accusamus absum demo titulus at tabernus vitium esse.\",\"photoIds\":[]}"
+2023-11-13T21:01:18.537Z http captures and matches:
+2023-11-13T21:01:18.537Z http {}
+2023-11-13T21:01:18.537Z http {
+  houseid: {
+    value: '1224c73c-62b5-445e-864d-d32e406d8179',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"1224c73c-62b5-445e-864d-d32e406d8179","ownerId":"Dulce.Schiller","name":"vilicus","location":"Lisbon","description":"Valens sophismata carbo copia beatus carus. Ustulo vilis terebro vallum infit animus strues atrocitas ciminatio. Accusamus absum demo titulus at tabernus vitium esse.","photoIds":[]}
+2023-11-13T21:01:18.668Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/1224c73c-62b5-445e-864d-d32e406d8179/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "1224c73c-62b5-445e-864d-d32e406d8179",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 670,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:18.669Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:18.669Z http:response "{\"id\":\"a9f814a8-2025-4019-93d1-c0cf5b206b52\",\"houseId\":\"1224c73c-62b5-445e-864d-d32e406d8179\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":670.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"a9f814a8-2025-4019-93d1-c0cf5b206b52","houseId":"1224c73c-62b5-445e-864d-d32e406d8179","fromDate":"12-2023","toDate":"12-2024","cost":670.0,"discount":0.0}
+2023-11-13T21:01:18.781Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "comis demitto aveho",
+    "location": "Porto",
+    "description": "Antea tempus absorbeo tunc dolorem. Tempora sonitus agnosco atque defero quasi paulatim compello contabesco. Apud tero talio veritas usitas maiores.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:18.782Z http:response {
+  "content-length": "299",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:18.782Z http:response "{\"id\":\"3bcd9a6f-cddb-4819-ab5e-573d58bdc4bc\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"comis demitto aveho\",\"location\":\"Porto\",\"description\":\"Antea tempus absorbeo tunc dolorem. Tempora sonitus agnosco atque defero quasi paulatim compello contabesco. Apud tero talio veritas usitas maiores.\",\"photoIds\":[]}"
+2023-11-13T21:01:18.782Z http captures and matches:
+2023-11-13T21:01:18.782Z http {}
+2023-11-13T21:01:18.782Z http {
+  houseid: {
+    value: '3bcd9a6f-cddb-4819-ab5e-573d58bdc4bc',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"3bcd9a6f-cddb-4819-ab5e-573d58bdc4bc","ownerId":"Dulce.Schiller","name":"comis demitto aveho","location":"Porto","description":"Antea tempus absorbeo tunc dolorem. Tempora sonitus agnosco atque defero quasi paulatim compello contabesco. Apud tero talio veritas usitas maiores.","photoIds":[]}
+2023-11-13T21:01:18.944Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/3bcd9a6f-cddb-4819-ab5e-573d58bdc4bc/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "3bcd9a6f-cddb-4819-ab5e-573d58bdc4bc",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 325,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:18.944Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:18.944Z http:response "{\"id\":\"722c2c34-5b02-4cae-8964-1fdd1cd24a88\",\"houseId\":\"3bcd9a6f-cddb-4819-ab5e-573d58bdc4bc\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":325.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"722c2c34-5b02-4cae-8964-1fdd1cd24a88","houseId":"3bcd9a6f-cddb-4819-ab5e-573d58bdc4bc","fromDate":"12-2023","toDate":"12-2024","cost":325.0,"discount":0.0}
+2023-11-13T21:01:19.067Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "casus utor centum",
+    "location": "Algarve",
+    "description": "Aiunt pectus civitas pecto neque aiunt arto. Claro allatus torrens vobis video. Curriculum umbra corrigo.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:19.067Z http:response {
+  "content-length": "256",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:19.067Z http:response "{\"id\":\"a5db6d29-0b2f-4922-87d1-d147b9d1fb28\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"casus utor centum\",\"location\":\"Algarve\",\"description\":\"Aiunt pectus civitas pecto neque aiunt arto. Claro allatus torrens vobis video. Curriculum umbra corrigo.\",\"photoIds\":[]}"
+2023-11-13T21:01:19.067Z http captures and matches:
+2023-11-13T21:01:19.067Z http {}
+2023-11-13T21:01:19.068Z http {
+  houseid: {
+    value: 'a5db6d29-0b2f-4922-87d1-d147b9d1fb28',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"a5db6d29-0b2f-4922-87d1-d147b9d1fb28","ownerId":"Dulce.Schiller","name":"casus utor centum","location":"Algarve","description":"Aiunt pectus civitas pecto neque aiunt arto. Claro allatus torrens vobis video. Curriculum umbra corrigo.","photoIds":[]}
+2023-11-13T21:01:19.191Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/a5db6d29-0b2f-4922-87d1-d147b9d1fb28/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "a5db6d29-0b2f-4922-87d1-d147b9d1fb28",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 227,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:19.191Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:19.191Z http:response "{\"id\":\"df8f8d04-1c0e-447c-80ff-992408df0ddf\",\"houseId\":\"a5db6d29-0b2f-4922-87d1-d147b9d1fb28\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":227.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"df8f8d04-1c0e-447c-80ff-992408df0ddf","houseId":"a5db6d29-0b2f-4922-87d1-d147b9d1fb28","fromDate":"12-2023","toDate":"12-2024","cost":227.0,"discount":0.0}
+2023-11-13T21:01:19.287Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "venustas canto",
+    "location": "Azores",
+    "description": "Ducimus sumo corrumpo spero calculus neque thymum. Volutabrum tabella deinde admoneo contigo adsuesco sulum cerno subvenio tabernus. Ipsa abstergo sponte coma turba canis aeger aegrus.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:19.287Z http:response {
+  "content-length": "331",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:19.287Z http:response "{\"id\":\"42301705-0c38-4542-b77b-d34fd7fa8139\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"venustas canto\",\"location\":\"Azores\",\"description\":\"Ducimus sumo corrumpo spero calculus neque thymum. Volutabrum tabella deinde admoneo contigo adsuesco sulum cerno subvenio tabernus. Ipsa abstergo sponte coma turba canis aeger aegrus.\",\"photoIds\":[]}"
+2023-11-13T21:01:19.287Z http captures and matches:
+2023-11-13T21:01:19.287Z http {}
+2023-11-13T21:01:19.287Z http {
+  houseid: {
+    value: '42301705-0c38-4542-b77b-d34fd7fa8139',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"42301705-0c38-4542-b77b-d34fd7fa8139","ownerId":"Dulce.Schiller","name":"venustas canto","location":"Azores","description":"Ducimus sumo corrumpo spero calculus neque thymum. Volutabrum tabella deinde admoneo contigo adsuesco sulum cerno subvenio tabernus. Ipsa abstergo sponte coma turba canis aeger aegrus.","photoIds":[]}
+2023-11-13T21:01:19.418Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/42301705-0c38-4542-b77b-d34fd7fa8139/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "42301705-0c38-4542-b77b-d34fd7fa8139",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 561,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:19.418Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:19.418Z http:response "{\"id\":\"897c42d3-2b59-464c-8139-8b34d1467fc4\",\"houseId\":\"42301705-0c38-4542-b77b-d34fd7fa8139\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":561.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"897c42d3-2b59-464c-8139-8b34d1467fc4","houseId":"42301705-0c38-4542-b77b-d34fd7fa8139","fromDate":"12-2023","toDate":"12-2024","cost":561.0,"discount":0.0}
+2023-11-13T21:01:19.537Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "apparatus cavus fugiat",
+    "location": "Porto",
+    "description": "Quaerat clam cribro umquam bardus aedificium surculus vomito apud stips. Modi vesco itaque tenuis defessus bene molestiae videlicet tamen adfectus. Solium acies credo voluptas supplanto vociferor spectaculum.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:19.538Z http:response {
+  "content-length": "362",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:19.538Z http:response "{\"id\":\"8a0270d3-832f-4a3c-bc4e-1538e8930a73\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"apparatus cavus fugiat\",\"location\":\"Porto\",\"description\":\"Quaerat clam cribro umquam bardus aedificium surculus vomito apud stips. Modi vesco itaque tenuis defessus bene molestiae videlicet tamen adfectus. Solium acies credo voluptas supplanto vociferor spectaculum.\",\"photoIds\":[]}"
+2023-11-13T21:01:19.538Z http captures and matches:
+2023-11-13T21:01:19.538Z http {}
+2023-11-13T21:01:19.538Z http {
+  houseid: {
+    value: '8a0270d3-832f-4a3c-bc4e-1538e8930a73',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"8a0270d3-832f-4a3c-bc4e-1538e8930a73","ownerId":"Dulce.Schiller","name":"apparatus cavus fugiat","location":"Porto","description":"Quaerat clam cribro umquam bardus aedificium surculus vomito apud stips. Modi vesco itaque tenuis defessus bene molestiae videlicet tamen adfectus. Solium acies credo voluptas supplanto vociferor spectaculum.","photoIds":[]}
+2023-11-13T21:01:19.728Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/8a0270d3-832f-4a3c-bc4e-1538e8930a73/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "8a0270d3-832f-4a3c-bc4e-1538e8930a73",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 577,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:19.728Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:18 GMT"
+}
+2023-11-13T21:01:19.728Z http:response "{\"id\":\"b54fba2b-80be-4035-b83c-03496be1c85f\",\"houseId\":\"8a0270d3-832f-4a3c-bc4e-1538e8930a73\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":577.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"b54fba2b-80be-4035-b83c-03496be1c85f","houseId":"8a0270d3-832f-4a3c-bc4e-1538e8930a73","fromDate":"12-2023","toDate":"12-2024","cost":577.0,"discount":0.0}
+2023-11-13T21:01:19.848Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": null,
+    "name": "tricesimus dedico velum",
+    "location": "Coimbra",
+    "description": "Vilicus audentia demonstro crur. Aequitas communis aer aureus. Absorbeo suasoria curo.",
+    "ownerId": "Dulce.Schiller",
+    "photoIds": []
+  }
+}
+2023-11-13T21:01:19.849Z http:response {
+  "content-length": "243",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:19 GMT"
+}
+2023-11-13T21:01:19.849Z http:response "{\"id\":\"6a3d1750-0f0c-4ef3-9b64-06ee3d39c7ee\",\"ownerId\":\"Dulce.Schiller\",\"name\":\"tricesimus dedico velum\",\"location\":\"Coimbra\",\"description\":\"Vilicus audentia demonstro crur. Aequitas communis aer aureus. Absorbeo suasoria curo.\",\"photoIds\":[]}"
+2023-11-13T21:01:19.849Z http captures and matches:
+2023-11-13T21:01:19.849Z http {}
+2023-11-13T21:01:19.849Z http {
+  houseid: {
+    value: '6a3d1750-0f0c-4ef3-9b64-06ee3d39c7ee',
+    strict: undefined,
+    failed: false
+  }
+}
+http:response status:
+200
+Body:
+{"id":"6a3d1750-0f0c-4ef3-9b64-06ee3d39c7ee","ownerId":"Dulce.Schiller","name":"tricesimus dedico velum","location":"Coimbra","description":"Vilicus audentia demonstro crur. Aequitas communis aer aureus. Absorbeo suasoria curo.","photoIds":[]}
+2023-11-13T21:01:20.283Z http request: {
+  "url": "https://scc24appwesteurope188046.azurewebsites.net/rest/house/6a3d1750-0f0c-4ef3-9b64-06ee3d39c7ee/available",
+  "method": "POST",
+  "headers": {
+    "user-agent": "Artillery (https://artillery.io)",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "cookie": "scc:session=a52f5316-24a5-4c52-be40-9ebf0e6420d6;Version=1;Comment=sessionid;Path=/;Max-Age=3600;HttpOnly"
+  },
+  "json": {
+    "id": "null",
+    "houseId": "6a3d1750-0f0c-4ef3-9b64-06ee3d39c7ee",
+    "fromDate": "12-2023",
+    "toDate": "12-2024",
+    "cost": 296,
+    "discount": 0
+  }
+}
+2023-11-13T21:01:20.283Z http:response {
+  "content-length": "162",
+  "content-type": "application/json",
+  "date": "Mon, 13 Nov 2023 21:01:19 GMT"
+}
+2023-11-13T21:01:20.283Z http:response "{\"id\":\"2ce39c7e-c8ec-4c36-a711-f52491b15936\",\"houseId\":\"6a3d1750-0f0c-4ef3-9b64-06ee3d39c7ee\",\"fromDate\":\"12-2023\",\"toDate\":\"12-2024\",\"cost\":296.0,\"discount\":0.0}"
+http:response status:
+200
+Body:
+{"id":"2ce39c7e-c8ec-4c36-a711-f52491b15936","houseId":"6a3d1750-0f0c-4ef3-9b64-06ee3d39c7ee","fromDate":"12-2023","toDate":"12-2024","cost":296.0,"discount":0.0}

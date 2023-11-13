@@ -121,7 +121,7 @@ public class RentalResource {
 
     //update rental
     @PUT
-    @Path("/{rentalId}")
+    @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public static Rental updateRental(@PathParam("rentalId") String rentalId, @PathParam("houseID") String houseId,@CookieParam("scc:session") Cookie session, Rental rental ) throws ParseException {
@@ -189,10 +189,15 @@ public class RentalResource {
     @GET
     @Path("/{rentalId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public static Rental getRental(@PathParam("houseId") String houseId, @PathParam("rentalId") String rentalId) {
+    public static Rental getRental(@CookieParam("scc:session") Cookie session ,@PathParam("houseId") String houseId, @PathParam("rentalId") String rentalId) {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        //check if user is logged in
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, rentalId);
+        if(isOwnerLoggedIn == false)
+            throw new WebApplicationException("Renter not logged in", Response.Status.UNAUTHORIZED);
 
         CosmosPagedIterable<RentalDao> rentals = db.getrentalbyidandhouse(houseId, rentalId);
 
