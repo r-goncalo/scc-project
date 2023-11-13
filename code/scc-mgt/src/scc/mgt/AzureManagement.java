@@ -47,7 +47,7 @@ public class AzureManagement {
 	
 	static final String AZURE_COSMOSDB_NAME = "scc24" + MY_SUFFIX;	// Cosmos DB account name
 	static final String AZURE_COSMOSDB_DATABASE = "scc24db" + MY_SUFFIX;	// Cosmos DB database name
-	static final String[] BLOB_CONTAINERS = { "westeurope-media", "northeurope-media" };	// TODO: Containers to add to the blob storage
+	static final String[] BLOB_CONTAINERS = { "media"};
 
 	static final String[] cosmosDBCollections= { "users", "houses", "rentals", "questions"};
 
