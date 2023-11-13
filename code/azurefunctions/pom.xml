@@ -14,7 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>11</java.version>
-		<functionAppName>sccfunwesteurope60519</functionAppName>
+		<functionAppName>scc24funwesteurope60519</functionAppName>
 		<functionAppRegion>westeurope</functionAppRegion>
 		<functionPricingTier>B1</functionPricingTier>
 		<functionResourceGroup>scc24-rg-westeurope-60519</functionResourceGroup>
