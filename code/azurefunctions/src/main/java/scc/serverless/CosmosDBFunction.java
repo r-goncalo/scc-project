@@ -22,7 +22,7 @@ public class CosmosDBFunction {
 
     @FunctionName("cosmosDBtest")
     public void updateMostRecentUsers(@CosmosDBTrigger(name = "cosmosTest",
-    										databaseName = "DB_NAME", // = to be defined in system variables
+    										databaseName = "scc24db60519", // = to be defined in system variables
     										collectionName = "users",
     										preferredLocations="West Europe",
     										createLeaseCollectionIfNotExists = true,
@@ -31,7 +31,6 @@ public class CosmosDBFunction {
         							final ExecutionContext context ) {
 
 		try (Jedis jedis = RedisCache.getCachePool().getResource()) {
-			jedis.incr("cnt:cosmos");
 
 			for( String u : users) {
 				jedis.lpush(MOST_RECENT_USERS_REDIS_KEY, u);
