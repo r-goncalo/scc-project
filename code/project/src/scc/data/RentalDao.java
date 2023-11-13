@@ -22,7 +22,7 @@ public class RentalDao {
     }
 
     public RentalDao(Rental rental) {
-        this(rental.getId(), rental.getHouseId(), rental.getUserId(), rental.getDay(), rental.getPrice());
+        this(rental.getId(), rental.getHouseId(), rental.getRenterID(), rental.getDate(), rental.getPrice());
     }
 
     public RentalDao(){

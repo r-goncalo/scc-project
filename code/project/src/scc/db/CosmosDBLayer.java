@@ -6,10 +6,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import scc.data.HouseDao;
-import scc.data.QuestionDao;
-import scc.data.RentalDao;
-import scc.data.UserDAO;
+import scc.data.*;
 
 import java.util.Date;
 
@@ -46,6 +43,7 @@ public class CosmosDBLayer {
 	private CosmosContainer houses;
 	private CosmosContainer rentals;
 	private CosmosContainer questions;
+	private CosmosContainer availabilities;
 	
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
@@ -59,13 +57,13 @@ public class CosmosDBLayer {
 		houses = db.getContainer("houses");
 		rentals = db.getContainer("rentals");//todo letra minuscula
 		questions = db.getContainer("questions");
-
+		availabilities = db.getContainer("availabilities");
 	}
 
 	//make a function to get all the rentals in a given date for a given house id
 	public CosmosPagedIterable<RentalDao> getHouseRentalForDate(String date, String houseId) {
 		init();
-		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.houseId=\"" + houseId + "\" AND rentals.day=\"" + date.toString() + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.houseId=\"" + houseId + "\" AND rentals.date=\"" + date + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
 
 	//update the owner if of a given house
@@ -228,5 +226,19 @@ public class CosmosDBLayer {
 		init();
 		CosmosItemResponse<HouseDao> response = houses.upsertItem(houseDao);
 		return response.getItem();
+	}
+
+	public CosmosPagedIterable<AvailabityDao> getAvailabilitiesForHouse(String houseId) {
+		return availabilities.queryItems("SELECT * FROM availabilities WHERE availabilities.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), AvailabityDao.class);
+	}
+
+	public void putAvailability(AvailabityDao a) {
+		init();
+		availabilities.createItem(a);
+	}
+
+	public CosmosPagedIterable<Availabity> getAvailabilityForDate(String houseId, String date) {
+		init();
+		return availabilities.queryItems("SELECT * FROM availabilities WHERE availabilities.houseId=\"" + houseId + "\" AND availabilities.fromDate <= \"" + date + "\" AND availabilities.toDate >= \"" + date + "\"", new CosmosQueryRequestOptions(), Availabity.class);
 	}
 }

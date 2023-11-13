@@ -3,15 +3,15 @@ package scc.data;
 public class Rental {
     private String id;
     private String houseId;
-    private String userId;
-    private String day;
+    private String renterID;
+    private String date; //assume rentals take place on a single month
     private double price;
 
-    public Rental(String id, String houseId, String userId, String day, double price) {
+    public Rental(String id, String houseId, String renterID, String date, double price) {
         this.id = id;
         this.houseId = houseId;
-        this.userId = userId;
-        this.day = day;
+        this.renterID = renterID;
+        this.date = date;
         this.price = price;
     }
 
@@ -24,8 +24,8 @@ public class Rental {
     }
 
     //getters
-    public String getDay() {
-        return day;
+    public String getDate() {
+        return date;
     }
 
     public String getId() {
@@ -36,8 +36,8 @@ public class Rental {
         return houseId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getRenterID() {
+        return renterID;
     }
 
     public double getPrice() {
@@ -47,5 +47,9 @@ public class Rental {
     //setters
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

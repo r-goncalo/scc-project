@@ -45,12 +45,9 @@ public class HouseResource {
         if(isOwnerLoggedIn == false)
             throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
 
-        //check if house id already exists please
-        if(db.getHouseById(house.getId()).iterator().hasNext())
-            throw new WebApplicationException("House already exists", Response.Status.CONFLICT);
-
-
         HouseDao h = new HouseDao(house);
+        UUID uniqueID = UUID.randomUUID();
+        h.setId(uniqueID.toString());
         db.putHouse(h);
 
 
@@ -58,7 +55,7 @@ public class HouseResource {
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             ObjectMapper mapper = new ObjectMapper();
-
+            house = h.toHouse();
             jedis.set("house:"+house.getId(), mapper.writeValueAsString(house));
 
             Long cnt = jedis.lpush(MOST_RECENT_HOUSES_REDIS_KEY, mapper.writeValueAsString(house));
@@ -256,7 +253,7 @@ public class HouseResource {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //todo check if this is the right format
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy"); //todo check if this is the right format
 
         Date startDate = null;
         Date endDate = null;
@@ -267,7 +264,7 @@ public class HouseResource {
             throw new RuntimeException(e);
         }
 
-        CosmosPagedIterable<HouseDao> houses = db.getHouseByLocationAndTime(location, startDate, endDate);
+        CosmosPagedIterable<HouseDao> houses = db.getHouseByLocationAndTime(location, startDate, endDate); //todo possivélmente mal
 
         List<House> ret = new ArrayList<>();
 
@@ -275,6 +272,65 @@ public class HouseResource {
             ret.add(new House(h));
 
         return ret;
+    }
+
+
+    //post availability
+    @POST
+    @Path("/{id}/availability")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Availabity newAvailability(@CookieParam("scc:session") Cookie session, @PathParam("id") String houseId, Availabity availabity ) throws ParseException {
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        //check if house exists
+        Iterator<HouseDao> houseIter = db.getHouseById(houseId).iterator();
+        if(houseIter.hasNext() == false)
+            throw new WebApplicationException("House not found", Response.Status.NOT_FOUND);
+
+        // check if owner is logged in
+        String ownerid = houseIter.next().getOwnerId();
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, ownerid);
+        if(isOwnerLoggedIn == false)
+            throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
+
+
+        //first get list of availabilities for the house
+        CosmosPagedIterable<AvailabityDao> availabilities = db.getAvailabilitiesForHouse(houseId);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+
+        //todo rever bem isto porque pode star errado
+        Date start = dateFormat.parse(availabity.getFromDate());
+        Date end = dateFormat.parse(availabity.getToDate());
+
+        for (AvailabityDao a : availabilities) {
+            Date aStart = dateFormat.parse(a.getFromDate());
+            Date aEnd = dateFormat.parse(a.getToDate());
+            // check if start and end does not intersect aStart and aEnd
+            if (start.compareTo(aStart) >= 0 && start.compareTo(aEnd) <= 0) {
+                throw new WebApplicationException("Availability date is already taken for the given house", Response.Status.CONFLICT);
+            }
+
+        }
+
+
+        // put availability in db
+        AvailabityDao a = new AvailabityDao(availabity);
+        UUID uniqueID = UUID.randomUUID();
+        a.setId(uniqueID.toString());
+        db.putAvailability(a);
+        availabity.setId(uniqueID.toString());
+
+        //put availability in cache
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+            ObjectMapper mapper = new ObjectMapper();
+            jedis.set("availability:"+availabity.getId(), mapper.writeValueAsString(availabity));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return availabity;
     }
 
 }
