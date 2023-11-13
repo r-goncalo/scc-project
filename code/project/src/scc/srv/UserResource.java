@@ -2,6 +2,7 @@ package scc.srv;
 
 
 import com.azure.cosmos.util.CosmosPagedIterable;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Cookie;
@@ -321,6 +322,9 @@ public class UserResource {
                 List<String> toReturn = new ArrayList<>(res.size());
 
                 ObjectMapper mapper = new ObjectMapper();
+
+                //if it was saved in cache with additional properties, don't fail when encountering them, just ignore them
+                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
                 for(String userString : res)
                     toReturn.add(mapper.readValue(userString, UserDAO.class).getName());

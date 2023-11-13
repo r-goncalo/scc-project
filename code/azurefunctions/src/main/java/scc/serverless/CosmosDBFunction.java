@@ -32,9 +32,9 @@ public class CosmosDBFunction {
 
 		try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
-			for( String u : users) {
+			for( String u : users)
 				jedis.lpush(MOST_RECENT_USERS_REDIS_KEY, u);
-			}
+
 			jedis.ltrim(MOST_RECENT_USERS_REDIS_KEY, 0, MAX_RECENT_USERS_IN_CACHE - 1);
 
 		}
