@@ -209,7 +209,7 @@ public class UserResource {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        User user = verifyUser(session, id, pwd); //this will cause an exception in case of failing
+        verifyUser(session, id, pwd); //this will cause an exception in case of failing
 
         db.delUserById(id);
 
@@ -235,11 +235,10 @@ public class UserResource {
         CosmosPagedIterable<UserDAO> users =  CosmosDBLayer.getInstance().getUsers();
 
 
-        for( UserDAO user : users){
+        for( UserDAO user : users)
 
             toReturn.add(user.getName());
 
-        }
 
         LogResource.writeLine("   list users returned with success: number of users: " + toReturn.size());
 
