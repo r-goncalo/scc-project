@@ -97,7 +97,6 @@ public class UserResource {
         if(db.getUserById(id).iterator().hasNext() == false)
             throw new NotFoundException("User not found");
 
-
         //check if id is the same as user's id
         if(!id.equals(user.getId()))
             throw new WebApplicationException("User id does not match", Response.Status.CONFLICT);
@@ -138,6 +137,7 @@ public class UserResource {
         boolean isLoggedIn = RedisCache.isSessionOfUser(session, id);
         if(isLoggedIn == false)
             throw new WebApplicationException("User not logged in", Response.Status.UNAUTHORIZED);
+
 
         //update user's houses with owner id "Deleted User"
         CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);//todo posso usar jedis nisto?
@@ -225,20 +225,20 @@ public class UserResource {
 
     /**
      *
-     * @param user a user with the relevant information (id, pwd)
+     * @param userLogin a user with the relevant information (id, pwd)
      *
      * @return a session id cookie
      */
     @POST
     @Path("/auth")
     @Consumes(MediaType.APPLICATION_JSON)
-    public static Response auth(User user) throws InternalServerErrorException, NotAuthorizedException {
+    public static Response auth(Login userLogin) throws InternalServerErrorException, NotAuthorizedException {
 
-        LogResource.writeLine("\nUSER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
+        LogResource.writeLine("\nUSER : AUTH: id = " + userLogin.getUser() + ", pwd = " + userLogin.getPwd());
 
-        User userInDb = getUser(user.getId());
+        User userInDb = getUser(userLogin.getUser());
 
-        if(Hash.of(user.getPwd()).equals(userInDb.getPwd())){
+        if(Hash.of(userLogin.getPwd()).equals(userInDb.getPwd())){
             String uid = UUID.randomUUID().toString();
             NewCookie cookie = new NewCookie.Builder("scc:session")
                     .value(uid)
@@ -256,7 +256,7 @@ public class UserResource {
                 throw new InternalServerErrorException("Error saving session");
             }
 
-            LogResource.writeLine("    Authenticated with success: (cookie = " + cookie.getValue() + ", userId = " + user.getId());
+            LogResource.writeLine("    Authenticated with success: (cookie = " + cookie.getValue() + ", userId = " + userLogin.getUser()+" )");
             return Response.ok().cookie(cookie).build();
 
         }

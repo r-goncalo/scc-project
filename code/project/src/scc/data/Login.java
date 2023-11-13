@@ -2,11 +2,11 @@ package scc.data;
 
 public class Login {
     //id
-    private String id;
+    private String user;
     //pwd
     private String pwd;
-    public Login(String id, String pwd){
-        this.id = id;
+    public Login(String user, String pwd){
+        this.user = user;
         this.pwd = pwd;
     }
     public Login(){
@@ -15,8 +15,8 @@ public class Login {
 
     //getters
 
-    public String getId() {
-        return id;
+    public String getUser() {
+        return user;
     }
 
     public String getPwd() {

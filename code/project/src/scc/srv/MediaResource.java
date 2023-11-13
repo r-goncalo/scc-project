@@ -43,6 +43,7 @@ public class MediaResource
 	public String upload(byte[] contents) {
 
 		String key = Hash.of(contents);
+		String timestamp = String.valueOf(System.currentTimeMillis());
 
 		try {
 			BinaryData data = BinaryData.fromBytes(contents);
@@ -67,7 +68,7 @@ public class MediaResource
 			e.printStackTrace();
 		}
 
-		return key;
+		return timestamp + "-" + key;
 
 
 	}
