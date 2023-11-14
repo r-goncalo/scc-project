@@ -67,6 +67,7 @@ public class CosmosDBLayer {
 	private CosmosContainer houses;
 	private CosmosContainer rentals;
 	private CosmosContainer questions;
+	private CosmosContainer availabilities;
 
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
@@ -83,6 +84,7 @@ public class CosmosDBLayer {
 		houses = db.getContainer("houses");
 		rentals = db.getContainer("rentals");
 		questions = db.getContainer("questions");
+		availabilities = db.getContainer("availabilities");
 
 	}
 
@@ -123,6 +125,12 @@ public class CosmosDBLayer {
 	/*
 	//////////////////// HOUSES ///////////////
 	*/
+
+	public HouseDao updateHouse(HouseDao houseDao) {
+		init();
+		CosmosItemResponse<HouseDao> response = houses.upsertItem(houseDao);
+		return response.getItem();
+	}
 
 	public CosmosItemResponse<HouseDao> putHouse(HouseDao h) {
 		init();
@@ -231,6 +239,7 @@ public class CosmosDBLayer {
 		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.id=\"" + rentalid + "\" AND rentals.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
 
+
 	/*
 	/////////////////// QUESTIONS /////////////
 	 */
@@ -249,6 +258,40 @@ public class CosmosDBLayer {
 	public CosmosPagedIterable<Object> getQuestions() {
 		init();
 		return questions.queryItems("SELECT * FROM questions ", new CosmosQueryRequestOptions(), Object.class);
+	}
+
+	//given a question id check if there exists a question with the same replytoid
+	public CosmosPagedIterable<QuestionDao> getQuestionByReplyToIdAndHouse( String houseId, String questionId) {
+		init();
+		return questions.queryItems("SELECT * FROM questions WHERE questions.replyToId=\"" + questionId + "\" AND questions.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
+	}
+
+	//getQuestionByIdAndHouse
+	public CosmosPagedIterable<QuestionDao> getQuestionByIdAndHouse(String houseId, String questionID) {
+		init();
+		return questions.queryItems("SELECT * FROM questions WHERE questions.id=\"" + questionID + "\" AND questions.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
+	}
+
+	public CosmosPagedIterable<QuestionDao> getQuestionsForHouse(String houseId) {
+		return questions.queryItems("SELECT * FROM questions WHERE questions.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
+	}
+
+	/*
+	///////////// AVAILABILITY ////////////
+	 */
+
+	public CosmosPagedIterable<AvailabityDao> getAvailabilitiesForHouse(String houseId) {
+		return availabilities.queryItems("SELECT * FROM availabilities WHERE availabilities.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), AvailabityDao.class);
+	}
+
+	public void putAvailability(AvailabityDao a) {
+		init();
+		availabilities.createItem(a);
+	}
+
+	public CosmosPagedIterable<Availabity> getAvailabilityForDate(String houseId, String date) {
+		init();
+		return availabilities.queryItems("SELECT * FROM availabilities WHERE availabilities.houseId=\"" + houseId + "\" AND availabilities.fromDate <= \"" + date + "\" AND availabilities.toDate >= \"" + date + "\"", new CosmosQueryRequestOptions(), Availabity.class);
 	}
 
 
