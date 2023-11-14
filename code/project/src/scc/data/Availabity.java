@@ -1,6 +1,7 @@
 package scc.data;
 
 public class Availabity {
+
     private String id;
     private String houseId;
     private String fromDate;
