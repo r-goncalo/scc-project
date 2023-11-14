@@ -1,7 +1,5 @@
 package scc.data;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.List;
 
 public class HouseDao {
@@ -14,25 +12,14 @@ public class HouseDao {
     private String location;
     private String description;
     private List<String> photoIds;
-    private double normalPrice;
-    private double promotionPrice;
-    private int monthWithDiscount;
 
-    public HouseDao(String id, String ownerId, String name, String location, String description, List<String> photos, double normalPrice, double promotionPrice, int monthWithDiscount) {
+    public HouseDao(String id, String ownerId, String name, String location, String description, List<String> photos) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
         this.location = location;
         this.description = description;
         this.photoIds = photos;
-        this.normalPrice = normalPrice;
-        this.promotionPrice = promotionPrice;
-        this.monthWithDiscount = monthWithDiscount;
-
-        // Month with discount must be between 1 and 12
-        if (monthWithDiscount < 1 || monthWithDiscount > 12) {
-            throw new IllegalArgumentException("Month with discount must be between 1 and 12");
-        }
     }
 
     public House toHouse(){
@@ -40,7 +27,7 @@ public class HouseDao {
     }
 
     public HouseDao(House house) {
-        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getNormalPrice(), house.getPromotionPrice(), house.getMonthWithDiscount());
+        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds());
     }
 
     public HouseDao(){
@@ -79,15 +66,13 @@ public class HouseDao {
         return photoIds;
     }
 
-    public double getNormalPrice() {
-        return normalPrice;
+    // setters
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public double getPromotionPrice() {
-        return promotionPrice;
-    }
-
-    public int getMonthWithDiscount() {
-        return monthWithDiscount;
+    public void setId(String id) {
+        this.id = id;
     }
 }
