@@ -21,7 +21,7 @@ public class UpdateMostRecentUsers {
 	private static final String MOST_RECENT_USERS_REDIS_KEY = "mostRecentUsers";
 
     @FunctionName("UpdateMostRecentUsers")
-    public void updateMostRecentUsers(@CosmosDBTrigger(name = "cosmosTest",
+    public void updateMostRecentUsers(@CosmosDBTrigger(name = "UpdateMostRecentUsers",
     										databaseName = "scc24db60519", // = to be defined in system variables
     										collectionName = "users",
     										preferredLocations="West Europe",
