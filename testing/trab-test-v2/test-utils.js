@@ -4,23 +4,24 @@
  * Exported functions to be used in the testing scripts.
  */
 module.exports = {
-  uploadImageBody,
-  genNewUser,
-  genNewUserReply,
-  genNewHouse,
-  selectUser,
+    uploadImageBody,
+    genNewUser,
+    genNewUserReply,
+    genNewHouse,
+    selectUser,
     selectUserSkewed,
     captureAuthCookie,
     responseStatus,
-  decideNextAction,
-  selectHouse,
-  selectRental,
-  selectQuestion,
-  random20,
-  random50,
-  random70,
-  random80,
-  random90
+    decideNextAction,
+    selectHouse,
+    selectRental,
+    selectQuestion,
+    random20,
+    random50,
+    random70,
+    random80,
+    random90,
+    getRandomDates
 }
 
 const { faker } = require('@faker-js/faker');
@@ -43,13 +44,18 @@ Array.prototype.sampleSkewed = function(){
 
 // Returns a random date
 function randomDate() {
-	let n = random(13);
-	if( n == 0)
-		return "12-2023";
-	if( n < 10)
-		return " " + n.toString()+ "-2024";
-	else
-		return n.toString()+ "-2024";
+    let n = random(13);
+    if( n == 0)
+	return "2023-12";
+    if( n < 10)
+	return "2024-0" + n.toString();
+    else
+	return "2024-" + n.toString();
+}
+
+function getRandomDates(requestParams, context, ee, next){
+    context.vars.toDate = randomDate()
+    return next()
 }
 
 
@@ -166,11 +172,12 @@ function genNewUserReply(requestParams, response, context, ee, next) {
 }
 
 function captureAuthCookie(requestParams, response, context, ee, next) {
-    context.vars.authToken = response.headers['set-cookie'][0]
     console.error("http:response status:")
     console.error(response.statusCode)
     console.error("Body:")
     console.error(response.body)
+    context.vars.authToken = response.headers['set-cookie'][0]
+
     return next()
 }
 

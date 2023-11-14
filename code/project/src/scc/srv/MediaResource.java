@@ -44,7 +44,7 @@ public class MediaResource
 
 		String key = Hash.of(contents);
 		String timestamp = String.valueOf(System.currentTimeMillis());
-
+		String id = timestamp + "-" + key;
 		try {
 			BinaryData data = BinaryData.fromBytes(contents);
 
@@ -55,20 +55,20 @@ public class MediaResource
 					.buildClient();
 
 			// Get client to blob
-			BlobClient blob = containerClient.getBlobClient( key);
+			BlobClient blob = containerClient.getBlobClient( id);
 
 			// Upload contents from BinaryData (check documentation for other alternatives)
 			blob.upload(data);
 			// todo check if it already exists
 
 
-			System.out.println( "File updloaded : " + key);
+			System.out.println( "File updloaded : " + id);
 
 		} catch( Exception e) {
 			e.printStackTrace();
 		}
 
-		return timestamp + "-" + key;
+		return id;
 
 
 	}

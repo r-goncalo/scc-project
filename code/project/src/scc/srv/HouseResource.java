@@ -2,6 +2,7 @@ package scc.srv;
 
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.Resource;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MediaType;
@@ -157,41 +158,46 @@ public class HouseResource {
         return houseDao.toHouse();
     }
 
-    /**
-     * Lists the ids of images stored.
-     */
+
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<House> listHouses() {
+    public List<House> listHouses(@QueryParam("st") String startTime, @QueryParam("et") String endTime, @QueryParam("location") String location) {
+        LogResource.writeLine("List houses");
+        Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-        List<House> toReturn = new ArrayList<>();
 
-        //get all the houses from the redis
-        try{
-            ObjectMapper mapper = new ObjectMapper();
-            try (Jedis jedis = RedisCache.getCachePool().getResource()) {
-                List<String> lst = jedis.lrange(HOUSES_REDIS_KEY, 0, -1);
-                for( String s : lst){
-                    House h = mapper.readValue(s, House.class);
-                    toReturn.add(h);
-                }
-            }
-        } catch (Exception e){
-            LogResource.writeLine("Error getting houses from cache");
-            e.printStackTrace();
+
+        //parse start time
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy"); //todo check if this is the right format
+        //check if string is in specified format
+
+
+        CosmosPagedIterable<HouseDao> houses = null;
+        if((startTime != null || endTime != null) && location != null){
+            LogResource.writeLine("houses by location and time");
+            return db.getHousesByLocationAndTime(location, startTime, endTime).stream().map(HouseDao::toHouse).toList();
+        } else if (startTime != null || endTime != null) {
+            LogResource.writeLine("houses by time");
+            return db.getHousesByTime(startTime, endTime).stream().map(HouseDao::toHouse).toList();
+        } else if (location != null) {
+            LogResource.writeLine("houses by location");
+            houses = db.getHousesByLocation(location);
+        } else {
+            LogResource.writeLine("all houses");
+            houses = db.getAllHouses();
         }
 
-        if(toReturn.isEmpty()) {
 
-            Iterable<HouseDao> houses = CosmosDBLayer.getInstance().getAllHouses();
+        List<House> ret = new ArrayList<>();
 
-            for (HouseDao house : houses) {
-                toReturn.add(house.toHouse());
-            }
-        }
-        return toReturn;
+        for (HouseDao h : houses)
+            ret.add(new House(h));
+
+        return ret;
     }
+
+
 
     @DELETE
     @Path("/house/{id}")
@@ -237,60 +243,13 @@ public class HouseResource {
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
-    @GET
-    @Path("/location/{location}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<House> getHousesByLocation(@PathParam("location") String location) {
-
-        Locale.setDefault(Locale.US);
-        CosmosDBLayer db = CosmosDBLayer.getInstance();
-
-        CosmosPagedIterable<HouseDao> houses = db.getHousesByLocation(location);
-
-        List<House> ret = new ArrayList<>();
-
-        for (HouseDao h : houses)
-            ret.add(new House(h));
-
-        return ret;
-    }
-
-    //get all the houses in a given location and whithin a given time range from start to end
-    @GET
-    @Path("/location/{location}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @QueryParam("start") String start, @QueryParam("end") String end) {
-
-        Locale.setDefault(Locale.US);
-        CosmosDBLayer db = CosmosDBLayer.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy"); //todo check if this is the right format
-
-        Date startDate = null;
-        Date endDate = null;
-        try {
-            startDate = sdf.parse(start);
-            endDate = sdf.parse(end);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        CosmosPagedIterable<HouseDao> houses = db.getHouseByLocationAndTime(location, startDate, endDate); //todo possivélmente mal
-
-        List<House> ret = new ArrayList<>();
-
-        for (HouseDao h : houses)
-            ret.add(new House(h));
-
-        return ret;
-    }
-
 
     //post availability
     @POST
     @Path("/{id}/available")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static Availabity newAvailability(@CookieParam("scc:session") Cookie session, @PathParam("id") String houseId, Availabity availabity ) throws ParseException {
+    public static Availabity newAvailability(@CookieParam("scc:session") Cookie session, @PathParam("id") String houseId, Availabity availabity ) {
         LogResource.writeLine("New availability: " + availabity);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -309,25 +268,37 @@ public class HouseResource {
             throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
         }
 
+        //check date format
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM"); //todo check if this is the right format
+            sdf.parse(availabity.getFromDate());
+            sdf.parse(availabity.getToDate());
+        } catch (ParseException e) {
+            LogResource.writeLine("Invalid date format");
+            throw new WebApplicationException("Invalid date format", Response.Status.BAD_REQUEST);
+        }
+
+
         //first get list of availabilities for the house
         CosmosPagedIterable<AvailabityDao> availabilities = db.getAvailabilitiesForHouse(houseId);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
-
-        //todo rever bem isto porque pode star errado
-        Date start = dateFormat.parse(availabity.getFromDate());
-        Date end = dateFormat.parse(availabity.getToDate());
+        String start = availabity.getFromDate();
+        String end = availabity.getToDate();
 
         for (AvailabityDao a : availabilities) {
-            Date aStart = dateFormat.parse(a.getFromDate());
-            Date aEnd = dateFormat.parse(a.getToDate());
-            // check if start and end does not intersect aStart and aEnd
-            if (start.compareTo(aStart) >= 0 && start.compareTo(aEnd) <= 0) {
-                LogResource.writeLine("Availability date is already taken for the given house");
-                throw new WebApplicationException("Availability date is already taken for the given house", Response.Status.CONFLICT);
+            String aStart = a.getFromDate();
+            String aEnd = a.getToDate();
+            if((start.compareTo(aStart) >= 0 && start.compareTo(aEnd) <= 0) ||
+                    (end.compareTo(aStart) >= 0 && end.compareTo(aEnd) <= 0) ||
+                    (start.compareTo(aStart) <= 0 && end.compareTo(aEnd) >= 0) || (start.compareTo(aStart) >= 0 && end.compareTo(aEnd) <= 0) ) { //todo check if this is correct
+                // check if start and end does not intersect a's start and end date
+                LogResource.writeLine("Availability period intersects with another availability period");
+                throw new WebApplicationException("Availability period intersects with another availability period", Response.Status.CONFLICT);
             }
-
-        }
+            // check if start and end does not intersect a's start and end date
+                LogResource.writeLine("Availability period intersects with another availability period");
+                throw new WebApplicationException("Availability period intersects with another availability period", Response.Status.CONFLICT);
+            }
 
         // put availability in db
         availabity.setId(UUID.randomUUID().toString());

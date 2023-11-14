@@ -104,11 +104,12 @@ scenarios:
                 Content-Type: application/json
                 Accept: application/json
                 Cookie: "{{ authToken }}"
+              beforeRequest: "getRandomDates"
               json:
                 id: "null"
                 houseId: "{{ houseid }}"
-                fromDate: "12-2023"
-                toDate: "12-2024"
+                fromDate: "2023-12"
+                toDate:  "{{ toDate }}" #"2024-12"
                 cost: "{{ cost }}"
                 discount: "{{ discount }}"
               afterResponse: "responseStatus"

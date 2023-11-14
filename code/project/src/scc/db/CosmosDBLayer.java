@@ -9,6 +9,7 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import scc.data.*;
 
 import java.util.Date;
+import java.util.List;
 
 public class CosmosDBLayer {
 
@@ -57,7 +58,7 @@ public class CosmosDBLayer {
 		houses = db.getContainer("houses");
 		rentals = db.getContainer("rentals");//todo letra minuscula
 		questions = db.getContainer("questions");
-		availabilities = db.getContainer("availability"); //todo change to // availabilities = db.getContainer("availabilities");
+		availabilities = db.getContainer("availabilities"); //todo change to // availabilities = db.getContainer("availabilities");
 	}
 
 	//make a function to get all the rentals in a given date for a given house id
@@ -188,12 +189,6 @@ public class CosmosDBLayer {
 		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
 	}
 
-	public CosmosPagedIterable<HouseDao> getHouseByLocationAndTime(String location, Date start, Date end) {
-		init();
-		// select * from house where house.location = location and house.id not in (select houseId from rental where rental.day between start and end)
-		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\" AND houses.id NOT IN (SELECT rentals.houseId FROM rentals WHERE rentals.day BETWEEN \"" + start.toString() + "\" AND \"" + end.toString() + "\")", new CosmosQueryRequestOptions(), HouseDao.class);
-	}
-
 	// list of rentals that will have a discounted price in the following two months
 	public CosmosPagedIterable<RentalDao> getRentalsWithDiscount() {
 		init();
@@ -237,8 +232,67 @@ public class CosmosDBLayer {
 		availabilities.createItem(a);
 	}
 
-	public CosmosPagedIterable<Availabity> getAvailabilityForDate(String houseId, String date) {
+	public List<HouseDao> getHousesByLocationAndTime(String location, String startDate, String endDate) {
+		init(); //TODO CONFIRM THIS. very important
+
+		CosmosPagedIterable<HouseDao> allHouses = getAllHouses();
+
+		CosmosPagedIterable<AvailabityDao> allAvailabilities = getAvailabilities();
+		if (endDate == null) {
+			//get all the availabilities for the houses in the location with the fromdate greater than startDate
+
+			return allHouses.stream().filter(houseDao -> houseDao.getLocation().equals(location)
+					&& allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+					&& startDate.compareTo(availabityDao.getFromDate()) >= 0)
+					.count() > 0 ).toList();
+		} else if (startDate == null) {
+			return allHouses.stream().filter(houseDao -> houseDao.getLocation().equals(location)
+					&& allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+							&& endDate.compareTo(availabityDao.getToDate()) <= 0
+					)
+					.count() > 0 ).toList();
+
+		} else {
+			return allHouses.stream().filter(houseDao -> houseDao.getLocation().equals(location)
+					&& allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+							&& startDate.compareTo(availabityDao.getFromDate()) >= 0
+							&& endDate.compareTo(availabityDao.getToDate()) <= 0
+					)
+					.count() > 0 ).toList();
+		}
+	}
+
+	//get all availabilities
+	public CosmosPagedIterable<AvailabityDao> getAvailabilities() {
 		init();
-		return availabilities.queryItems("SELECT * FROM availabilities WHERE availabilities.houseId=\"" + houseId + "\" AND availabilities.fromDate <= \"" + date + "\" AND availabilities.toDate >= \"" + date + "\"", new CosmosQueryRequestOptions(), Availabity.class);
+		return availabilities.queryItems("SELECT * FROM availabilities ", new CosmosQueryRequestOptions(), AvailabityDao.class);
+	}
+
+	public List<HouseDao> getHousesByTime(String startDate, String endDate) {
+		init(); //TODO CONFIRM THIS. very important
+
+		CosmosPagedIterable<HouseDao> allHouses = getAllHouses();
+
+		CosmosPagedIterable<AvailabityDao> allAvailabilities = getAvailabilities();
+		if (endDate == null) {
+			//get all the availabilities for the houses in the location with the fromdate greater than startDate
+
+			return allHouses.stream().filter(houseDao -> allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+							&& startDate.compareTo(availabityDao.getToDate()) <= 0
+					)
+					.count() > 0 ).toList();
+		} else if (startDate == null) {
+			return allHouses.stream().filter(houseDao -> allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+							&& endDate.compareTo(availabityDao.getFromDate()) >= 0
+					)
+					.count() > 0 ).toList();
+
+		} else {
+			return allHouses.stream().filter(houseDao ->  allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+							&& startDate.compareTo(availabityDao.getToDate()) <= 0
+							&& endDate.compareTo(availabityDao.getFromDate()) >= 0
+					)
+					.count() > 0 ).toList();
+		}
 	}
 }

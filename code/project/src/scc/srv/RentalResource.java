@@ -66,16 +66,12 @@ public class RentalResource {
         // find availability period todo find beter way
         CosmosPagedIterable<AvailabityDao> availabilities = db.getAvailabilitiesForHouse(rental.getHouseId());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy");
-        Date rentalDate = sdf.parse(rental.getDate());
-
         boolean isInsideAvailability = false;
         double price = 0;
         for (AvailabityDao a : availabilities) {
-            Date startDate = sdf.parse(a.getFromDate());
-            Date endDate = sdf.parse(a.getToDate());
-            //check if is between any availability period
-            if (rentalDate.after(startDate) && rentalDate.before(endDate)) {
+            String startDate = a.getFromDate(),
+                    endDate = a.getToDate();
+            if (rental.getDate().compareTo(startDate) >= 0 && rental.getDate().compareTo(endDate) <= 0) {
                 isInsideAvailability = true;
                 price = a.getCost();
                 break;
@@ -157,10 +153,10 @@ public class RentalResource {
         boolean isInsideAvailability = false;
         double price = 0;
         for (AvailabityDao a : availabilities) {
-            Date startDate = sdf.parse(a.getFromDate());
-            Date endDate = sdf.parse(a.getToDate());
             //check if is between any availability period
-            if (rentalDate.after(startDate) && rentalDate.before(endDate)) {
+            String startDate = a.getFromDate(),
+                    endDate = a.getToDate();
+            if (rental.getDate().compareTo(startDate) >= 0 && rental.getDate().compareTo(endDate) <= 0) {
                 isInsideAvailability = true;
                 price = a.getCost();
                 break;
