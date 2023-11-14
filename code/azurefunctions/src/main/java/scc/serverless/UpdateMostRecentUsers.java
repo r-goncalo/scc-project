@@ -21,8 +21,8 @@ public class UpdateMostRecentUsers {
 	private static final int MAX_RECENT_USERS_IN_CACHE = 5;
 	private static final String MOST_RECENT_USERS_REDIS_KEY = "mostRecentUsers";
 
-    @FunctionName("UpdateMostRecentUsers")
-    public void updateMostRecentUsers(@CosmosDBTrigger(name = "cosmosTest",
+    @FunctionName("updateMostRecentUsers")
+    public void updateMostRecentUsersOnUserAddition(@CosmosDBTrigger(name = "cosmosTest",
     										databaseName = "scc24db60519", // = to be defined in system variables
     										collectionName = "users",
     										preferredLocations="West Europe",

@@ -31,7 +31,7 @@ public class BlobReplication
 
 	private static final String REGION = System.getenv("REGION_NAME");
 
-	@FunctionName("PropagateMediaCreation")
+	@FunctionName("propagateMediaCreation")
 	public void propagateMediaCreation(@BlobTrigger(name = "blobtest",
 									dataType = "binary", 
 									path = CONTAINER_NAME + "/{name}",
