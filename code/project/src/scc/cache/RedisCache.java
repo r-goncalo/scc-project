@@ -72,7 +72,7 @@ public class RedisCache {
 	public static boolean isSessionOfUser(Cookie session, String id) throws NotAuthorizedException {
 
 		if(session == null || session.getValue() == null) {
-			LogResource.writeLine("    cookie session invalid or non existent");
+			LogResource.writeLine("    cookie session invalid or null");
 			throw new NotAuthorizedException("No session initialized");
 		}
 
