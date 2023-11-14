@@ -14,10 +14,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>11</java.version>
-		<functionAppName>scc24funwesteurope60519</functionAppName>
-		<functionAppRegion>westeurope</functionAppRegion>
+		<functionAppName>scc24funnortheurope60519</functionAppName>
+		<functionAppRegion>northeurope</functionAppRegion>
 		<functionPricingTier>B1</functionPricingTier>
-		<functionResourceGroup>scc24-rg-westeurope-60519</functionResourceGroup>
+		<functionResourceGroup>scc24-rg-northeurope-60519</functionResourceGroup>
 	</properties>
 
 	<dependencies>
@@ -90,6 +90,16 @@
 			<artifactId>mockito-core</artifactId>
 			<version>5.6.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
 
