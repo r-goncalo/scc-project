@@ -9,12 +9,45 @@ import scc.cache.RedisCache;
 
 import com.microsoft.azure.functions.*;
 
+import static scc.cache.RedisCache.LOG_KEY;
+
 /**
  * Azure Functions with HTTP Trigger. These functions can be accessed at:
  * {Server_URL}/api/{route}
  * Complete URL appear when deploying functions.
  */
-public class HttpFunction {/*
+public class HttpFunction {
+
+
+    @FunctionName("functions-log")
+    public HttpResponseMessage getFunctionsLog(@HttpTrigger(name = "req",
+            methods = {HttpMethod.GET },
+            authLevel = AuthorizationLevel.ANONYMOUS,
+            route = "serverless/log")
+                                            HttpRequestMessage<Optional<String>> request,
+                                    final ExecutionContext context) {
+
+
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+
+            jedis.append(LOG_KEY, "FUNCTIONS : GETTING LOG\n");
+
+            String val = jedis.get(LOG_KEY);
+
+            return request.createResponseBuilder(HttpStatus.OK).body(val).build();
+
+        } catch (Exception e) {
+            // Log the exception
+            context.getLogger().severe("Error: " + e.getMessage());
+
+            // Return an error response
+            return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal Server Error").build();
+        }
+
+    }
+
+
 
 	@FunctionName("http-info")
 	public HttpResponseMessage info(@HttpTrigger(name = "req", 
@@ -28,7 +61,9 @@ public class HttpFunction {/*
 		request.getHeaders().forEach( (k,v) -> { buffer.append( k + "->" + v + "\n");});
 		return request.createResponseBuilder(HttpStatus.OK).body(buffer.toString()).build();
 	}
-	
+
+    /*
+
 	@FunctionName("http-stats")
 	public HttpResponseMessage run(@HttpTrigger(name = "req", 
 										methods = {HttpMethod.GET }, 

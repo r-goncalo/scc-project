@@ -32,7 +32,7 @@ public class BlobReplication
 	private static final String REGION = System.getenv("REGION_NAME");
 
 	@FunctionName("PropagateMediaCreation")
-	public void propagateMediaCreation(@BlobTrigger(name = "PropagateMediaCreation",
+	public void propagateMediaCreation(@BlobTrigger(name = "blobtest",
 									dataType = "binary", 
 									path = CONTAINER_NAME + "/{name}",
 									connection = "BlobStoreConnection") 
@@ -40,6 +40,7 @@ public class BlobReplication
 								@BindingName("name") String blobname,
 								final ExecutionContext context) {
 
+		RedisCache.writeLogLine("FUNCTIONS : PROP");
 
 		int maxTries = 5;
 		for(String region : REGIONS){

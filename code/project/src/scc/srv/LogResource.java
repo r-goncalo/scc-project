@@ -13,8 +13,12 @@ public class LogResource {
 
     private static String LOG = "";
 
+    private static String REDIS_LOG_KEY = "logcache";
+
     public static void writeLine(String line){
+
         LOG += line + "\n";
+
     }
 
     @GET
@@ -23,9 +27,17 @@ public class LogResource {
         return LOG;
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getFunctionsLog() {
+        return LOG;
+    }
+
     @POST
     public void cleanLog() {
         LOG = "";
     }
+
+
 
 }

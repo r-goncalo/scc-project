@@ -1,5 +1,7 @@
 package scc.cache;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -9,6 +11,8 @@ public class RedisCache {
 	private static final String RedisKey = System.getenv("REDIS_KEY");
 	
 	private static JedisPool instance;
+
+	public static final String LOG_KEY = "functions:log";
 	
 	public synchronized static JedisPool getCachePool() {
 
@@ -28,4 +32,21 @@ public class RedisCache {
 		return instance;
 		
 	}
+
+	/**
+	 *
+	 * this method should only be used if there isn't an already existent use of jedis
+	 *
+	 * @param line
+	 */
+	public synchronized static void writeLogLine(String line){
+
+		try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+
+			jedis.append(LOG_KEY, line + "\n"); //the index will be "user" + <that user's id>
+
+		}
+
+	}
+
 }
