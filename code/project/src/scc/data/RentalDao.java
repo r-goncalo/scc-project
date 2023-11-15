@@ -9,20 +9,20 @@ public class RentalDao {
     private String _ts;
     private String id;
     private String houseId;
-    private String userId;
-    private String day;
+    private String renterId;
+    private String period;
     private double price;
 
-    public RentalDao(String id, String houseId, String userId, String day, double price) {
+    public RentalDao(String id, String houseId, String renterId, String period, double price) {
         this.id = id;
         this.houseId = houseId;
-        this.userId = userId;
-        this.day = day;
+        this.renterId = renterId;
+        this.period = period;
         this.price = price;
     }
 
     public RentalDao(Rental rental) {
-        this(rental.getId(), rental.getHouseId(), rental.getRenterID(), rental.getDate(), rental.getPrice());
+        this(rental.getId(), rental.getHouseId(), rental.getRenterId(), rental.getPeriod(), rental.getPrice());
     }
 
     public RentalDao(){
@@ -31,8 +31,8 @@ public class RentalDao {
 
 
     //getters
-    public String getDay() {
-        return day;
+    public String getPeriod() {
+        return period;
     }
 
     public String getId() {
@@ -43,8 +43,8 @@ public class RentalDao {
         return houseId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getRenterId() {
+        return renterId;
     }
 
     public double getPrice() {

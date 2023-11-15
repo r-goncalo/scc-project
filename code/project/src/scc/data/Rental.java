@@ -3,20 +3,20 @@ package scc.data;
 public class Rental {
     private String id;
     private String houseId;
-    private String renterID;
-    private String date; //assume rentals take place on a single month
+    private String renterId;
+    private String period; //assume rentals take place on a single month
     private double price;
 
-    public Rental(String id, String houseId, String renterID, String date, double price) {
+    public Rental(String id, String houseId, String renterId, String period, double price) {
         this.id = id;
         this.houseId = houseId;
-        this.renterID = renterID;
-        this.date = date;
+        this.renterId = renterId;
+        this.period = period;
         this.price = price;
     }
 
     public Rental(RentalDao rental) {
-        this(rental.getId(), rental.getHouseId(), rental.getUserId(), rental.getDay(), rental.getPrice());
+        this(rental.getId(), rental.getHouseId(), rental.getRenterId(), rental.getPeriod(), rental.getPrice());
     }
 
     public Rental(){
@@ -24,8 +24,8 @@ public class Rental {
     }
 
     //getters
-    public String getDate() {
-        return date;
+    public String getPeriod() {
+        return period;
     }
 
     public String getId() {
@@ -36,8 +36,8 @@ public class Rental {
         return houseId;
     }
 
-    public String getRenterID() {
-        return renterID;
+    public String getRenterId() {
+        return renterId;
     }
 
     public double getPrice() {

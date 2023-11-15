@@ -21,7 +21,8 @@ module.exports = {
     random70,
     random80,
     random90,
-    getRandomDates
+    getRandomDates,
+    genNewRental
 }
 
 const { faker } = require('@faker-js/faker');
@@ -30,6 +31,8 @@ const fs = require('fs')
 var imagesIds = []
 var images = []
 var users = []
+var houses = []
+var availabilities = []
 const locations = ["Lisbon","Porto","Madeira","Azores","Algarve","Braga","Coimbra","Evora","Aveiro","Leiria"]
 
 // Auxiliary function to select an element from an array
@@ -351,4 +354,12 @@ function random80(context, next) {
 function random90(context, next) {
   const continueLooping = Math.random() < 0.9
   return next(continueLooping);
+}
+
+
+function genNewRental(context, events, done) {
+    const user = users.sample();
+    context.vars.renterid = user.id; // Assuming users array is available
+    context.vars.pwd = user.pwd
+    return done();
 }

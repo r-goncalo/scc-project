@@ -8,7 +8,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import scc.data.*;
 
-import java.util.Date;
 import java.util.List;
 
 public class CosmosDBLayer {
@@ -130,7 +129,7 @@ public class CosmosDBLayer {
 
 	public CosmosItemResponse<Object> delUserById(String id) {
 		init();
-		PartitionKey key = new PartitionKey( id);
+		PartitionKey key = new PartitionKey(id);
 		return users.deleteItem(id, key, new CosmosItemRequestOptions());
 	}
 
@@ -177,7 +176,7 @@ public class CosmosDBLayer {
 		return houses.queryItems("SELECT * FROM houses WHERE houses.ownerId=\"" + id + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
 	}
 
-	public CosmosPagedIterable<HouseDao> getAllHouses() {
+	public CosmosPagedIterable<HouseDao> getHouses() {
 		init();
 		return houses.queryItems("SELECT * FROM houses", new CosmosQueryRequestOptions(), HouseDao.class);
 
@@ -235,7 +234,7 @@ public class CosmosDBLayer {
 	public List<HouseDao> getHousesByLocationAndTime(String location, String startDate, String endDate) {
 		init(); //TODO CONFIRM THIS. very important
 
-		CosmosPagedIterable<HouseDao> allHouses = getAllHouses();
+		CosmosPagedIterable<HouseDao> allHouses = getHouses();
 
 		CosmosPagedIterable<AvailabityDao> allAvailabilities = getAvailabilities();
 		if (endDate == null) {
@@ -271,7 +270,7 @@ public class CosmosDBLayer {
 	public List<HouseDao> getHousesByTime(String startDate, String endDate) {
 		init(); //TODO CONFIRM THIS. very important
 
-		CosmosPagedIterable<HouseDao> allHouses = getAllHouses();
+		CosmosPagedIterable<HouseDao> allHouses = getHouses();
 
 		CosmosPagedIterable<AvailabityDao> allAvailabilities = getAvailabilities();
 		if (endDate == null) {
@@ -294,5 +293,15 @@ public class CosmosDBLayer {
 					)
 					.count() > 0 ).toList();
 		}
+	}
+
+	public void reset() {
+		init();
+		getUsers().stream().forEach(userDAO -> delUserById(userDAO.getId()));
+		getHouses().stream().forEach(houseDao -> delHouseById(houseDao.getId()));
+		getRentals().stream().forEach(rentalDao -> rentals.deleteItem(rentalDao.getId(), new PartitionKey(rentalDao.getId()), new CosmosItemRequestOptions()));
+		getQuestions().stream().forEach(questionDao -> questions.deleteItem(questionDao.getId(), new PartitionKey(questionDao.getId()), new CosmosItemRequestOptions()));
+		getAvailabilities().stream().forEach(availabityDao -> availabilities.deleteItem(availabityDao.getId(), new PartitionKey(availabityDao.getId()), new CosmosItemRequestOptions()));
+
 	}
 }

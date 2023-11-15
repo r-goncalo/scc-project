@@ -34,67 +34,82 @@ public class RentalResource {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static Rental newRental(@CookieParam("scc:session") Cookie session, @PathParam("houseId") String houseId , Rental rental) throws ParseException {
+    public static Rental newRental(@CookieParam("scc:session") Cookie session, @PathParam("houseId") String houseId , Rental rental) {
 
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
         //confirm rental's houseid
         if(!houseId.equals(rental.getHouseId())){
+            LogResource.writeLine("    houseid does not match");
             throw new NotFoundException("House not found");
         }
 
+        // confirm rental's house exists
         Iterator<HouseDao> h = db.getHouseById(rental.getHouseId()).iterator();
-        //todo confirm rental's house exists
-        if(h.hasNext() == false)
-            throw new NotFoundException(); //todo house not found exception
+        if(h.hasNext() == false) {
+            LogResource.writeLine("    house not found");
+            throw new WebApplicationException("House not found", Response.Status.NOT_FOUND);
+        }
 
         // confirm rental's date is not taken. use db.gethouserentalfordate
-        if(db.getHouseRentalForDate(rental.getDate(),rental.getHouseId()).iterator().hasNext()) //todo possivelmente mal
+        if(db.getHouseRentalForDate(rental.getPeriod(),rental.getHouseId()).iterator().hasNext()) { //todo possivelmente mal
+            LogResource.writeLine("    rental date is already taken for the given house");
             throw new WebApplicationException("Rental date is already taken for the given house", Response.Status.CONFLICT);
-
+        }
         // confirm rental's user exists
-        if(db.getUserById(rental.getRenterID()).iterator().hasNext()==false)
+        if(db.getUserById(rental.getRenterId()).iterator().hasNext()==false) {
+            LogResource.writeLine("    user not found");
             throw new WebApplicationException("User not found", Response.Status.NOT_FOUND);
+        }
+
+        // check if renter is not the house owner
+        if(db.getHouseById(rental.getHouseId()).iterator().next().getOwnerId().equals(rental.getRenterId())) {
+            LogResource.writeLine("    renter cannot be the owner of the house");
+            throw new WebApplicationException("Renter cannot be the owner of the house", Response.Status.CONFLICT);
+        }
+
 
         //check if user is logged in
-        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, rental.getRenterID());
-        if(isOwnerLoggedIn == false)
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, rental.getRenterId());
+        if(isOwnerLoggedIn == false) {
+            LogResource.writeLine("    renter not logged in");
             throw new WebApplicationException("Renter not logged in", Response.Status.UNAUTHORIZED);
+        }
 
 
-        // find availability period todo find beter way
+        // find if rental date is inside any availability period
         CosmosPagedIterable<AvailabityDao> availabilities = db.getAvailabilitiesForHouse(rental.getHouseId());
-
         boolean isInsideAvailability = false;
         double price = 0;
         for (AvailabityDao a : availabilities) {
             String startDate = a.getFromDate(),
                     endDate = a.getToDate();
-            if (rental.getDate().compareTo(startDate) >= 0 && rental.getDate().compareTo(endDate) <= 0) {
+            if (rental.getPeriod().compareTo(startDate) >= 0 && rental.getPeriod().compareTo(endDate) <= 0) {
                 isInsideAvailability = true;
                 price = a.getCost();
                 break;
             }
         }
-        if(!isInsideAvailability)
+        if(!isInsideAvailability) {
+            LogResource.writeLine("    rental date is not inside any availability period");
             throw new WebApplicationException("Rental date is not inside any availability period", Response.Status.CONFLICT);
+        }
 
-
+        //set values
         rental.setId(UUID.randomUUID().toString());
         rental.setPrice(price); //todo fazer para o discounted price
-
-
         RentalDao r = new RentalDao(rental);
 
         //put in db
         db.putRental(r);
+
         //put in cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            jedis.set("rental:"+r.getId(), mapper.writeValueAsString(rental));
+            jedis.set("rental:"+rental.getId(), mapper.writeValueAsString(rental));
 
             Long cnt = jedis.lpush(MOST_RECENT_RENTALS_REDIS_KEY, mapper.writeValueAsString(rental));
 
@@ -103,7 +118,7 @@ public class RentalResource {
             if (cnt < MAX_RECENTE_RENTALS_IN_CACHE)
                 jedis.incr(NUM_RECENT_RENTALS);
 
-            jedis.lpush(RENTALS_REDIS_KEY, mapper.writeValueAsString(h));
+            jedis.lpush(RENTALS_REDIS_KEY, mapper.writeValueAsString(rental));
             jedis.incr(NUM_RENTALS);
 
         } catch(Exception e) {
@@ -132,15 +147,16 @@ public class RentalResource {
             throw new NotFoundException("Rental not found");
 
         //check if rental Date is not taken
-        if(db.getHouseRentalForDate(rental.getDate(),rental.getHouseId()).iterator().hasNext()) //todo possivelmente mal
+        if(db.getHouseRentalForDate(rental.getPeriod(),rental.getHouseId()).iterator().hasNext()) { //todo possivelmente mal
+            LogResource.writeLine("    rental date is already taken for the given house");
             throw new WebApplicationException("Rental date is already taken for the given house", Response.Status.CONFLICT);
-
+        }
         //check if house id exists
         if(db.getHouseById(houseId).iterator().hasNext() == false)
             throw new NotFoundException("House not found");
 
         //check if user is logged in
-        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, rental.getRenterID());
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, rental.getRenterId());
         if(isOwnerLoggedIn == false)
             throw new WebApplicationException("Renter not logged in", Response.Status.UNAUTHORIZED);
 
@@ -148,7 +164,7 @@ public class RentalResource {
         CosmosPagedIterable<AvailabityDao> availabilities = db.getAvailabilitiesForHouse(rental.getHouseId());
 
         SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy");
-        Date rentalDate = sdf.parse(rental.getDate());
+        Date rentalDate = sdf.parse(rental.getPeriod());
 
         boolean isInsideAvailability = false;
         double price = 0;
@@ -156,14 +172,16 @@ public class RentalResource {
             //check if is between any availability period
             String startDate = a.getFromDate(),
                     endDate = a.getToDate();
-            if (rental.getDate().compareTo(startDate) >= 0 && rental.getDate().compareTo(endDate) <= 0) {
+            if (rental.getPeriod().compareTo(startDate) >= 0 && rental.getPeriod().compareTo(endDate) <= 0) {
                 isInsideAvailability = true;
                 price = a.getCost();
                 break;
             }
         }
-        if(!isInsideAvailability)
+        if(!isInsideAvailability) {
+            LogResource.writeLine("    rental date is not inside any availability period");
             throw new WebApplicationException("Rental date is not inside any availability period", Response.Status.CONFLICT);
+        }
 
         //update rental
         rental.setPrice(price);

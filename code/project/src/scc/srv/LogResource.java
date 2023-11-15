@@ -17,6 +17,11 @@ public class LogResource {
         LOG += line + "\n";
     }
 
+    public static void reset() {
+        LOG = "";
+        writeLine("Log reset");
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getLog() {

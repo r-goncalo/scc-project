@@ -2,7 +2,6 @@ package scc.srv;
 
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.Resource;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MediaType;
@@ -185,7 +184,7 @@ public class HouseResource {
             houses = db.getHousesByLocation(location);
         } else {
             LogResource.writeLine("all houses");
-            houses = db.getAllHouses();
+            houses = db.getHouses();
         }
 
 
