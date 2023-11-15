@@ -53,4 +53,8 @@ public class House {
         return photoIds;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }

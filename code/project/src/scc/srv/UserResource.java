@@ -37,7 +37,6 @@ public class UserResource {
     public static User newUser(User user){
 
         LogResource.writeLine("\nUSER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
-
         
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -48,6 +47,7 @@ public class UserResource {
         //chek if user id is not "Deleted User"
         if(user.getId().equals("Deleted User"))
             throw new WebApplicationException("User id cannot be \"Deleted User\"", Response.Status.CONFLICT);
+
 
         UserDAO u = new UserDAO(user);
         u.setPwd(Hash.of(user.getPwd()));
@@ -69,7 +69,7 @@ public class UserResource {
             if(cnt < MAX_RECENT_USERS_IN_CACHE)
                 jedis.incr(NUM_RECENT_USERS);
 
-            
+
             jedis.lpush(USERS_REDIS_KEY, mapper.writeValueAsString(userRedis));
             jedis.incr(NUM_USERS);
 
@@ -182,7 +182,7 @@ public class UserResource {
         //get users from redis
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
             ObjectMapper mapper = new ObjectMapper();
-            List<String> usersJson = jedis.lrange(MOST_RECENT_USERS_REDIS_KEY, 0, -1);
+            List<String> usersJson = jedis.lrange(USERS_REDIS_KEY, 0, -1);
             for (String userJson : usersJson) {
                 toReturn.add(mapper.readValue(userJson, User.class));
             }
@@ -211,6 +211,18 @@ public class UserResource {
     public static List<House> listHouses(@PathParam("id") String id) {
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
+        //list houses from cache
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+            ObjectMapper mapper = new ObjectMapper();
+            List<String> housesJson = jedis.lrange("houses:" + id, 0, -1);
+            List<House> toReturn = new ArrayList<>();
+            for (String houseJson : housesJson) {
+                toReturn.add(mapper.readValue(houseJson, House.class));
+            }
+            return toReturn;
+        } catch (Exception e) {
+            LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
+        }
         //check if user exists
         if(db.getUserById(id).iterator().hasNext() == false)
             throw new NotFoundException("User not found");

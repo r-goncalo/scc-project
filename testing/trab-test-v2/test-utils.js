@@ -16,13 +16,14 @@ module.exports = {
     selectHouse,
     selectRental,
     selectQuestion,
+    genNewHouseReply,
+    selectUserAndHouse,
     random20,
     random50,
     random70,
     random80,
     random90,
-    getRandomDates,
-    genNewRental
+    getRandomDates
 }
 
 const { faker } = require('@faker-js/faker');
@@ -129,14 +130,14 @@ function selectImageToDownload(context, events, done) {
 /**
  * Select an image to download.
  */
-function selectUser(context, events, done) {
-	if( userIds.length > 0) {
-		context.vars.userId = userIds.sample()
-	} else {
-		delete context.vars.userId
-	}
-	return done()
-}
+// function selectUser(context, events, done) {
+// 	if( userIds.length > 0) {
+// 		context.vars.userId = userIds.sample()
+// 	} else {
+// 		delete context.vars.userId
+// 	}
+// 	return done()
+// }
 
 /**
  * Generate data for a new user using Faker
@@ -174,7 +175,21 @@ function genNewUserReply(requestParams, response, context, ee, next) {
     return next()
 }
 
+function genNewHouseReply(requestParams, response, context, ee, next) {
+	if( response.statusCode >= 200 && response.statusCode < 300 && response.body.length > 0)  {
+		let h = JSON.parse( response.body)
+		houses.push(h)
+		fs.writeFileSync('houses.data', JSON.stringify(houses));
+	}
+    console.error("http:response status:")
+    console.error(response.statusCode)
+    console.error("Body:")
+    console.error(response.body)
+    return next()
+}
+
 function captureAuthCookie(requestParams, response, context, ee, next) {
+    console.error("CREATING NEW USER FOR HOUSES")
     console.error("http:response status:")
     console.error(response.statusCode)
     console.error("Body:")
@@ -184,12 +199,10 @@ function captureAuthCookie(requestParams, response, context, ee, next) {
     return next()
 }
 
-
 /**
  * Generate data for a new house using Faker
  */
 function genNewHouse(context, events, done) {
-    context.vars.id = `${faker.string.uuid()}`
     context.vars.name = `${faker.lorem.words({ min: 1, max: 3 })}`
     context.vars.location = locations.sample()
     context.vars.description = `${faker.lorem.paragraph()}`
@@ -204,18 +217,36 @@ function genNewHouse(context, events, done) {
  * Select user
  */
 function selectUser(context, events, done) {
-	if( users.length > 0) {
-		let user = users.sample()
-		context.vars.user = user.id
-		context.vars.pwd = user.pwd
-	} else {
-		delete context.vars.user
-		delete context.vars.pwd
-	}
-	return done()
+    if( users.length > 0) {
+	let user = users.sample()
+	context.vars.userid = user.id
+	context.vars.pwd = user.pwd
+    } else {
+	delete context.vars.userid
+	delete context.vars.pwd
+    }
+    return done()
 }
 
+function selectUserAndHouse(context, events, done){
+    if( users.length > 0) {
+	let user = users.sample()
+	context.vars.userid = user.id
+	context.vars.pwd = user.pwd
+    } else {
+	delete context.vars.userid
+	delete context.vars.pwd
+    }
 
+    if( houses.length > 0) {
+	let house = houses.sample()
+	context.vars.houseid = house.id
+    } else {
+	delete context.vars.houseid
+    }
+
+    return done()
+}
 /**
  * Select user
  */
@@ -241,7 +272,7 @@ function selectHouse(context, events, done) {
 	if( typeof context.vars.user !== 'undefined' && typeof context.vars.housesLst !== 'undefined' && 
 			context.vars.housesLst.constructor == Array && context.vars.housesLst.length > 0) {
 		let house = context.vars.housesLst.sample()
-		context.vars.houseId = house.id;
+		context.vars.houseid = house.id;
 		context.vars.owner = house.owner;
 	} else
 		delete context.vars.houseId
@@ -357,9 +388,3 @@ function random90(context, next) {
 }
 
 
-function genNewRental(context, events, done) {
-    const user = users.sample();
-    context.vars.renterid = user.id; // Assuming users array is available
-    context.vars.pwd = user.pwd
-    return done();
-}

@@ -35,7 +35,7 @@ public class RentalResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public static Rental newRental(@CookieParam("scc:session") Cookie session, @PathParam("houseId") String houseId , Rental rental) {
-
+        LogResource.writeLine("    new rental:"+rental.toString());
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 

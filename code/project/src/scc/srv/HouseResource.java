@@ -32,7 +32,7 @@ public class HouseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public static House newHouse(@CookieParam("scc:session") Cookie session, House house){
-        LogResource.writeLine("New house: " + house);
+        LogResource.writeLine("New house: " + house.getOwnerId());
 
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -42,16 +42,16 @@ public class HouseResource {
             throw new WebApplicationException("User" + house.getOwnerId() + " not found", Response.Status.NOT_FOUND);
         }
 
-        //check if owner is logged in with session cookie use the verify user method
-        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId()); //todo autenticação a falhar a
+        //check if owner is logged in with session cookie
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId());
         if(isOwnerLoggedIn == false) {
             LogResource.writeLine("Owner not logged in");
             throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
         }
 
-        HouseDao h = new HouseDao(house);
         UUID uniqueID = UUID.randomUUID();
-        h.setId(uniqueID.toString());
+        house.setId(uniqueID.toString());
+        HouseDao h = new HouseDao(house);
         db.putHouse(h);
 
 
