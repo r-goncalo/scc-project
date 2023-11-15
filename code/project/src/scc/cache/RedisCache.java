@@ -94,4 +94,8 @@ public class RedisCache {
 		return true;
 
 	}
+
+	public static void reset() {
+		getCachePool().getResource().flushAll();
+	}
 }
