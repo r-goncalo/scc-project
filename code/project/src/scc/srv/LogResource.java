@@ -13,8 +13,6 @@ public class LogResource {
 
     private static String LOG = "";
 
-    private static String REDIS_LOG_KEY = "logcache";
-
     public static void writeLine(String line){
 
         LOG += line + "\n";
@@ -37,6 +35,8 @@ public class LogResource {
     public void cleanLog() {
         LOG = "";
     }
+
+    public static void reset() {LOG = "";}
 
 
 
