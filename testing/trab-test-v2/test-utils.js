@@ -77,24 +77,31 @@ function randomSkewed( val){
 
 // Loads data about images from disk
 function loadData() {
-	var i
-	var basefile
-	if( fs.existsSync( '/images')) 
-		basefile = '/images/house.'
-	else
-		basefile =  'images/house.'	
-	for( i = 1; i <= 40 ; i++) {
-		var img  = fs.readFileSync(basefile + i + '.jpg')
-		images.push( img)
-	}
-	var str;
-	if( fs.existsSync('users.data')) {
-		str = fs.readFileSync('users.data','utf8')
-		users = JSON.parse(str)
-	} 
+    var i
+    var basefile
+    if( fs.existsSync( '/images')) 
+	basefile = '/images/house.'
+    else
+	basefile =  'images/house.'	
+    for( i = 1; i <= 40 ; i++) {
+	var img  = fs.readFileSync(basefile + i + '.jpg')
+	images.push( img)
+    }
+    var str;
+    if( fs.existsSync('users.data')) {
+	str = fs.readFileSync('users.data','utf8')
+	users = JSON.parse(str)
+    }
+
+    if( fs.existsSync('houses.data')) {
+	str = fs.readFileSync('houses.data','utf8')
+	houses = JSON.parse(str)
+    } 
 }
 
 loadData();
+// console.error(houses)
+// console.error(users)
 
 /**
  * Sets the body to an image, when using images.
@@ -233,18 +240,12 @@ function selectUserAndHouse(context, events, done){
 	let user = users.sample()
 	context.vars.userid = user.id
 	context.vars.pwd = user.pwd
-    } else {
-	delete context.vars.userid
-	delete context.vars.pwd
-    }
+    } 
 
     if( houses.length > 0) {
 	let house = houses.sample()
 	context.vars.houseid = house.id
-    } else {
-	delete context.vars.houseid
-    }
-
+    } 
     return done()
 }
 /**

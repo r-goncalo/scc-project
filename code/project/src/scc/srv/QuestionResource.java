@@ -12,10 +12,7 @@ import scc.data.QuestionDao;
 import scc.data.UserDAO;
 import scc.db.CosmosDBLayer;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Path("/house/{houseId}/question")
 public class QuestionResource {
@@ -32,6 +29,7 @@ public class QuestionResource {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
+        question.setId(UUID.randomUUID().toString());
         QuestionDao q = new QuestionDao(question);
         CosmosPagedIterable<HouseDao> h = db.getHouseById(houseId);
 
@@ -43,6 +41,7 @@ public class QuestionResource {
         //check if house exists
         if(h.iterator().hasNext() == false)
             throw new NotFoundException("House not found");
+
         //check if user is logged in
         boolean isLoggedIn = RedisCache.isSessionOfUser(session, userIter.next().getId());
         if(isLoggedIn == false)
@@ -50,7 +49,6 @@ public class QuestionResource {
 
 
         if (q.getReplyToId() != null) {
-
             //check if question to reply to exists
             if (db.getQuestionByIdAndHouse(houseId,q.getReplyToId()).iterator().hasNext() == false)
                 throw new NotFoundException("Question to reply to not found");
