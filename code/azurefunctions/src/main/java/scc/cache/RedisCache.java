@@ -41,11 +41,11 @@ public class RedisCache {
 	 */
 	public synchronized static void writeLogLine(String line){
 
-		try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+		Jedis jedis = RedisCache.getCachePool().getResource();
 
-			jedis.append(LOG_KEY, line + "\n"); //the index will be "user" + <that user's id>
+        jedis.append(LOG_KEY, line + "\n"); //the index will be "user" + <that user's id>
 
-		}
+
 
 	}
 

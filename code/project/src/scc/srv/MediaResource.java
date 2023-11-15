@@ -61,48 +61,13 @@ public class MediaResource
 
 			LogResource.writeLine("   Error uploading: " + e.getMessage());
 
-			throw new InternalServerErrorException("Error uploading");
+			throw e;
 		}
 
 		return key;
 
 	}
 
-	/**
-	 * Post a new image that was uploaded in other region.
-	 */
-	@POST
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
-	public void propagatedUpload(@PathParam("id") String id, byte[] contents) {
-
-		LogResource.writeLine("MEDIA : PROPAGATED UPLOAD : id = " + id);
-
-		try {
-			BinaryData data = BinaryData.fromBytes(contents);
-
-			// Get container client
-			BlobContainerClient containerClient = new BlobContainerClientBuilder()
-					.connectionString(STORAGE_CONNECT_STRING)
-					.containerName(CONTAINER_NAME)
-					.buildClient();
-
-			// Get client to blob
-			BlobClient blob = containerClient.getBlobClient( id);
-
-			// Upload contents from BinaryData (check documentation for other alternatives)
-			blob.upload(data);
-
-			LogResource.writeLine("    File uploaded");
-
-		} catch( Exception e) {
-
-			LogResource.writeLine("   Error uploading: " + e.getMessage());
-
-			throw new InternalServerErrorException("Error uploading");
-		}
-
-	}
 
 	/**
 	 * Return the contents of an image. Throw an appropriate error message if

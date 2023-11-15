@@ -17,7 +17,9 @@ import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 
 import java.awt.*;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 
 /**
  * Azure Functions with Blob Trigger.
@@ -40,7 +42,7 @@ public class BlobReplication
 								@BindingName("name") String blobname,
 								final ExecutionContext context) {
 
-		RedisCache.writeLogLine("FUNCTIONS : PROP");
+		RedisCache.writeLogLine("FUNCTIONS : PROPAGATING MEDIA FILE : ID = " + blobname);
 
 		int maxTries = 5;
 		for(String region : REGIONS){
@@ -48,13 +50,27 @@ public class BlobReplication
 			if(!region.equals(REGION)){
 
 
-				//Response r;
-				//do {
-				//	r = (ClientBuilder.newClient()).target("https://scc24app" + region + "60519.azurewebsites.net/rest").path(CONTAINER_NAME)
-				//			.request()
-				//			.post(Entity.entity(content, MediaType.APPLICATION_OCTET_STREAM));
-				//
-				//} while (r.getStatusInfo().getStatusCode() < 200 || r.getStatusInfo().getStatusCode() >= 300 && maxTries-- > 0); //while the response does not return "ok"
+				Response r = null;
+				do {
+
+					RedisCache.writeLogLine("    propagating media file to: " + region);
+
+					try {
+
+						r = (ClientBuilder.newClient()).target("https://scc24app" + region + "60519.azurewebsites.net/rest/media")
+								.request()
+								.post(Entity.entity(content, MediaType.APPLICATION_OCTET_STREAM));
+
+						RedisCache.writeLogLine("    propagating media file to: " + region + " response code: " + r.getStatusInfo().getStatusCode());
+
+
+					}catch (Exception e){
+
+						RedisCache.writeLogLine("    error propagating media file to: " + region + ": " + e.getClass() + " " + e.getMessage());
+
+					}
+
+				} while (r.getStatusInfo().getStatusCode() != 409 && (r.getStatusInfo().getStatusCode() < 200 || r.getStatusInfo().getStatusCode() >= 300 && maxTries-- > 0)); //while the response does not return "ok"
 			}
 
 		}

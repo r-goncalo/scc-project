@@ -30,8 +30,6 @@ public class LogFunctions {
 
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
-            jedis.append(LOG_KEY, "FUNCTIONS : GETTING LOG\n");
-
             String val = jedis.get(LOG_KEY);
 
             return request.createResponseBuilder(HttpStatus.OK).body(val).build();
@@ -48,7 +46,7 @@ public class LogFunctions {
     }
 
     @FunctionName("clear-functions-log")
-    public HttpResponseMessage clearFunctionsLog(@HttpTrigger(name = "req",
+    public void clearFunctionsLog(@HttpTrigger(name = "req",
             methods = {HttpMethod.POST },
             authLevel = AuthorizationLevel.ANONYMOUS,
             route = "serverless/log")
@@ -65,9 +63,6 @@ public class LogFunctions {
             // Log the exception
             context.getLogger().severe("Error: " + e.getMessage());
 
-            // Return an error response
-            return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Internal Server Error").build();
         }
 
     }
