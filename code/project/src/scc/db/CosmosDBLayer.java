@@ -185,9 +185,9 @@ public class CosmosDBLayer {
 	 */
 
 	//make a function to get all the rentals in a given date for a given house id
-	public CosmosPagedIterable<RentalDao> getHouseRentalForDate(Date date, String houseId) {
+	public CosmosPagedIterable<RentalDao> getHouseRentalForDate(String date, String houseId) {
 		init();
-		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.houseId=\"" + houseId + "\" AND rentals.day=\"" + date.toString() + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.houseId=\"" + houseId + "\" AND rentals.date=\"" + date + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
 
 	// list of rentals that will have a discounted price in the following two months
@@ -250,14 +250,14 @@ public class CosmosDBLayer {
 		return questions.createItem(question);
 	}
 
-	public CosmosPagedIterable<Object> getQuestionById(String id) {
+	public CosmosPagedIterable<QuestionDao> getQuestionById(String id) {
 		init();
-		return questions.queryItems("SELECT * FROM questions WHERE questions.id=\"" + id + "\"", new CosmosQueryRequestOptions(), Object.class);
+		return questions.queryItems("SELECT * FROM questions WHERE questions.id=\"" + id + "\"", new CosmosQueryRequestOptions(), QuestionDao.class);
 	}
 
-	public CosmosPagedIterable<Object> getQuestions() {
+	public CosmosPagedIterable<QuestionDao> getQuestions() {
 		init();
-		return questions.queryItems("SELECT * FROM questions ", new CosmosQueryRequestOptions(), Object.class);
+		return questions.queryItems("SELECT * FROM questions ", new CosmosQueryRequestOptions(), QuestionDao.class);
 	}
 
 	//given a question id check if there exists a question with the same replytoid
@@ -294,5 +294,24 @@ public class CosmosDBLayer {
 		return availabilities.queryItems("SELECT * FROM availabilities WHERE availabilities.houseId=\"" + houseId + "\" AND availabilities.fromDate <= \"" + date + "\" AND availabilities.toDate >= \"" + date + "\"", new CosmosQueryRequestOptions(), Availabity.class);
 	}
 
+	//get all availabilities
+	public CosmosPagedIterable<AvailabityDao> getAvailabilities() {
+		init();
+		return availabilities.queryItems("SELECT * FROM availabilities ", new CosmosQueryRequestOptions(), AvailabityDao.class);
+	}
+
+	/*
+	//////////////// OTHER ////////////////////
+	 */
+
+	public void reset() {
+		init();
+		getUsers().stream().forEach(userDAO -> delUserById(userDAO.getId()));
+		getHouses().stream().forEach(houseDao -> delHouseById(houseDao.getId()));
+		getRentals().stream().forEach(rentalDao -> rentals.deleteItem(rentalDao.getId(), new PartitionKey(rentalDao.getId()), new CosmosItemRequestOptions()));
+		getQuestions().stream().forEach(questionDao -> questions.deleteItem(questionDao.getId(), new PartitionKey(questionDao.getId()), new CosmosItemRequestOptions()));
+		getAvailabilities().stream().forEach(availabityDao -> availabilities.deleteItem(availabityDao.getId(), new PartitionKey(availabityDao.getId()), new CosmosItemRequestOptions()));
+
+	}
 
 }
