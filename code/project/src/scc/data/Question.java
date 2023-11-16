@@ -48,4 +48,7 @@ public class Question {
         return replyToId;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

@@ -14,6 +14,7 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import scc.data.*;
 
 import java.util.Date;
+import java.util.List;
 
 import scc.srv.LogResource;
 
@@ -122,6 +123,12 @@ public class CosmosDBLayer {
 		return users.queryItems("SELECT * FROM users ", new CosmosQueryRequestOptions(), UserDAO.class);
 	}
 
+	public UserDAO updateUser(UserDAO userDAO) {
+		init();
+		CosmosItemResponse<UserDAO> response = users.upsertItem(userDAO);
+		return response.getItem();
+	}
+
 	/*
 	//////////////////// HOUSES ///////////////
 	*/
@@ -168,10 +175,19 @@ public class CosmosDBLayer {
 	}
 
 
-	public CosmosPagedIterable<HouseDao> getHouseByLocationAndTime(String location, Date start, Date end) {
-		init();
-		// select * from house where house.location = location and house.id not in (select houseId from rental where rental.day between start and end)
-		return houses.queryItems("SELECT * FROM houses WHERE houses.location=\"" + location + "\" AND houses.id NOT IN (SELECT rentals.houseId FROM rentals WHERE rentals.day BETWEEN \"" + start.toString() + "\" AND \"" + end.toString() + "\")", new CosmosQueryRequestOptions(), HouseDao.class);
+	public List<HouseDao> getHousesByLocationAndTime(String location, String startDate, String endDate) {
+		init(); //TODO CONFIRM THIS. very important
+
+		CosmosPagedIterable<HouseDao> allHouses = getHouses();
+
+		CosmosPagedIterable<AvailabityDao> allAvailabilities = getAvailabilities();
+		return allHouses.stream().filter(houseDao -> houseDao.getLocation().equals(location)
+				&& allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+						&& startDate.compareTo(availabityDao.getFromDate()) >= 0
+						&& endDate.compareTo(availabityDao.getToDate()) <= 0
+				)
+				.count() > 0 ).toList();
+
 	}
 
 
@@ -189,6 +205,34 @@ public class CosmosDBLayer {
 		HouseDao h = house.iterator().next();
 		h.setOwnerId(ownerId);
 		return houses.upsertItem(h);
+	}
+
+	public List<HouseDao> getHousesByTime(String startDate, String endDate) {
+		init(); //TODO CONFIRM THIS. very important
+
+		CosmosPagedIterable<HouseDao> allHouses = getHouses();
+
+		CosmosPagedIterable<AvailabityDao> allAvailabilities = getAvailabilities();
+		if (endDate == null) {
+			//get all the availabilities for the houses in the location with the fromdate greater than startDate
+
+			return allHouses.stream().filter(houseDao -> allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+							&& startDate.compareTo(availabityDao.getToDate()) <= 0
+					)
+					.count() > 0 ).toList();
+		} else if (startDate == null) {
+			return allHouses.stream().filter(houseDao -> allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+							&& endDate.compareTo(availabityDao.getFromDate()) >= 0
+					)
+					.count() > 0 ).toList();
+
+		} else {
+			return allHouses.stream().filter(houseDao ->  allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+							&& startDate.compareTo(availabityDao.getToDate()) <= 0
+							&& endDate.compareTo(availabityDao.getFromDate()) >= 0
+					)
+					.count() > 0 ).toList();
+		}
 	}
 
 	/*
@@ -249,6 +293,12 @@ public class CosmosDBLayer {
 		init();
 		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.id=\"" + rentalid + "\" AND rentals.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
 	}
+
+	public CosmosPagedIterable<RentalDao> getrentalbyidandhouse(String houseId, String rentalid) {
+		init();
+		return rentals.queryItems("SELECT * FROM rentals WHERE rentals.id=\"" + rentalid + "\" AND rentals.houseId=\"" + houseId + "\"", new CosmosQueryRequestOptions(), RentalDao.class);
+	}
+
 
 
 	/*
@@ -323,6 +373,9 @@ public class CosmosDBLayer {
 		getQuestions().stream().forEach(questionDao -> questions.deleteItem(questionDao.getId(), new PartitionKey(questionDao.getId()), new CosmosItemRequestOptions()));
 		getAvailabilities().stream().forEach(availabityDao -> availabilities.deleteItem(availabityDao.getId(), new PartitionKey(availabityDao.getId()), new CosmosItemRequestOptions()));
 
+
+
 	}
+
 
 }

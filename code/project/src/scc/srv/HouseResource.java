@@ -25,6 +25,8 @@ public class HouseResource {
     public static final String MOST_RECENT_HOUSES_REDIS_KEY = "MostRecentHouses";
     public static final String NUM_HOUSES = "NumHouses";
     public static final String NUM_RECENT_HOUSES = "NumRecentHouses";
+    public static final String NUM_AVAILABILITIES = "numAvailabilities";
+    public static final String AVAILABILITIES = "availabilities";
 
     //new house given session cookie and house object
     @POST
@@ -32,7 +34,7 @@ public class HouseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public static House newHouse(@CookieParam("scc:session") Cookie session, House house){
-        LogResource.writeLine("New house: " + house);
+        LogResource.writeLine("New house: " + house.getOwnerId());
 
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -42,16 +44,16 @@ public class HouseResource {
             throw new WebApplicationException("User" + house.getOwnerId() + " not found", Response.Status.NOT_FOUND);
         }
 
-        //check if owner is logged in with session cookie use the verify user method
-        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId()); //todo autenticação a falhar a
+        //check if owner is logged in with session cookie
+        boolean isOwnerLoggedIn = RedisCache.isSessionOfUser(session, house.getOwnerId());
         if(isOwnerLoggedIn == false) {
             LogResource.writeLine("Owner not logged in");
             throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
         }
 
-        HouseDao h = new HouseDao(house);
         UUID uniqueID = UUID.randomUUID();
-        h.setId(uniqueID.toString());
+        house.setId(uniqueID.toString());
+        HouseDao h = new HouseDao(house);
         db.putHouse(h);
 
 
@@ -157,41 +159,157 @@ public class HouseResource {
         return houseDao.toHouse();
     }
 
-    /**
-     * Lists the ids of images stored.
-     */
+
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<House> listHouses() {
+    public List<House> listHouses(@QueryParam("initDate") String startTime, @QueryParam("endDate") String endTime, @QueryParam("location") String location,
+                                  @QueryParam("st") String start, @QueryParam("len") String length, @QueryParam("discount") String discount) {
+        LogResource.writeLine("List houses");
+        Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
-        List<House> toReturn = new ArrayList<>();
 
-        //get all the houses from the redis
-        try{
-            ObjectMapper mapper = new ObjectMapper();
+        int startInt = 0;
+        int lenInt = Integer.MAX_VALUE/2;
+
+        if (start != null ){
+            startInt = Integer.parseInt(start);
+        }
+
+        if (length != null){
+            lenInt = Integer.parseInt(length);
+
+        }
+
+        if (lenInt == 0){
+            return new ArrayList<>();
+        }
+
+        //parse start time
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy"); //todo check if this is the right format
+        //check if string is in specified format
+        try {
+            if(startTime != null)
+                sdf.parse(startTime);
+            if(endTime != null)
+                sdf.parse(endTime);
+        } catch (ParseException e) {
+            LogResource.writeLine("Invalid date format");
+            throw new WebApplicationException("Invalid date format", Response.Status.BAD_REQUEST);
+        }
+
+
+
+        //redis
+        if(RedisCache.REDIS_ENABLED) {
             try (Jedis jedis = RedisCache.getCachePool().getResource()) {
-                List<String> lst = jedis.lrange(HOUSES_REDIS_KEY, 0, -1);
-                for( String s : lst){
-                    House h = mapper.readValue(s, House.class);
-                    toReturn.add(h);
+                ObjectMapper mapper = new ObjectMapper();
+                List<String> housesJson = jedis.lrange(HOUSES_REDIS_KEY, 0, -1);
+                List<House> toReturn = new ArrayList<>();
+
+                for (String houseJson : housesJson) {
+                    House house = mapper.readValue(houseJson, House.class);
+                    if(discount != null && discount.equals("1"))
+                        if(house.getDiscountMonth() != null)
+                            toReturn.add(house);
+                        else  toReturn.add(house);
                 }
+
+                //get all availabilites redis
+                List<String> availabilitiesJson = jedis.lrange(AVAILABILITIES, 0, -1);
+                List<Availabity> allAvailabilities = new ArrayList<>();
+                for (String availabilityJson : availabilitiesJson) {
+                    Availabity availability = mapper.readValue(availabilityJson, Availabity.class);
+                    allAvailabilities.add(availability);
+                }
+
+                if((startTime != null && endTime != null) && location != null){
+                    toReturn = toReturn.stream().filter(house -> house.getLocation().equals(location)
+                            && allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(house.getId())
+                                    && startTime.compareTo(availabityDao.getFromDate()) >= 0
+                                    && endTime.compareTo(availabityDao.getToDate()) <= 0
+                            )
+                            .count() > 0 ).toList();
+                } else if (startTime != null && endTime != null) {
+                    toReturn = toReturn.stream().filter(houseDao -> allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+                                    && startTime.compareTo(availabityDao.getFromDate()) >= 0
+                                    && endTime.compareTo(availabityDao.getToDate()) <= 0
+                            )
+                            .count() > 0 ).toList();
+                } else if (location != null) {
+                    toReturn = toReturn.stream().filter(house -> house.getLocation().equals(location)).toList();
+                }
+
+                LogResource.writeLine("    returning from cache");
+
+                if(discount!= null && discount.equals("1"))
+                    toReturn = toReturn.stream().filter(house -> house.getDiscountMonth() != null).toList();
+
+                if(startInt > toReturn.size())
+                    return new ArrayList<>();
+
+                List<House> ret;
+                ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+                return ret;
+
+            } catch (Exception e) {
+                LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
             }
-        } catch (Exception e){
-            LogResource.writeLine("Error getting houses from cache");
-            e.printStackTrace();
         }
 
-        if(toReturn.isEmpty()) {
-
-            Iterable<HouseDao> houses = CosmosDBLayer.getInstance().getAllHouses();
-
-            for (HouseDao house : houses) {
-                toReturn.add(house.toHouse());
-            }
+        //cosmos
+        CosmosPagedIterable<HouseDao> houses = null;
+        if((startTime != null && endTime != null) && location != null){
+            LogResource.writeLine("houses by location and time");
+            return db.getHousesByLocationAndTime(location, startTime, endTime).stream().map(HouseDao::toHouse).toList();
+        } else if (startTime != null && endTime != null) {
+            LogResource.writeLine("houses by time");
+            return db.getHousesByTime(startTime, endTime).stream().map(HouseDao::toHouse).toList();
+        } else if (location != null) {
+            LogResource.writeLine("houses by location");
+            houses = db.getHousesByLocation(location);
+        } else {
+            LogResource.writeLine("all houses");
+            houses = db.getHouses();
         }
-        return toReturn;
+
+        if(houses == null)
+            throw new WebApplicationException("Bad request", Response.Status.BAD_REQUEST);
+
+
+        List<House> toReturn = new ArrayList<>();
+        for (HouseDao h : houses) {
+            if(discount != null && discount.equals("1"))
+                if (h.getDiscountMonth() != null)
+                    toReturn.add(new House(h));
+                else
+                    toReturn.add(h.toHouse());
+        }
+
+
+        List<House> ret = new ArrayList<>();
+
+
+        for (HouseDao h : houses) {
+            if(discount != null && discount.equals("1"))
+                if (h.getDiscountMonth() != null)
+                    ret.add(new House(h));
+                else
+                    ret.add(h.toHouse());
+        }
+
+        if(startInt > toReturn.size())
+            return new ArrayList<>();
+
+
+        ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+        return ret;
+
     }
+
+
 
     @DELETE
     @Path("/house/{id}")
@@ -237,60 +355,13 @@ public class HouseResource {
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
-    @GET
-    @Path("/location/{location}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<House> getHousesByLocation(@PathParam("location") String location) {
-
-        Locale.setDefault(Locale.US);
-        CosmosDBLayer db = CosmosDBLayer.getInstance();
-
-        CosmosPagedIterable<HouseDao> houses = db.getHousesByLocation(location);
-
-        List<House> ret = new ArrayList<>();
-
-        for (HouseDao h : houses)
-            ret.add(new House(h));
-
-        return ret;
-    }
-
-    //get all the houses in a given location and whithin a given time range from start to end
-    @GET
-    @Path("/location/{location}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<House> getHousesByLocationAndTime(@PathParam("location") String location, @QueryParam("start") String start, @QueryParam("end") String end) {
-
-        Locale.setDefault(Locale.US);
-        CosmosDBLayer db = CosmosDBLayer.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy"); //todo check if this is the right format
-
-        Date startDate = null;
-        Date endDate = null;
-        try {
-            startDate = sdf.parse(start);
-            endDate = sdf.parse(end);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        CosmosPagedIterable<HouseDao> houses = db.getHouseByLocationAndTime(location, startDate, endDate); //todo possivélmente mal
-
-        List<House> ret = new ArrayList<>();
-
-        for (HouseDao h : houses)
-            ret.add(new House(h));
-
-        return ret;
-    }
-
 
     //post availability
     @POST
     @Path("/{id}/available")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public static Availabity newAvailability(@CookieParam("scc:session") Cookie session, @PathParam("id") String houseId, Availabity availabity ) throws ParseException {
+    public static Availabity newAvailability(@CookieParam("scc:session") Cookie session, @PathParam("id") String houseId, Availabity availabity ) {
         LogResource.writeLine("New availability: " + availabity);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
@@ -309,24 +380,36 @@ public class HouseResource {
             throw new WebApplicationException("Owner not logged in", Response.Status.UNAUTHORIZED);
         }
 
+        //check date format
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM"); //todo check if this is the right format
+            sdf.parse(availabity.getFromDate());
+            sdf.parse(availabity.getToDate());
+        } catch (ParseException e) {
+            LogResource.writeLine("Invalid date format");
+            throw new WebApplicationException("Invalid date format", Response.Status.BAD_REQUEST);
+        }
+
+
         //first get list of availabilities for the house
         CosmosPagedIterable<AvailabityDao> availabilities = db.getAvailabilitiesForHouse(houseId);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
-
-        //todo rever bem isto porque pode star errado
-        Date start = dateFormat.parse(availabity.getFromDate());
-        Date end = dateFormat.parse(availabity.getToDate());
+        String start = availabity.getFromDate();
+        String end = availabity.getToDate();
 
         for (AvailabityDao a : availabilities) {
-            Date aStart = dateFormat.parse(a.getFromDate());
-            Date aEnd = dateFormat.parse(a.getToDate());
-            // check if start and end does not intersect aStart and aEnd
-            if (start.compareTo(aStart) >= 0 && start.compareTo(aEnd) <= 0) {
-                LogResource.writeLine("Availability date is already taken for the given house");
-                throw new WebApplicationException("Availability date is already taken for the given house", Response.Status.CONFLICT);
+            String aStart = a.getFromDate();
+            String aEnd = a.getToDate();
+            if((start.compareTo(aStart) >= 0 && start.compareTo(aEnd) <= 0) ||
+                    (end.compareTo(aStart) >= 0 && end.compareTo(aEnd) <= 0) ||
+                    (start.compareTo(aStart) <= 0 && end.compareTo(aEnd) >= 0) || (start.compareTo(aStart) >= 0 && end.compareTo(aEnd) <= 0) ) { //todo check if this is correct
+                // check if start and end does not intersect a's start and end date
+                LogResource.writeLine("Availability period intersects with another availability period");
+                throw new WebApplicationException("Availability period intersects with another availability period", Response.Status.CONFLICT);
             }
-
+            // check if start and end does not intersect a's start and end date
+            LogResource.writeLine("Availability period intersects with another availability period");
+            throw new WebApplicationException("Availability period intersects with another availability period", Response.Status.CONFLICT);
         }
 
         // put availability in db
@@ -339,6 +422,9 @@ public class HouseResource {
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
             ObjectMapper mapper = new ObjectMapper();
             jedis.set("availability:"+availabity.getId(), mapper.writeValueAsString(availabity));
+            jedis.lpush(AVAILABILITIES, mapper.writeValueAsString(availabity));
+            jedis.incr(NUM_AVAILABILITIES);
+
         } catch (Exception e){
             e.printStackTrace();
         }

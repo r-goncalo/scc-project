@@ -75,6 +75,45 @@ public class UserResource {
 
     }
 
+    //update user (not implemented)
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public static User updateUser(@PathParam("id") String id, @CookieParam("scc:session") Cookie session, User user){
+        LogResource.writeLine("\nUSER : UPDATE USER : id = " + id + ", name = " + user.getName() + ", pwd = " + user.getPwd());
+
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        //check if user is logged in
+        boolean isLoggedIn = RedisCache.isSessionOfUser(session, id);
+        if(isLoggedIn == false)
+            throw new WebApplicationException("User not logged in", Response.Status.UNAUTHORIZED);
+
+        //check if user exists
+        if(db.getUserById(id).iterator().hasNext() == false)
+            throw new NotFoundException("User not found");
+
+        //check if id is the same as user's id
+        if(!id.equals(user.getId()))
+            throw new WebApplicationException("User id does not match", Response.Status.CONFLICT);
+
+
+        //update user
+        User ret = db.updateUser(new UserDAO(user)).toUser();
+
+        //update redis
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+            ObjectMapper mapper = new ObjectMapper();
+            jedis.set("user:" + id, mapper.writeValueAsString(ret));
+        } catch (Exception e) {
+            LogResource.writeLine("    error when putting in cache: " + e.getClass() + ": " + e.getMessage());
+        }
+
+        return ret;
+    }
+
+
     /**
      * Note: This method is not needed
      * Note: missing password implementation
@@ -212,13 +251,6 @@ public class UserResource {
 
         db.delUserById(id);
 
-        //update user's houses with owner id "Deleted User"
-        CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);
-
-        for (HouseDao house : houses)
-            db.updateHouseOwner(house.getId(), "Deleted User");
-
-
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             jedis.del("user:"+id);
@@ -231,7 +263,7 @@ public class UserResource {
         } catch (Exception e) {
             LogResource.writeLine("    error when deleting from cache: " + e.getClass() + ": " + e.getMessage());
         }
-        
+
 
         LogResource.writeLine("    user deleted with success");
 
@@ -363,40 +395,143 @@ public class UserResource {
     @GET
     @Path("/{id}/houses")
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<House> listHouses(@PathParam("id") String id) {
+    public static List<House> listHouses(@PathParam("id") String id,@QueryParam("st") String start, @QueryParam("len") String length) {
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+        int startInt = 0;
+        int lenInt = Integer.MAX_VALUE/2;
+
+        if (start != null ){
+            startInt = Integer.parseInt(start);
+        }
+
+        if (length != null){
+            lenInt = Integer.parseInt(length);
+
+        }
+
+        if (lenInt == 0){
+            return new ArrayList<>();
+        }
 
         //list houses from cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
-
             ObjectMapper mapper = new ObjectMapper();
-
-            List<String> housesJson = jedis.lrange("houses:" + id, 0, -1);
-
+            List<String> housesJson = jedis.lrange(HouseResource.HOUSES_REDIS_KEY, 0, -1);
             List<House> toReturn = new ArrayList<>();
+            for (String houseJson : housesJson) {
+                House house = mapper.readValue(houseJson, House.class);
+                if (house.getOwnerId().equals(id)) {
+                    toReturn.add(house);
+                }
+            }
 
-            for (String houseJson : housesJson)
-                toReturn.add(mapper.readValue(houseJson, House.class));
+            if(startInt > toReturn.size())
+                return new ArrayList<>();
 
-            return toReturn;
+            List<House> ret;
+            ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+            return ret;
 
         } catch (Exception e) {
             LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
         }
-
         //check if user exists
         if(db.getUserById(id).iterator().hasNext() == false)
             throw new NotFoundException("User not found");
 
         CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);
 
-        List<House> toReturn = new ArrayList<>();
+        List<House> toReturn = new ArrayList<>((int) houses.stream().count());
+        for (HouseDao house : houses) {
+            if (house.getOwnerId().equals(id))
+                toReturn.add(house.toHouse());
+        }
 
-        for (HouseDao house : houses)
-            toReturn.add(house.toHouse());
+        if(startInt > toReturn.size())
+            return new ArrayList<>();
 
-        return toReturn;
+        List<House> ret;
+        ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+        return ret;
     }
+
+    //list rentals
+    @GET
+    @Path("/{id}/rentals")
+    @Produces(MediaType.APPLICATION_JSON)
+    public static List<Rental> listRentals(@PathParam("id") String id, @QueryParam("st") String start, @QueryParam("len") String length) {
+        LogResource.writeLine("\nUSER : LIST RENTALS : id = " + id);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+        int startInt = 0;
+        int lenInt = Integer.MAX_VALUE/2;
+
+        if (start != null ){
+            startInt = Integer.parseInt(start);
+        }
+
+        if (length != null){
+            lenInt = Integer.parseInt(length);
+
+        }
+
+        if (lenInt == 0){
+            return new ArrayList<>();
+        }
+        //check if user exists
+        if(db.getUserById(id).iterator().hasNext() == false)
+            throw new NotFoundException("User not found");
+
+        if(RedisCache.REDIS_ENABLED) {
+            try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+                ObjectMapper mapper = new ObjectMapper();
+                List<String> rentalsJson = jedis.lrange(RentalResource.RENTALS_REDIS_KEY, 0, -1);
+                List<Rental> toReturn = new ArrayList<>();
+
+                for (String rentalJson : rentalsJson) {
+                    Rental rental = mapper.readValue(rentalJson, Rental.class);
+                    LogResource.writeLine("    in cache rental: " + rental.getId() + ", renterId = " + rental.getRenterId());
+                    if (rental.getRenterId().equals(id)) {
+                        toReturn.add(rental);
+                    }
+                }
+                LogResource.writeLine("    returning from cache");
+
+                if(startInt > toReturn.size())
+                    return new ArrayList<>();
+
+                List<Rental> ret;
+                ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+                return ret;
+
+            } catch (Exception e) {
+                LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
+            }
+        }
+
+        CosmosPagedIterable<RentalDao> rentals = db.getRentalsForUser(id);
+
+        //return rentals starting at id and with lenght len
+        List<Rental> toReturn = new ArrayList<>((int) rentals.stream().count());
+
+        for (RentalDao rental : rentals) {
+            if (rental.getRenterId().equals(id))
+                toReturn.add(rental.toRental());
+        }
+
+        LogResource.writeLine("    returning from cosmos");
+
+        if(startInt > toReturn.size())
+            return new ArrayList<>();
+
+        List<Rental> ret;
+        ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+        return ret;
+    }
+
 
 
 

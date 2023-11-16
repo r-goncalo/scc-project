@@ -30,11 +30,25 @@ public class ControlResource
 	//delete everything in cache and cosmosdb
 	@Path("/reset")
 	@DELETE
-	public Response reset() {
-		CosmosDBLayer.getInstance().reset();
-		RedisCache.reset();
-		LogResource.reset();
-		return Response.ok().build();
+	public void reset() {
+
+		try {
+
+			LogResource.writeLine("Reseting data...");
+
+			CosmosDBLayer.getInstance().reset();
+			RedisCache.reset();
+			LogResource.reset();
+
+			LogResource.writeLine("Reset done");
+
+		}catch(Exception e){
+
+			LogResource.writeLine("    Exception " + e.getClass() + " reseting data, " + e.getMessage());
+
+		}
+
+
 	}
 
 
