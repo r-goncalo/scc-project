@@ -11,9 +11,7 @@ import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import redis.clients.jedis.Jedis;
 import scc.cache.RedisCache;
-import scc.data.Session;
-import scc.data.User;
-import scc.data.UserDAO;
+import scc.data.*;
 import scc.db.CosmosDBLayer;
 import scc.utils.Hash;
 
@@ -27,6 +25,7 @@ import java.util.*;
 public class UserResource {
 
     private static final String MOST_RECENT_USERS_REDIS_KEY = "mostRecentUsers";
+    private static final String USERS_REDIS_KEY = "users";
 
     public UserResource (){}
 
@@ -209,11 +208,30 @@ public class UserResource {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        verifyUser(session, id, pwd); //this will cause an exception in case of failing
+        User user = verifyUser(session, id, pwd); //this will cause an exception in case of failing
 
         db.delUserById(id);
 
-        RedisCache.getCachePool().getResource().del("user:" + id);
+        //update user's houses with owner id "Deleted User"
+        CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);
+
+        for (HouseDao house : houses)
+            db.updateHouseOwner(house.getId(), "Deleted User");
+
+
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+
+            jedis.del("user:"+id);
+            ObjectMapper mapper = new ObjectMapper();
+
+            String userString = mapper.writeValueAsString(user);
+            jedis.lrem(MOST_RECENT_USERS_REDIS_KEY, 0, userString);
+
+
+        } catch (Exception e) {
+            LogResource.writeLine("    error when deleting from cache: " + e.getClass() + ": " + e.getMessage());
+        }
+        
 
         LogResource.writeLine("    user deleted with success");
 
@@ -350,16 +368,22 @@ public class UserResource {
 
         //list houses from cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+
             ObjectMapper mapper = new ObjectMapper();
+
             List<String> housesJson = jedis.lrange("houses:" + id, 0, -1);
+
             List<House> toReturn = new ArrayList<>();
-            for (String houseJson : housesJson) {
+
+            for (String houseJson : housesJson)
                 toReturn.add(mapper.readValue(houseJson, House.class));
-            }
+
             return toReturn;
+
         } catch (Exception e) {
             LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
         }
+
         //check if user exists
         if(db.getUserById(id).iterator().hasNext() == false)
             throw new NotFoundException("User not found");
@@ -367,9 +391,10 @@ public class UserResource {
         CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);
 
         List<House> toReturn = new ArrayList<>();
-        for (HouseDao house : houses) {
+
+        for (HouseDao house : houses)
             toReturn.add(house.toHouse());
-        }
+
         return toReturn;
     }
 

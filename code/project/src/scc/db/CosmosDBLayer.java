@@ -180,6 +180,17 @@ public class CosmosDBLayer {
 		return houses.queryItems("SELECT * FROM houses", new CosmosQueryRequestOptions(), HouseDao.class);
 
 	}
+
+	//update the owner if of a given house
+	public CosmosItemResponse<HouseDao> updateHouseOwner(String houseId, String ownerId) {
+		init();
+		CosmosPagedIterable<HouseDao> house = houses.queryItems("SELECT * FROM houses WHERE houses.id=\"" + houseId + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+
+		HouseDao h = house.iterator().next();
+		h.setOwnerId(ownerId);
+		return houses.upsertItem(h);
+	}
+
 	/*
 	////////////////// RENTALS ////////////////
 	 */
