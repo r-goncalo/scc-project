@@ -237,28 +237,13 @@ public class CosmosDBLayer {
 		CosmosPagedIterable<HouseDao> allHouses = getHouses();
 
 		CosmosPagedIterable<AvailabityDao> allAvailabilities = getAvailabilities();
-		if (endDate == null) {
-			//get all the availabilities for the houses in the location with the fromdate greater than startDate
+		return allHouses.stream().filter(houseDao -> houseDao.getLocation().equals(location)
+				&& allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+						&& startDate.compareTo(availabityDao.getFromDate()) >= 0
+						&& endDate.compareTo(availabityDao.getToDate()) <= 0
+				)
+				.count() > 0 ).toList();
 
-			return allHouses.stream().filter(houseDao -> houseDao.getLocation().equals(location)
-					&& allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
-					&& startDate.compareTo(availabityDao.getFromDate()) >= 0)
-					.count() > 0 ).toList();
-		} else if (startDate == null) {
-			return allHouses.stream().filter(houseDao -> houseDao.getLocation().equals(location)
-					&& allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
-							&& endDate.compareTo(availabityDao.getToDate()) <= 0
-					)
-					.count() > 0 ).toList();
-
-		} else {
-			return allHouses.stream().filter(houseDao -> houseDao.getLocation().equals(location)
-					&& allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
-							&& startDate.compareTo(availabityDao.getFromDate()) >= 0
-							&& endDate.compareTo(availabityDao.getToDate()) <= 0
-					)
-					.count() > 0 ).toList();
-		}
 	}
 
 	//get all availabilities

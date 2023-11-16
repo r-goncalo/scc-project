@@ -121,23 +121,33 @@ public class QuestionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public static List<Question> listQuestions(@PathParam("houseId") String houseId,
                                                @QueryParam("noanswer") String noanswer,
-                                               @QueryParam("st") String startIndex,
+                                               @QueryParam("st") String start,
                                                @QueryParam("len") String length) {
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+        int startInt = 0;
+        int lenInt = Integer.MAX_VALUE/2;
 
-        int startIndexInt = 0;
-        int lengthInt = -1;
-        if(startIndex != null)
-            startIndexInt = Integer.parseInt(startIndex);
-        if(length != null)
-            lengthInt = Integer.parseInt(length);
+        if (start != null ){
+            startInt = Integer.parseInt(start);
+        }
+
+        if (length != null){
+            lenInt = Integer.parseInt(length);
+
+        }
+
+        if (lenInt == 0){
+            return new ArrayList<>();
+        }
+
+
         //get from cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            List<String> questions = jedis.lrange(QUESTION_REDIS_KEY, startIndexInt, startIndexInt + lengthInt - 1);
+            List<String> questions = jedis.lrange(QUESTION_REDIS_KEY, startInt, startInt + lenInt - 1);
 
             List<Question> ret = new ArrayList<>();
 
@@ -166,26 +176,26 @@ public class QuestionResource {
 
         CosmosPagedIterable<QuestionDao> questions = db.getQuestionsForHouse(houseId);
 
-        List<Question> ret = new ArrayList<>();
+        List<Question> toReturn = new ArrayList<>();
 
         if (noanswer.equals("1")) {
             for (QuestionDao q : questions) {
                 if (q.getReplyToId() == null)
-                    ret.add(new Question(q));
+                    toReturn.add(new Question(q));
             }
         } else {
             for (QuestionDao q : questions)
-                ret.add(new Question(q));
+                toReturn.add(new Question(q));
         }
 
-        if (lengthInt == -1)
-            return ret.subList(startIndexInt, ret.size() - 1);
-        else if(startIndexInt + lengthInt > ret.size())
-            return ret.subList(startIndexInt, ret.size() - 1);
-        else if (startIndexInt > ret.size())
+        if(startInt > toReturn.size())
             return new ArrayList<>();
 
-        return ret.subList(startIndexInt, startIndexInt + lengthInt - 1);
+        List<Question> ret;
+        ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+        return ret;
+
     }
 
 

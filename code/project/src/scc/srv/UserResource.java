@@ -210,24 +210,44 @@ public class UserResource {
     @GET
     @Path("/{id}/houses")
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<House> listHouses(@PathParam("id") String id,@QueryParam("st") String start, @QueryParam("len") String lenght) {
+    public static List<House> listHouses(@PathParam("id") String id,@QueryParam("st") String start, @QueryParam("len") String length) {
         CosmosDBLayer db = CosmosDBLayer.getInstance();
         int startInt = 0;
-        int lenInt = -1;
-        if(start != null && lenght != null){
+        int lenInt = Integer.MAX_VALUE/2;
+
+        if (start != null ){
             startInt = Integer.parseInt(start);
-            lenInt = Integer.parseInt(lenght);
+        }
+
+        if (length != null){
+            lenInt = Integer.parseInt(length);
+
+        }
+
+        if (lenInt == 0){
+            return new ArrayList<>();
         }
 
         //list houses from cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
             ObjectMapper mapper = new ObjectMapper();
-            List<String> housesJson = jedis.lrange("houses:" + id, startInt, startInt + lenInt - 1);
+            List<String> housesJson = jedis.lrange(HouseResource.HOUSES_REDIS_KEY, 0, -1);
             List<House> toReturn = new ArrayList<>();
             for (String houseJson : housesJson) {
-                toReturn.add(mapper.readValue(houseJson, House.class));
+                House house = mapper.readValue(houseJson, House.class);
+                if (house.getOwnerId().equals(id)) {
+                    toReturn.add(house);
+                }
             }
-            return toReturn;
+
+            if(startInt > toReturn.size())
+                return new ArrayList<>();
+
+            List<House> ret;
+            ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+            return ret;
+
         } catch (Exception e) {
             LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
         }
@@ -239,15 +259,17 @@ public class UserResource {
 
         List<House> toReturn = new ArrayList<>((int) houses.stream().count());
         for (HouseDao house : houses) {
-            toReturn.add(house.toHouse());
+            if (house.getOwnerId().equals(id))
+                toReturn.add(house.toHouse());
         }
 
-        if(startInt + lenInt > toReturn.size())
-            return toReturn.subList(startInt, toReturn.size()-1);
         if(startInt > toReturn.size())
             return new ArrayList<>();
 
-        return toReturn.subList(startInt, startInt + lenInt -1);
+        List<House> ret;
+        ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+        return ret;
     }
 
     //list rentals
@@ -294,7 +316,6 @@ public class UserResource {
                 if(startInt > toReturn.size())
                     return new ArrayList<>();
 
-                //return sublist
                 List<Rental> ret;
                 ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
 
@@ -311,7 +332,8 @@ public class UserResource {
         List<Rental> toReturn = new ArrayList<>((int) rentals.stream().count());
 
         for (RentalDao rental : rentals) {
-            toReturn.add(rental.toRental());
+            if (rental.getRenterId().equals(id))
+                toReturn.add(rental.toRental());
         }
 
         LogResource.writeLine("    returning from cosmos");
@@ -319,7 +341,6 @@ public class UserResource {
         if(startInt > toReturn.size())
             return new ArrayList<>();
 
-        //return sublist
         List<Rental> ret;
         ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
 

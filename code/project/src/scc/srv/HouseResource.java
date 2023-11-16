@@ -25,6 +25,8 @@ public class HouseResource {
     public static final String MOST_RECENT_HOUSES_REDIS_KEY = "MostRecentHouses";
     public static final String NUM_HOUSES = "NumHouses";
     public static final String NUM_RECENT_HOUSES = "NumRecentHouses";
+    public static final String NUM_AVAILABILITIES = "numAvailabilities";
+    public static final String AVAILABILITIES = "availabilities";
 
     //new house given session cookie and house object
     @POST
@@ -162,18 +164,26 @@ public class HouseResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<House> listHouses(@QueryParam("initDate") String startTime, @QueryParam("endDate") String endTime, @QueryParam("location") String location,
-                                  @QueryParam("st") String startIndex, @QueryParam("len") String lenght, @QueryParam("discount") String discount) {
+                                  @QueryParam("st") String start, @QueryParam("len") String length, @QueryParam("discount") String discount) {
         LogResource.writeLine("List houses");
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
 
-        int startIndexInt = -1;
-        int lengthInt = 0;
-        if(startIndex != null)
-            startIndexInt = Integer.parseInt(startIndex);
-        if(lenght != null)
-            lengthInt = Integer.parseInt(lenght);
+        int startInt = 0;
+        int lenInt = Integer.MAX_VALUE/2;
 
+        if (start != null ){
+            startInt = Integer.parseInt(start);
+        }
+
+        if (length != null){
+            lenInt = Integer.parseInt(length);
+
+        }
+
+        if (lenInt == 0){
+            return new ArrayList<>();
+        }
 
         //parse start time
         SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy"); //todo check if this is the right format
@@ -189,11 +199,71 @@ public class HouseResource {
         }
 
 
+
+        //redis
+        if(RedisCache.REDIS_ENABLED) {
+            try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+                ObjectMapper mapper = new ObjectMapper();
+                List<String> housesJson = jedis.lrange(HOUSES_REDIS_KEY, 0, -1);
+                List<House> toReturn = new ArrayList<>();
+
+                for (String houseJson : housesJson) {
+                    House house = mapper.readValue(houseJson, House.class);
+                    if(discount != null && discount.equals("1"))
+                        if(house.getDiscountMonth() != null)
+                            toReturn.add(house);
+                    else  toReturn.add(house);
+                }
+
+                //get all availabilites redis
+                List<String> availabilitiesJson = jedis.lrange(AVAILABILITIES, 0, -1);
+                List<Availabity> allAvailabilities = new ArrayList<>();
+                for (String availabilityJson : availabilitiesJson) {
+                    Availabity availability = mapper.readValue(availabilityJson, Availabity.class);
+                    allAvailabilities.add(availability);
+                }
+
+                if((startTime != null && endTime != null) && location != null){
+                    toReturn = toReturn.stream().filter(house -> house.getLocation().equals(location)
+                            && allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(house.getId())
+                                    && startTime.compareTo(availabityDao.getFromDate()) >= 0
+                                    && endTime.compareTo(availabityDao.getToDate()) <= 0
+                            )
+                            .count() > 0 ).toList();
+                } else if (startTime != null && endTime != null) {
+                    toReturn = toReturn.stream().filter(houseDao -> allAvailabilities.stream().filter(availabityDao -> availabityDao.getHouseId().equals(houseDao.getId())
+                                    && startTime.compareTo(availabityDao.getFromDate()) >= 0
+                                    && endTime.compareTo(availabityDao.getToDate()) <= 0
+                            )
+                            .count() > 0 ).toList();
+                } else if (location != null) {
+                    toReturn = toReturn.stream().filter(house -> house.getLocation().equals(location)).toList();
+                }
+
+                LogResource.writeLine("    returning from cache");
+
+                if(discount!= null && discount.equals("1"))
+                    toReturn = toReturn.stream().filter(house -> house.getDiscountMonth() != null).toList();
+
+                if(startInt > toReturn.size())
+                    return new ArrayList<>();
+
+                List<House> ret;
+                ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+                return ret;
+
+            } catch (Exception e) {
+                LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
+            }
+        }
+
+        //cosmos
         CosmosPagedIterable<HouseDao> houses = null;
         if((startTime != null && endTime != null) && location != null){
             LogResource.writeLine("houses by location and time");
             return db.getHousesByLocationAndTime(location, startTime, endTime).stream().map(HouseDao::toHouse).toList();
-        } else if (startTime != null || endTime != null) {
+        } else if (startTime != null && endTime != null) {
             LogResource.writeLine("houses by time");
             return db.getHousesByTime(startTime, endTime).stream().map(HouseDao::toHouse).toList();
         } else if (location != null) {
@@ -208,24 +278,35 @@ public class HouseResource {
             throw new WebApplicationException("Bad request", Response.Status.BAD_REQUEST);
 
 
-        List<House> ret = new ArrayList<>();
-
-        if(discount != null && discount.equals("1")) {
-            for (HouseDao h : houses) {
+        List<House> toReturn = new ArrayList<>();
+        for (HouseDao h : houses) {
+            if(discount != null && discount.equals("1"))
                 if (h.getDiscountMonth() != null)
-                    ret.add(new House(h));
-            }
-        } else {
-            for (HouseDao h : houses)
-                ret.add(new House(h));
+                    toReturn.add(new House(h));
+                else
+                    toReturn.add(h.toHouse());
         }
 
-        for (HouseDao h : houses)
-            ret.add(new House(h));
+
+        List<House> ret = new ArrayList<>();
 
 
+        for (HouseDao h : houses) {
+            if(discount != null && discount.equals("1"))
+                if (h.getDiscountMonth() != null)
+                    ret.add(new House(h));
+                else
+                    ret.add(h.toHouse());
+        }
 
-        return ret.subList(startIndexInt, startIndexInt + lengthInt-1);
+        if(startInt > toReturn.size())
+            return new ArrayList<>();
+
+
+        ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+        return ret;
+
     }
 
 
@@ -341,6 +422,9 @@ public class HouseResource {
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
             ObjectMapper mapper = new ObjectMapper();
             jedis.set("availability:"+availabity.getId(), mapper.writeValueAsString(availabity));
+            jedis.lpush(AVAILABILITIES, mapper.writeValueAsString(availabity));
+            jedis.incr(NUM_AVAILABILITIES);
+
         } catch (Exception e){
             e.printStackTrace();
         }
