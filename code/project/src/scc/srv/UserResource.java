@@ -341,5 +341,38 @@ public class UserResource {
 
     }
 
+    // list user's houses
+    @GET
+    @Path("/{id}/houses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public static List<House> listHouses(@PathParam("id") String id) {
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        //list houses from cache
+        try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+            ObjectMapper mapper = new ObjectMapper();
+            List<String> housesJson = jedis.lrange("houses:" + id, 0, -1);
+            List<House> toReturn = new ArrayList<>();
+            for (String houseJson : housesJson) {
+                toReturn.add(mapper.readValue(houseJson, House.class));
+            }
+            return toReturn;
+        } catch (Exception e) {
+            LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
+        }
+        //check if user exists
+        if(db.getUserById(id).iterator().hasNext() == false)
+            throw new NotFoundException("User not found");
+
+        CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);
+
+        List<House> toReturn = new ArrayList<>();
+        for (HouseDao house : houses) {
+            toReturn.add(house.toHouse());
+        }
+        return toReturn;
+    }
+
+
 
 }
