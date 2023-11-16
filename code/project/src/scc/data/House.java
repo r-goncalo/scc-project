@@ -9,15 +9,17 @@ public class House {
     private String location;
     private String description;
     private List<String> photoIds;
+    private String discountMonth;
 
 
-    public House(String id, String ownerId, String name, String location, String description, List<String> photos) {
+    public House(String id, String ownerId, String name, String location, String description, List<String> photos, String discountMonth) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
         this.location = location;
         this.description = description;
         this.photoIds = photos;
+        this.discountMonth = discountMonth;
     }
 
     public String getOwnerId() {
@@ -25,13 +27,16 @@ public class House {
     }
 
     public House(HouseDao house) {
-        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds());
+        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getDiscountMonth());
     }
 
     public House(){
 
     }
 
+    public String getDiscountMonth() {
+        return discountMonth;
+    }
 
     public String getId() {
         return id;

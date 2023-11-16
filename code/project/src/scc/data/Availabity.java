@@ -26,7 +26,7 @@ public class Availabity {
     }
 
     public Availabity(AvailabityDao availabity) {
-        this(availabity.getId(), availabity.getHouseId(), availabity.getFromDate(), availabity.getToDate(), availabity.getCost(), availabity.isDiscount());
+        this(availabity.getId(), availabity.getHouseId(), availabity.getFromDate(), availabity.getToDate(), availabity.getCost(), availabity.getDiscount());
     }
 
     public Availabity() {

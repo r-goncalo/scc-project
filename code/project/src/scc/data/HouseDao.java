@@ -12,14 +12,17 @@ public class HouseDao {
     private String location;
     private String description;
     private List<String> photoIds;
+    // discount month
+    private String discountMonth;
 
-    public HouseDao(String id, String ownerId, String name, String location, String description, List<String> photos) {
+    public HouseDao(String id, String ownerId, String name, String location, String description, List<String> photos, String discountMonth) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
         this.location = location;
         this.description = description;
         this.photoIds = photos;
+        this.discountMonth = discountMonth;
     }
 
     public House toHouse(){
@@ -27,7 +30,7 @@ public class HouseDao {
     }
 
     public HouseDao(House house) {
-        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds());
+        this(house.getId(), house.getOwnerId(), house.getName(), house.getLocation(), house.getDescription(), house.getPhotoIds(), house.getDiscountMonth());
     }
 
     public HouseDao(){
@@ -66,6 +69,9 @@ public class HouseDao {
         return photoIds;
     }
 
+    public String getDiscountMonth() {
+        return discountMonth;
+    }
     // setters
 
     public void setOwnerId(String ownerId) {

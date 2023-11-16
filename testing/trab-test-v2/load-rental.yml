@@ -39,5 +39,5 @@ scenarios:
               period: "{{ toDate }}"  # assume rentals take place on a single month
               price: null
             afterResponse: "responseStatus"
-        count: 10
+        count: 20
         

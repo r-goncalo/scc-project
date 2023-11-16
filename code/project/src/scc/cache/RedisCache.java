@@ -13,6 +13,7 @@ public class RedisCache {
 
 	private static final String REDIS_HOST_NAME = System.getenv("REDIS_URL");
 	private static final String REDIS_KEY = System.getenv("REDIS_KEY");
+	public static final boolean REDIS_ENABLED = true;
 	private static JedisPool instance;
 	
 	public synchronized static JedisPool getCachePool() {

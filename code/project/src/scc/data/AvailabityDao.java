@@ -47,7 +47,7 @@ public class AvailabityDao {
         return cost;
     }
 
-    public double isDiscount() {
+    public double getDiscount() {
         return discount;
     }
 

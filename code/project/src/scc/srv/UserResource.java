@@ -17,6 +17,8 @@ import scc.utils.Hash;
 
 import java.util.*;
 
+import static scc.srv.RentalResource.NUM_RENTALS;
+
 /**
  * Resource for managing users
  */
@@ -208,13 +210,19 @@ public class UserResource {
     @GET
     @Path("/{id}/houses")
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<House> listHouses(@PathParam("id") String id) {
+    public static List<House> listHouses(@PathParam("id") String id,@QueryParam("st") String start, @QueryParam("len") String lenght) {
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+        int startInt = 0;
+        int lenInt = -1;
+        if(start != null && lenght != null){
+            startInt = Integer.parseInt(start);
+            lenInt = Integer.parseInt(lenght);
+        }
 
         //list houses from cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
             ObjectMapper mapper = new ObjectMapper();
-            List<String> housesJson = jedis.lrange("houses:" + id, 0, -1);
+            List<String> housesJson = jedis.lrange("houses:" + id, startInt, startInt + lenInt - 1);
             List<House> toReturn = new ArrayList<>();
             for (String houseJson : housesJson) {
                 toReturn.add(mapper.readValue(houseJson, House.class));
@@ -229,11 +237,93 @@ public class UserResource {
 
         CosmosPagedIterable<HouseDao> houses = db.getHousesForUser(id);
 
-        List<House> toReturn = new ArrayList<>();
+        List<House> toReturn = new ArrayList<>((int) houses.stream().count());
         for (HouseDao house : houses) {
             toReturn.add(house.toHouse());
         }
-        return toReturn;
+
+        if(startInt + lenInt > toReturn.size())
+            return toReturn.subList(startInt, toReturn.size()-1);
+        if(startInt > toReturn.size())
+            return new ArrayList<>();
+
+        return toReturn.subList(startInt, startInt + lenInt -1);
+    }
+
+    //list rentals
+    @GET
+    @Path("/{id}/rentals")
+    @Produces(MediaType.APPLICATION_JSON)
+    public static List<Rental> listRentals(@PathParam("id") String id, @QueryParam("st") String start, @QueryParam("len") String length) {
+        LogResource.writeLine("\nUSER : LIST RENTALS : id = " + id);
+        CosmosDBLayer db = CosmosDBLayer.getInstance();
+        int startInt = 0;
+        int lenInt = Integer.MAX_VALUE/2;
+
+        if (start != null ){
+            startInt = Integer.parseInt(start);
+        }
+
+        if (length != null){
+            lenInt = Integer.parseInt(length);
+
+        }
+
+        if (lenInt == 0){
+            return new ArrayList<>();
+        }
+        //check if user exists
+        if(db.getUserById(id).iterator().hasNext() == false)
+            throw new NotFoundException("User not found");
+
+        if(RedisCache.REDIS_ENABLED) {
+            try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+                ObjectMapper mapper = new ObjectMapper();
+                List<String> rentalsJson = jedis.lrange(RentalResource.RENTALS_REDIS_KEY, 0, -1);
+                List<Rental> toReturn = new ArrayList<>();
+
+                for (String rentalJson : rentalsJson) {
+                    Rental rental = mapper.readValue(rentalJson, Rental.class);
+                    LogResource.writeLine("    in cache rental: " + rental.getId() + ", renterId = " + rental.getRenterId());
+                    if (rental.getRenterId().equals(id)) {
+                        toReturn.add(rental);
+                    }
+                }
+                LogResource.writeLine("    returning from cache");
+
+                if(startInt > toReturn.size())
+                    return new ArrayList<>();
+
+                //return sublist
+                List<Rental> ret;
+                ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+                return ret;
+
+            } catch (Exception e) {
+                LogResource.writeLine("    error when getting from cache: " + e.getClass() + ": " + e.getMessage());
+            }
+        }
+
+        CosmosPagedIterable<RentalDao> rentals = db.getRentalsForUser(id);
+
+        //return rentals starting at id and with lenght len
+        List<Rental> toReturn = new ArrayList<>((int) rentals.stream().count());
+
+        for (RentalDao rental : rentals) {
+            toReturn.add(rental.toRental());
+        }
+
+        LogResource.writeLine("    returning from cosmos");
+
+        if(startInt > toReturn.size())
+            return new ArrayList<>();
+
+        //return sublist
+        List<Rental> ret;
+        ret = toReturn.subList(startInt, Math.min(startInt + lenInt, toReturn.size()));
+
+        return ret;
     }
 
 

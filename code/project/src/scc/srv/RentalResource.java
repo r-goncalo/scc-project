@@ -27,8 +27,8 @@ public class RentalResource {
     private static final long MAX_RECENTE_RENTALS_IN_CACHE = 5;
     private static final String MOST_RECENT_RENTALS_REDIS_KEY = "MostRecentRentals";
     private static final String NUM_RECENT_RENTALS = "NumRecentRentals";
-    private static final String RENTALS_REDIS_KEY = "Rentals";
-    private static final String NUM_RENTALS = "NumRentals";
+    public static final String RENTALS_REDIS_KEY = "Rentals";
+    public static final String NUM_RENTALS = "NumRentals";
 
     @POST
     @Path("/")
@@ -80,14 +80,20 @@ public class RentalResource {
 
         // find if rental date is inside any availability period
         CosmosPagedIterable<AvailabityDao> availabilities = db.getAvailabilitiesForHouse(rental.getHouseId());
+        //get house
+        CosmosPagedIterable<HouseDao> house = db.getHouseById(rental.getHouseId());
         boolean isInsideAvailability = false;
         double price = 0;
+        boolean isDiscounted = false;
         for (AvailabityDao a : availabilities) {
             String startDate = a.getFromDate(),
                     endDate = a.getToDate();
             if (rental.getPeriod().compareTo(startDate) >= 0 && rental.getPeriod().compareTo(endDate) <= 0) {
                 isInsideAvailability = true;
-                price = a.getCost();
+                String discountMonth= house.iterator().next().getDiscountMonth();
+                if (discountMonth != null)
+                    isDiscounted = discountMonth.equals(rental.getPeriod());
+                price = a.getCost() * (isDiscounted ? a.getDiscount() : 1);
                 break;
             }
         }

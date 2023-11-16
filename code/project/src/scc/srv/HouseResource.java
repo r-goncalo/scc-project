@@ -161,19 +161,36 @@ public class HouseResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<House> listHouses(@QueryParam("st") String startTime, @QueryParam("et") String endTime, @QueryParam("location") String location) {
+    public List<House> listHouses(@QueryParam("initDate") String startTime, @QueryParam("endDate") String endTime, @QueryParam("location") String location,
+                                  @QueryParam("st") String startIndex, @QueryParam("len") String lenght, @QueryParam("discount") String discount) {
         LogResource.writeLine("List houses");
         Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        int startIndexInt = -1;
+        int lengthInt = 0;
+        if(startIndex != null)
+            startIndexInt = Integer.parseInt(startIndex);
+        if(lenght != null)
+            lengthInt = Integer.parseInt(lenght);
 
 
         //parse start time
         SimpleDateFormat sdf = new SimpleDateFormat("MM-yyyy"); //todo check if this is the right format
         //check if string is in specified format
+        try {
+            if(startTime != null)
+                sdf.parse(startTime);
+            if(endTime != null)
+                sdf.parse(endTime);
+        } catch (ParseException e) {
+            LogResource.writeLine("Invalid date format");
+            throw new WebApplicationException("Invalid date format", Response.Status.BAD_REQUEST);
+        }
 
 
         CosmosPagedIterable<HouseDao> houses = null;
-        if((startTime != null || endTime != null) && location != null){
+        if((startTime != null && endTime != null) && location != null){
             LogResource.writeLine("houses by location and time");
             return db.getHousesByLocationAndTime(location, startTime, endTime).stream().map(HouseDao::toHouse).toList();
         } else if (startTime != null || endTime != null) {
@@ -187,13 +204,28 @@ public class HouseResource {
             houses = db.getHouses();
         }
 
+        if(houses == null)
+            throw new WebApplicationException("Bad request", Response.Status.BAD_REQUEST);
+
 
         List<House> ret = new ArrayList<>();
+
+        if(discount != null && discount.equals("1")) {
+            for (HouseDao h : houses) {
+                if (h.getDiscountMonth() != null)
+                    ret.add(new House(h));
+            }
+        } else {
+            for (HouseDao h : houses)
+                ret.add(new House(h));
+        }
 
         for (HouseDao h : houses)
             ret.add(new House(h));
 
-        return ret;
+
+
+        return ret.subList(startIndexInt, startIndexInt + lengthInt-1);
     }
 
 

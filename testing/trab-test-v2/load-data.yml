@@ -57,6 +57,7 @@ scenarios:
           - function: "genNewHouse"         
           - post:
               url: "/house"
+              beforeRequest: "getRandomDates"
               headers:
                 Content-Type: application/json
                 Accept: application/json
@@ -67,6 +68,7 @@ scenarios:
                 location: "{{ location }}"
                 description: "{{ description }}"
                 ownerId: "{{ userid }}"
+                discountMonth: "{{ toDate }}"
                 photoIds: [] #["{{ imageId }}"]
               afterResponse: "genNewHouseReply"
               capture: 
@@ -91,32 +93,32 @@ scenarios:
           count: 1
         count: 5
         # cria rentals
-      - loop:
-        - function: "selectUserAndHouse"
-        - post:
-            url: "/user/auth"
-            beforeRequest:
-              - "selectUser"
-              - "selectHouse"
-            headers:
-              Content-Type: application/json
-            json:
-              user: "{{ userid }}"
-              pwd: "{{ pwd }}"
-            afterResponse: "captureAuthCookie"
-        - post:
-            url: "/house/{{ houseid }}/rental"
-            beforeRequest: "getRandomDates"
-            headers:
-              Content-Type: application/json
-              Accept: application/json
-              Cookie: "{{ authTokenRenter }}"
-            json:
-              id: null
-              houseId: "{{ houseid }}"
-              renterId: "{{ userid }}"
-              period: "{{ toDate }}"  # assume rentals take place on a single month
-              price: null
-            afterResponse: "responseStatus"
-        count: 10
+      # - loop:
+      #   - function: "selectUserAndHouse"
+      #   - post:
+      #       url: "/user/auth"
+      #       beforeRequest:
+      #         - "selectUser"
+      #         - "selectHouse"
+      #       headers:
+      #         Content-Type: application/json
+      #       json:
+      #         user: "{{ userid }}"
+      #         pwd: "{{ pwd }}"
+      #       afterResponse: "captureAuthCookie"
+      #   - post:
+      #       url: "/house/{{ houseid }}/rental"
+      #       beforeRequest: "getRandomDates"
+      #       headers:
+      #         Content-Type: application/json
+      #         Accept: application/json
+      #         Cookie: "{{ authTokenRenter }}"
+      #       json:
+      #         id: null
+      #         houseId: "{{ houseid }}"
+      #         renterId: "{{ userid }}"
+      #         period: "{{ toDate }}"  # assume rentals take place on a single month
+      #         price: null
+      #       afterResponse: "responseStatus"
+      #   count: 10
         
