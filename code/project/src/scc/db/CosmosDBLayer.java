@@ -115,7 +115,7 @@ public class CosmosDBLayer {
 
 	public CosmosPagedIterable<UserDAO> getUserById( String id) {
 		init();
-		return users.queryItems("SELECT * FROM users WHERE users.id=\"" + id + "\"", new CosmosQueryRequestOptions(), UserDAO.class);
+		return users.queryItems("SELECT * FROM users WHERE users.id='" + id + "'", new CosmosQueryRequestOptions(), UserDAO.class);
 	}
 
 	public CosmosPagedIterable<UserDAO> getUsers() {
@@ -146,7 +146,7 @@ public class CosmosDBLayer {
 
 	public CosmosPagedIterable<HouseDao> getHouseById(String id) {
 		init();
-		return houses.queryItems("SELECT * FROM houses WHERE users.id=\"" + id + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
+		return houses.queryItems("SELECT * FROM houses WHERE houses.id=\"" + id + "\"", new CosmosQueryRequestOptions(), HouseDao.class);
 	}
 
 	public CosmosPagedIterable<HouseDao> getHouses() {

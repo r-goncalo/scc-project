@@ -26,6 +26,8 @@ public class UserResource {
 
     private static final String MOST_RECENT_USERS_REDIS_KEY = "mostRecentUsers";
     private static final String USERS_REDIS_KEY = "users";
+    private static final String NUM_USERS = "numUsers";
+
 
     public UserResource (){}
 
@@ -43,27 +45,32 @@ public class UserResource {
 
         LogResource.writeLine("\nUSER : CREATE USER : name: " + user.getName() + ", pwd = " + user.getPwd());
 
-        String id = "0:" + System.currentTimeMillis();
-        user.setId(id);
-        LogResource.writeLine("    Generated id: " + id);
-
-        Locale.setDefault(Locale.US);
         CosmosDBLayer db = CosmosDBLayer.getInstance();
+
+        //check if user already exists
+        if(db.getUserById(user.getId()).iterator().hasNext())
+            throw new WebApplicationException("User already exists", Response.Status.CONFLICT);
+
+        //chek if user id is not "Deleted User"
+        if(user.getId().equals("Deleted User"))
+            throw new WebApplicationException("User id cannot be \"Deleted User\"", Response.Status.CONFLICT);
+
 
         UserDAO u = new UserDAO(user);
         u.setPwd(Hash.of(user.getPwd()));
         db.putUser(u); //puts user in database
 
         //Note: maybe redis stuff should be in separate methods or even class
-
+        String id = u.getId();
         //we'll save the user in cache
         try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 
             ObjectMapper mapper = new ObjectMapper();
+            User userRedis = u.toUser();
+            jedis.set("user:"+id, mapper.writeValueAsString(userRedis)); //the index will be "user" + <that user's id>
 
-            jedis.set("user:"+id, mapper.writeValueAsString(u)); //the index will be "user" + <that user's id>
-
-            jedis.incr("NumUsers");
+            jedis.lpush(USERS_REDIS_KEY, mapper.writeValueAsString(userRedis));
+            jedis.incr(NUM_USERS);
 
         } catch (Exception e) {
             LogResource.writeLine("    error when putting in cache: " + e.getClass() + ": " + e.getMessage());
@@ -72,7 +79,6 @@ public class UserResource {
 
         LogResource.writeLine("    user created with success");
         return user;
-
     }
 
     //update user (not implemented)
@@ -297,24 +303,16 @@ public class UserResource {
     }
 
 
-    /**
-     *
-     * @param user a user with the relevant information (id, pwd)
-     *
-     * @return a session id cookie
-     */
     @POST
     @Path("/auth")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response auth(User user) throws InternalServerErrorException, NotAuthorizedException {
+    public static Response auth(Login userLogin) throws InternalServerErrorException, NotAuthorizedException {
 
+        LogResource.writeLine("\nUSER : AUTH: id = " + userLogin.getUser() + ", pwd = " + userLogin.getPwd());
 
-        LogResource.writeLine("\nUSER : AUTH: id = " + user.getId() + ", pwd = " + user.getPwd());
+        User userInDb = getUser(userLogin.getUser());
 
-        User userInDb = getUser(user.getId());
-
-        if(Hash.of(user.getPwd()).equals(userInDb.getPwd())){
-
+        if(Hash.of(userLogin.getPwd()).equals(userInDb.getPwd())){
             String uid = UUID.randomUUID().toString();
             NewCookie cookie = new NewCookie.Builder("scc:session")
                     .value(uid)
@@ -326,29 +324,20 @@ public class UserResource {
                     .build();
 
             try {
-
                 RedisCache.putSession(new Session(uid, userInDb.getId()));
-
             }catch(Exception e){
-
                 LogResource.writeLine("    Error saving session in cache: " + e.getClass() + ": " + e.getMessage());
                 throw new InternalServerErrorException("Error saving session");
-
-
             }
 
-            LogResource.writeLine("    Authenticated with success: (cookie = " + cookie.getValue() + ", userId = " + user.getId());
+            LogResource.writeLine("    Authenticated with success: (cookie = " + cookie.getValue() + ", userId = " + userLogin.getUser()+" )");
             return Response.ok().cookie(cookie).build();
 
         }
 
         LogResource.writeLine("    wrong password");
         throw new NotAuthorizedException("Incorrect login");
-
-
-
     }
-
 
     /**
      * Lists of most recent users
