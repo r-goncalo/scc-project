@@ -1,0 +1,95 @@
+config:
+  target: 'https://scc24appwesteurope59895.azurewebsites.net/rest'
+  plugins:
+    metrics-by-endpoint:
+      useOnlyRequestNames: true
+  processor: "./test-utils.js"
+  variables:
+     metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
+  phases:
+  - name: "Create users"    # Create users
+    duration: 1
+    arrivalCount: 1
+
+scenarios:
+  - name: 'Create users'
+    weight: 1
+    flow:
+      # create users just to have some in store
+      - loop:                            # let's create 950 users - loop ... count
+        - function: "genNewUser"         # Generate the needed information for the user
+        - post:
+            url: "/user"
+            headers:
+              Content-Type: application/json
+              Accept: application/json
+            json:
+              id: "{{ userid }}"
+              name: "{{ name }}"
+              pwd: "{{ pwd }}"
+              photoId: null #"{{ imageId }}"
+            afterResponse: "genNewUserReply"    # capture result and store in file
+        count: 10
+      - loop:
+          #creates user to post houses
+        - function: "genNewUser"         
+        - post:
+            url: "/user"
+            headers:
+              Content-Type: application/json
+              Accept: application/json
+            json:
+              id: "{{ userid }}"
+              name: "{{ name }}"
+              pwd: "{{ pwd }}"
+              photoId: null
+            afterResponse: "genNewUserReply"    
+        - post:
+            url: "/user/auth"
+            headers:
+              Content-Type: application/json
+            json:
+              user: "{{ userid }}"
+              pwd: "{{ pwd }}"
+            afterResponse: "captureAuthCookie"
+            # creates all the houses 
+        - loop:                            
+          - function: "genNewHouse"         
+          - post:
+              url: "/house"
+              beforeRequest: "getRandomDates"
+              headers:
+                Content-Type: application/json
+                Accept: application/json
+                Cookie: "{{ authToken }}"
+              json:
+                id: null
+                name: "{{ name }}"
+                location: "{{ location }}"
+                description: "{{ description }}"
+                ownerId: "{{ userid }}"
+                discountMonth: "{{ toDate }}"
+                photoIds: [] #["{{ imageId }}"]
+              afterResponse: "genNewHouseReply"
+              capture: 
+                json: "$.id"
+                as: "houseid"
+          # make house available
+          - post:                          
+              url: "/house/{{ houseid }}/available"
+              headers:
+                Content-Type: application/json
+                Accept: application/json
+                Cookie: "{{ authToken }}"
+              beforeRequest: "getRandomDates"
+              json:
+                id: "null"
+                houseId: "{{ houseid }}"
+                fromDate: "2023-12"
+                toDate:  "{{ toDate }}" #"2024-12"
+                cost: "{{ cost }}"
+                discount: "{{ discount }}"
+              afterResponse: "responseStatus"
+          count: 2
+        count: 5
+        

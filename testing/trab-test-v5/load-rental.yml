@@ -1,0 +1,43 @@
+config:
+  target: 'https://scc24appwesteurope59895.azurewebsites.net/rest'
+  plugins:
+    metrics-by-endpoint:
+      useOnlyRequestNames: true
+  processor: "./test-utils.js"
+  variables:
+     metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
+  phases:
+  - name: "Create users"    # Create users
+    duration: 1
+    arrivalCount: 1
+
+scenarios:
+  - name: 'Create users'
+    weight: 1
+    flow:
+      - loop:
+        - function: "selectUserAndHouse"
+        - post:
+            url: "/user/auth"
+            headers:
+              Content-Type: application/json
+            json:
+              user: "{{ userid }}"
+              pwd: "{{ pwd }}"
+            afterResponse: "captureAuthCookie"
+        - post:
+            url: "/house/{{ houseid }}/rental"
+            beforeRequest: "getRandomDates"
+            headers:
+              Content-Type: application/json
+              Accept: application/json
+              Cookie: "{{ authToken }}"
+            json:
+              id: null
+              houseId: "{{ houseid }}"
+              renterId: "{{ userid }}"
+              period: "{{ toDate }}"  # assume rentals take place on a single month
+              price: null
+            afterResponse: "responseStatus"
+        count: 20
+        

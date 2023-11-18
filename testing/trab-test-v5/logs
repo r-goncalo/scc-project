@@ -1,0 +1,129 @@
+HTTP/1.1 200 OK
+Content-Length: 6067
+Content-Type: application/json
+Date: Sat, 18 Nov 2023 18:34:55 GMT
+Set-Cookie: ARRAffinity=0f34364a857c918169464177f2476e3d9554db456587c0167bfe1f0496459f61;Path=/;HttpOnly;Secure;Domain=scc24appwesteurope59895.azurewebsites.net
+Set-Cookie: ARRAffinitySameSite=0f34364a857c918169464177f2476e3d9554db456587c0167bfe1f0496459f61;Path=/;HttpOnly;SameSite=None;Secure;Domain=scc24appwesteurope59895.azurewebsites.net
+Vary: accept-encoding
+
+Starting app...
+    App startup: region: westeurope
+    App startup: resources added
+
+USER : AUTH: id = Trenton.Skiles, pwd = pxO5W0z6Qg1N7Hu
+    Creating Cosmos Database Client...
+        Connection url: https://scc2459895.documents.azure.com:443/
+        Database key: GsTFGbGsH5AgqIdaJ2QW8uDaYrn4wdvE9MKmwsDETrSB3bcjAkRf6Gk5HdnRWYJLduWPV7joi3W5ACDbAyL5ng==
+        Database name: scc24db59895
+    Ended creation of Cosmos Database Client...
+    Creating Redis Client...
+        Redis host: rediswesteurope59895.redis.cache.windows.net
+        Redis key: aZGMk5BeDIVS0y9QFwSsoSTUmRiW3fl8AAzCaPl5r34=
+    Finished creating Redis Client...
+    cache hit getting user with id: Trenton.Skiles
+    Authenticated with success: (cookie = a0f277ca-bb96-46a8-8cee-8635dd8df841, userId = Trenton.Skiles )
+    new rental:scc.data.Rental@43ca6f15
+
+USER : AUTH: id = Nat.VonRueden, pwd = HNJ0LbGBZihcA_J
+    cache hit getting user with id: Nat.VonRueden
+    Authenticated with success: (cookie = a7897d46-c13f-4941-8962-029292ab4a6e, userId = Nat.VonRueden )
+    new rental:scc.data.Rental@1d7112b1
+
+USER : AUTH: id = Emmalee.Bogisich, pwd = eZNehsktw6FbB8c
+    cache hit getting user with id: Emmalee.Bogisich
+    Authenticated with success: (cookie = b78b30df-bdb8-4a39-8d4f-fec02a779198, userId = Emmalee.Bogisich )
+    new rental:scc.data.Rental@93e4434
+
+USER : AUTH: id = Cameron.Kling, pwd = RZVL2AZvlapaEic
+    cache hit getting user with id: Cameron.Kling
+    Authenticated with success: (cookie = 04c2839d-e66a-45fd-9630-601df2b33503, userId = Cameron.Kling )
+    new rental:scc.data.Rental@b15fd23
+    rental date is not inside any availability period
+
+USER : AUTH: id = Emmalee.Bogisich, pwd = eZNehsktw6FbB8c
+    cache hit getting user with id: Emmalee.Bogisich
+    Authenticated with success: (cookie = 8482a1f0-4cab-4de4-9920-d36d9205d73c, userId = Emmalee.Bogisich )
+    new rental:scc.data.Rental@3264c158
+    rental date is not inside any availability period
+
+USER : AUTH: id = Ressie.Ernser, pwd = 97vN7C4oncGQfP_
+    cache hit getting user with id: Ressie.Ernser
+    Authenticated with success: (cookie = de2640a8-808f-4453-ade8-ba22e1904859, userId = Ressie.Ernser )
+    new rental:scc.data.Rental@144992bb
+    rental date is not inside any availability period
+
+USER : AUTH: id = Ken.Moen, pwd = tOkeYde8fw9BtTy
+    cache hit getting user with id: Ken.Moen
+    Authenticated with success: (cookie = 1009968e-a1ac-4774-91a7-2e00a4708656, userId = Ken.Moen )
+    new rental:scc.data.Rental@760ae8e7
+
+USER : AUTH: id = Kraig.Labadie, pwd = rH3j0bHaBAXhQQm
+    cache hit getting user with id: Kraig.Labadie
+    Authenticated with success: (cookie = 308212b5-48df-4671-b321-380d1c1eba27, userId = Kraig.Labadie )
+    new rental:scc.data.Rental@e332b08
+    rental date is not inside any availability period
+
+USER : AUTH: id = Arthur.Mante, pwd = zNmfRUa0gEg5Zqe
+    cache hit getting user with id: Arthur.Mante
+    Authenticated with success: (cookie = b3297439-a192-46e3-b735-d10c5afc8cef, userId = Arthur.Mante )
+    new rental:scc.data.Rental@59ed7259
+
+USER : AUTH: id = Arch.Lockman, pwd = Qsom5Ng70Z5Nb6Y
+    cache hit getting user with id: Arch.Lockman
+    Authenticated with success: (cookie = 78fb13b5-f833-45ca-858b-bac9ffcd865b, userId = Arch.Lockman )
+    new rental:scc.data.Rental@22061290
+
+USER : AUTH: id = Ken.Moen, pwd = tOkeYde8fw9BtTy
+    cache hit getting user with id: Ken.Moen
+    Authenticated with success: (cookie = 2097895b-fbed-4117-87da-afee82498590, userId = Ken.Moen )
+    new rental:scc.data.Rental@599a60e6
+    rental date is not inside any availability period
+
+USER : AUTH: id = Adell.Adams, pwd = UvIr2IzxHoj5LwW
+    cache hit getting user with id: Adell.Adams
+    Authenticated with success: (cookie = 0f665eb1-d83c-48ef-b0db-520b315475f1, userId = Adell.Adams )
+    new rental:scc.data.Rental@32cea11
+
+USER : AUTH: id = Audrey.Kovacek, pwd = RBaiQmCfllfP1P2
+    cache hit getting user with id: Audrey.Kovacek
+    Authenticated with success: (cookie = a6b6e58a-9fc2-4e1f-992b-776d436c6afb, userId = Audrey.Kovacek )
+    new rental:scc.data.Rental@66b36cd8
+
+USER : AUTH: id = Lynn.Brown, pwd = XzmxpavBiUQzxeE
+    cache hit getting user with id: Lynn.Brown
+    Authenticated with success: (cookie = dc3f84fb-a97f-46d5-bcc4-b48b2d5dd2aa, userId = Lynn.Brown )
+    new rental:scc.data.Rental@2ca3d95f
+
+USER : AUTH: id = Monserrate.Little, pwd = 7fxW_KT2JipGyZs
+    cache hit getting user with id: Monserrate.Little
+    Authenticated with success: (cookie = c545427d-f4c0-4672-a61a-2fa03e53f842, userId = Monserrate.Little )
+    new rental:scc.data.Rental@7cc9980c
+    rental date is not inside any availability period
+
+USER : AUTH: id = Mikel.Greenholt, pwd = 33_xEJyx1DoJFG8
+    cache hit getting user with id: Mikel.Greenholt
+    Authenticated with success: (cookie = a1ff52c2-aaf2-4da7-b714-f3ab8debf342, userId = Mikel.Greenholt )
+    new rental:scc.data.Rental@298399ed
+
+USER : AUTH: id = Adell.Adams, pwd = UvIr2IzxHoj5LwW
+    cache hit getting user with id: Adell.Adams
+    Authenticated with success: (cookie = 9554fa42-06d5-4b6e-a447-155d5295c01d, userId = Adell.Adams )
+    new rental:scc.data.Rental@1aeb9225
+
+USER : AUTH: id = Katarina.Jast, pwd = c_xqnzxMqOdcTL7
+    cache hit getting user with id: Katarina.Jast
+    Authenticated with success: (cookie = ec0580e4-a30f-4fd1-9b75-af2cf261743b, userId = Katarina.Jast )
+    new rental:scc.data.Rental@2034f96e
+    rental date is not inside any availability period
+
+USER : AUTH: id = Adell.Adams, pwd = UvIr2IzxHoj5LwW
+    cache hit getting user with id: Adell.Adams
+    Authenticated with success: (cookie = c9b215ea-20b3-45cf-b978-b3a42c0130bd, userId = Adell.Adams )
+    new rental:scc.data.Rental@6c1bd1a9
+    rental date is not inside any availability period
+
+USER : AUTH: id = Jaylon.Murazik, pwd = 47VEi73s1771GFy
+    cache hit getting user with id: Jaylon.Murazik
+    Authenticated with success: (cookie = 6953cbfc-b593-44c8-9bf2-52a21b559ed5, userId = Jaylon.Murazik )
+    new rental:scc.data.Rental@299887a8
+    rental date is not inside any availability period
