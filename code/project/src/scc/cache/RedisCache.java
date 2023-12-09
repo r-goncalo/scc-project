@@ -33,6 +33,7 @@ public class RedisCache {
 		LogResource.writeLine("        Redis key: " + REDIS_KEY);
 		LogResource.writeLine("        Redis timeout: " + REDIS_TIMEOUT);
 
+
 		final JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxTotal(128);
 		poolConfig.setMaxTotal(128);
@@ -43,7 +44,8 @@ public class RedisCache {
 		poolConfig.setTestWhileIdle(true);
 		poolConfig.setNumTestsPerEvictionRun(3);
 		poolConfig.setBlockWhenExhausted(true);
-		instance = new JedisPool(poolConfig, REDIS_HOST_NAME, REDIS_PORT, REDIS_TIMEOUT, REDIS_KEY, true);
+
+		instance = new JedisPool(poolConfig, REDIS_HOST_NAME, REDIS_PORT, REDIS_TIMEOUT, REDIS_KEY, false);
 
 		LogResource.writeLine("    Finished creating Redis Client...");
 
