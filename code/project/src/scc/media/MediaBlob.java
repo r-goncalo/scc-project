@@ -21,7 +21,7 @@ public class MediaBlob implements MediaInterface {
     public MediaBlob() {}
 
 
-    public String upload(String key, byte[] contents) {
+    public void upload(String key, byte[] contents) {
 
             BinaryData data = BinaryData.fromBytes(contents);
 
@@ -36,11 +36,6 @@ public class MediaBlob implements MediaInterface {
 
             // Upload contents from BinaryData (check documentation for other alternatives)
             blob.upload(data);
-
-
-
-        return key;
-
     }
 
 

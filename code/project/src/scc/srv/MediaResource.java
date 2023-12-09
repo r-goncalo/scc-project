@@ -87,7 +87,7 @@ public class MediaResource
 	public List<String> list() {
 
 		LogResource.writeLine("MEDIA : LIST");
-		
+
 		return  BlobStorage.getInstance().list();
 
 	}

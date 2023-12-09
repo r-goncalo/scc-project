@@ -7,7 +7,8 @@ public class BlobStorage {
 
     public static MediaInterface getInstance(){
 
-        return new MediaBlob();
+        return new VolumeSystem();
+        //return new MediaBlob();
 
     }
 
