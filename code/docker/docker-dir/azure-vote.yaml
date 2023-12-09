@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scc2324-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scc2324-app
+  template:
+    metadata:
+      labels:
+        app: scc2324-app
+    spec:
+      nodeSelector:
+          "kubernetes.io/os": linux
+      containers:
+      - name: scc2324-app
+        image: rgoncalo/scc2324
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256M
+        env:
+          - name: BlobStoreConnection
+            value: "DefaultEndpointsProtocol=https;AccountName=sccstwesteurope60519;AccountKey=CpUJunbeM2pfVDXCz4czUjmpQ/TDSuRg2VO3yN0gtvl6n8miRC4w1GpQtzVKpHcVCLCTNvdF15ZV+AStB8SBWg==;EndpointSuffix=core.windows.net"
+          - name: COSMOSDB_KEY
+            value: "3H167TuvbDEU9nXBYdHu3K4UH0XUE5ivFR6xJcbxJUpb9ZaCEZ3QsmtZ1VQyZ8pvmVgybsVj0purACDb70edJg=="
+          - name: COSMOSDB_URL
+            value: "https://scc2460519.documents.azure.com:443/"
+          - name: COSMOSDB_DATABASE
+            value: "scc24db60519"
+          - name: AzureCosmosDBConnection
+            value: "AccountEndpoint=https://scc2460519.documents.azure.com:443/;AccountKey=sNr6sveFhPUpNMMK4vuBKIFgEmhCoKZA2bjVCeIxmfGeKDdTpCbflNjXlPK2c7wdEwFxvkwiB2dXACDbwABKJQ==;"
+          - name: REDIS_URL
+            value: "redis"
+          - name: REDIS_PORT
+            value: "6379"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scc2324-app
+spec:
+  selector:
+    app: scc2324-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: redis
+        image: redis
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        ports:
+        - containerPort: 6379
+          name: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  ports:
+    - port: 6379
+  selector:
+    app: redis
+

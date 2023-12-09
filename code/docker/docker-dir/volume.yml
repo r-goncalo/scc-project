@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: azure-managed-disk
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: azurefile
+  resources:
+    requests:
+      storage: 1Gi
+  containers:
+    - name: ...
+      image: ...
+    volumeMounts:
+    - mountPath: "/mnt/vol"
+      name: mediavolume
+  volumes:
+    - name: mediavolume
+      persistentVolumeClaim:
+        claimName: azure-managed-disk

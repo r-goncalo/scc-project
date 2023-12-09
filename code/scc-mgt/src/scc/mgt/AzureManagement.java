@@ -51,7 +51,8 @@ public class AzureManagement {
 
 	static final String[] cosmosDBCollections= { "users", "houses", "rentals", "questions", "availabilities"};
 
-	static final Region[] REGIONS = new Region[] { Region.EUROPE_WEST, Region.EUROPE_NORTH}; // Define the regions to deploy resources here
+	//static final Region[] REGIONS = new Region[] { Region.EUROPE_WEST, Region.EUROPE_NORTH}; // Define the regions to deploy resources here
+	static final Region[] REGIONS = new Region[] { Region.EUROPE_WEST }; // Define the regions to deploy resources here
 	//Region.EUROPE_WEST.name() == westeurope
 
 
