@@ -1,8 +1,6 @@
 package scc.media;
 
-import scc.srv.MediaResource;
-
-public class BlobStorage {
+public class MediaStorage {
 
 
     public static MediaInterface getInstance(){

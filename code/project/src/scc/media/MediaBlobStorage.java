@@ -5,20 +5,16 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlobItem;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-import scc.srv.LogResource;
-import scc.utils.Hash;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediaBlob implements MediaInterface {
+public class MediaBlobStorage implements MediaInterface {
 
     private static final String CONTAINER_NAME = "media";
     public String STORAGE_CONNECT_STRING = System.getenv("BlobStoreConnection");
 
-    public MediaBlob() {}
+    public MediaBlobStorage() {}
 
 
     public void upload(String key, byte[] contents) {

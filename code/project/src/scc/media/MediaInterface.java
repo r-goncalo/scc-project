@@ -16,7 +16,7 @@ public interface MediaInterface {
 
     public byte[] download(String id) throws IOException;
 
-    public List<String> list();
+    public List<String> list() throws Exception;
 
 
 }

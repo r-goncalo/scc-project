@@ -1,20 +1,11 @@
 package scc.srv;
 
-import com.azure.core.util.BinaryData;
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.storage.blob.models.BlobItem;
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import jakarta.ws.rs.*;
-import scc.media.BlobStorage;
+import scc.media.MediaStorage;
 import scc.utils.Hash;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import jakarta.ws.rs.core.MediaType;
 
@@ -45,7 +36,7 @@ public class MediaResource
 
 		try {
 
-			BlobStorage.getInstance().upload(key, contents);
+			MediaStorage.getInstance().upload(key, contents);
 
 			LogResource.writeLine("    File uploaded");
 
@@ -72,11 +63,22 @@ public class MediaResource
 
 		LogResource.writeLine("MEDIA : DOWNLOAD : id = " + id);
 
-		byte[] arr = BlobStorage.getInstance().download(id);
+		try {
 
-		System.out.println( "Blob size : " + arr.length);
+			byte[] arr = MediaStorage.getInstance().download(id);
 
-		return arr;
+			LogResource.writeLine( "     Downloaded file, size : " + arr.length);
+
+			return arr;
+
+
+		} catch( Exception e) {
+
+			LogResource.writeLine("   Error Downloading: " + e.getMessage());
+
+			throw e;
+		}
+
 	}
 
 	/**
@@ -85,11 +87,21 @@ public class MediaResource
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<String> list() {
+	public List<String> list() throws Exception {
 
 		LogResource.writeLine("MEDIA : LIST");
 
-		return  BlobStorage.getInstance().list();
+		try {
+
+			return MediaStorage.getInstance().list();
+
+		} catch(Exception e){
+
+			LogResource.writeLine("   Error getting list: " + e.getMessage());
+
+			throw e;
+
+		}
 
 	}
 }

@@ -18,7 +18,7 @@ public class VolumeSystem implements MediaInterface{
     @Override
     public void upload(String key, byte[] contents) throws IOException {
 
-        String path = VOLUME_PATH + key;
+        String path = VOLUME_PATH + "/" +  key;
         LogResource.writeLine("    writing file in path: " + path);
         Files.write(Path.of(path), contents);
 
@@ -27,7 +27,7 @@ public class VolumeSystem implements MediaInterface{
     @Override
     public byte[] download(String id) throws IOException {
 
-        String path = VOLUME_PATH + id;
+        String path = VOLUME_PATH  + "/" +   id;
         LogResource.writeLine("    reading file in path: " + path);
 
         return Files.readAllBytes(Path.of(path));
@@ -35,10 +35,16 @@ public class VolumeSystem implements MediaInterface{
     }
 
     @Override
-    public List<String> list() {
+    public List<String> list() throws Exception {
 
-        File folder = new File("VOLUME_PATH");
+        LogResource.writeLine("    reading files in path: " + VOLUME_PATH);
+
+        File folder = new File(VOLUME_PATH);
+
         File[] listOfFiles = folder.listFiles();
+
+        if(listOfFiles == null)
+            throw new Exception("Is not path of folder");
 
         List<String> toReturn = new ArrayList<>(listOfFiles.length);
 
