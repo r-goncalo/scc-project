@@ -16,7 +16,7 @@ import java.util.List;
 public class MediaBlob implements MediaInterface {
 
     private static final String CONTAINER_NAME = "media";
-    String STORAGE_CONNECT_STRING = System.getenv("BlobStoreConnection");
+    public String STORAGE_CONNECT_STRING = System.getenv("BlobStoreConnection");
 
     public MediaBlob() {}
 

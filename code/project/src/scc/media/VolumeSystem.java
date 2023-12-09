@@ -1,5 +1,7 @@
 package scc.media;
 
+import scc.srv.LogResource;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,21 +18,26 @@ public class VolumeSystem implements MediaInterface{
     @Override
     public void upload(String key, byte[] contents) throws IOException {
 
-        Files.write(Path.of(VOLUME_PATH), contents);
+        String path = VOLUME_PATH + key;
+        LogResource.writeLine("    writing file in path: " + path);
+        Files.write(Path.of(path), contents);
 
     }
 
     @Override
     public byte[] download(String id) throws IOException {
 
-        return Files.readAllBytes(Path.of(VOLUME_PATH));
+        String path = VOLUME_PATH + id;
+        LogResource.writeLine("    reading file in path: " + path);
+
+        return Files.readAllBytes(Path.of(path));
 
     }
 
     @Override
     public List<String> list() {
 
-        File folder = new File("your/path");
+        File folder = new File("VOLUME_PATH");
         File[] listOfFiles = folder.listFiles();
 
         List<String> toReturn = new ArrayList<>(listOfFiles.length);
@@ -42,6 +49,6 @@ public class VolumeSystem implements MediaInterface{
         }
 
         return toReturn;
-        
+
     }
 }

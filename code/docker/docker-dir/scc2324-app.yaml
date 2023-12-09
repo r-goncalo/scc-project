@@ -48,6 +48,9 @@ spec:
           - name: REDIS_TIMEOUT
             value: "10000"
 
+          - name: VOLUME_PATH
+            value: "/mnt/vol"
+
 ---
 apiVersion: v1
 kind: Service

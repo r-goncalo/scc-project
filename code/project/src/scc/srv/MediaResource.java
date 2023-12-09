@@ -10,6 +10,7 @@ import jakarta.ws.rs.*;
 import scc.media.BlobStorage;
 import scc.utils.Hash;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ public class MediaResource
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String upload(byte[] contents) {
+	public String upload(byte[] contents) throws IOException {
 
 		String key = Hash.of(contents);
 
@@ -67,7 +68,7 @@ public class MediaResource
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public byte[] download(@PathParam("id") String id) {
+	public byte[] download(@PathParam("id") String id) throws IOException {
 
 		LogResource.writeLine("MEDIA : DOWNLOAD : id = " + id);
 
