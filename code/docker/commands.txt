@@ -96,6 +96,10 @@ Deploy an application:
 
     kubectl apply -f azure-vote.yaml
 
+Delee stuff:
+
+    kubectl delete service scc2324-app
+
 Check the application services:
 
     kubectl get services
