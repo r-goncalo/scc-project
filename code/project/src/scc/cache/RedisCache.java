@@ -16,6 +16,7 @@ public class RedisCache {
 
 	private static final String REDIS_HOST_NAME = System.getenv("REDIS_URL");
 	private static final String REDIS_KEY = System.getenv("REDIS_KEY");
+	private static final int REDIS_PORT = Integer.parseInt(System.getenv("REDIS_PORT"));
 	public static final boolean REDIS_ENABLED = true;
 
 	private static JedisPool instance;
@@ -27,9 +28,11 @@ public class RedisCache {
 
 		LogResource.writeLine("    Creating Redis Client...");
 		LogResource.writeLine("        Redis host: " + REDIS_HOST_NAME);
+		LogResource.writeLine("        Redis port: " + REDIS_PORT);
 		LogResource.writeLine("        Redis key: " + REDIS_KEY);
 
 		final JedisPoolConfig poolConfig = new JedisPoolConfig();
+		poolConfig.setMaxTotal(128);
 		poolConfig.setMaxTotal(128);
 		poolConfig.setMaxIdle(128);
 		poolConfig.setMinIdle(16);
@@ -38,7 +41,7 @@ public class RedisCache {
 		poolConfig.setTestWhileIdle(true);
 		poolConfig.setNumTestsPerEvictionRun(3);
 		poolConfig.setBlockWhenExhausted(true);
-		instance = new JedisPool(poolConfig, REDIS_HOST_NAME, 6380, 1000, REDIS_KEY, true);
+		instance = new JedisPool(poolConfig, REDIS_HOST_NAME, REDIS_PORT, 1000, REDIS_KEY, true);
 
 		LogResource.writeLine("    Finished creating Redis Client...");
 

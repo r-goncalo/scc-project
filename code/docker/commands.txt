@@ -100,20 +100,23 @@ Check the application services:
 
     kubectl get services
 
-NAME               TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
-azure-vote-back    ClusterIP      10.0.183.205   <none>         6379/TCP       28m
-azure-vote-front   LoadBalancer   10.0.208.255   20.76.79.160   80:30939/TCP   27m
-kubernetes         ClusterIP      10.0.0.1       <none>         443/TCP        48m
+NAME          TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)        AGE
+kubernetes    ClusterIP      10.0.0.1       <none>           443/TCP        2m6s
+redis         ClusterIP      10.0.176.32    <none>           6379/TCP       6s
+scc2324-app   LoadBalancer   10.0.240.193   20.101.226.207   80:32074/TCP   22s
 
-Note the IP and the port
+
+Note that the port of the app is 80
 
 Get the application pods:
 
     kubectl get pods
 
-NAME                                READY   STATUS    RESTARTS   AGE
-azure-vote-back-5784db577b-xg5th    1/1     Running   0          27m
-azure-vote-front-79449f4cc5-rb6dc   1/1     Running   0          27m
+NAME                          READY   STATUS             RESTARTS   AGE
+redis-55f6f94f89-hv6qf        1/1     Running            0          2m50s
+scc2324-app-cd689466f-gsdsd   0/1     ImagePullBackOff   0          3m6s
+
+Note: Status ImagePullBackOff means there was an error getting the image
 
 Stream the logs from one pod:
 

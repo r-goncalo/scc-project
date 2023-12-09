@@ -16,7 +16,7 @@ spec:
           "kubernetes.io/os": linux
       containers:
       - name: scc2324-app
-        image: rgoncalo/scc2324
+        image: rgoncalo/scc2324-app
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -42,6 +42,8 @@ spec:
             value: "redis"
           - name: REDIS_PORT
             value: "6379"
+          - name: REGION_NAME
+            value: "westeurope"
 ---
 apiVersion: v1
 kind: Service
@@ -55,40 +57,4 @@ spec:
       port: 80
       targetPort: 8080
   type: LoadBalancer
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: redis
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: redis
-  template:
-    metadata:
-      labels:
-        app: redis
-    spec:
-      nodeSelector:
-        "kubernetes.io/os": linux
-      containers:
-      - name: redis
-        image: redis
-        env:
-        - name: ALLOW_EMPTY_PASSWORD
-          value: "yes"
-        ports:
-        - containerPort: 6379
-          name: redis
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis
-spec:
-  ports:
-    - port: 6379
-  selector:
-    app: redis
 
