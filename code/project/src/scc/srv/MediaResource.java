@@ -5,7 +5,9 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlobItem;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import jakarta.ws.rs.*;
+import scc.media.BlobStorage;
 import scc.utils.Hash;
 
 import java.util.ArrayList;
@@ -41,19 +43,8 @@ public class MediaResource
 		LogResource.writeLine("MEDIA : UPLOAD : id(hash) = " + key);
 
 		try {
-			BinaryData data = BinaryData.fromBytes(contents);
 
-			// Get container client
-			BlobContainerClient containerClient = new BlobContainerClientBuilder()
-					.connectionString(STORAGE_CONNECT_STRING)
-					.containerName(CONTAINER_NAME)
-					.buildClient();
-
-			// Get client to blob
-			BlobClient blob = containerClient.getBlobClient( key);
-
-			// Upload contents from BinaryData (check documentation for other alternatives)
-			blob.upload(data);
+			BlobStorage.getInstance().upload(key, contents);
 
 			LogResource.writeLine("    File uploaded");
 
@@ -80,19 +71,7 @@ public class MediaResource
 
 		LogResource.writeLine("MEDIA : DOWNLOAD : id = " + id);
 
-		// Get container client
-		BlobContainerClient containerClient = new BlobContainerClientBuilder()
-				.connectionString(STORAGE_CONNECT_STRING)
-				.containerName(CONTAINER_NAME)
-				.buildClient();
-
-		// Get client to blob
-		BlobClient blob = containerClient.getBlobClient( id);
-
-		// Download contents to BinaryData (check documentation for other alternatives)
-		BinaryData data = blob.downloadContent();
-
-		byte[] arr = data.toBytes();
+		byte[] arr = BlobStorage.getInstance().download(id);
 
 		System.out.println( "Blob size : " + arr.length);
 
@@ -107,23 +86,9 @@ public class MediaResource
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<String> list() {
 
-		List<String> toReturn = new ArrayList<>();
-
-		BlobContainerClient containerClient = new BlobContainerClientBuilder()
-				.connectionString(STORAGE_CONNECT_STRING)
-				.containerName(CONTAINER_NAME)
-				.buildClient();
-
-
-		Iterable<BlobItem> blobs =  containerClient.listBlobs();
-
-		for( BlobItem blob : blobs){
-
-			toReturn.add(blob.getName());
-
-		}
-
-		return toReturn;
+		LogResource.writeLine("MEDIA : LIST");
+		
+		return  BlobStorage.getInstance().list();
 
 	}
 }
