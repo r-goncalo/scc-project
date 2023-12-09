@@ -51,6 +51,14 @@ spec:
           - name: VOLUME_PATH
             value: "/mnt/vol"
 
+        volumeMounts:
+          - mountPath: "/mnt/vol"
+            name: mediavolume
+  
+      volumes:
+        - name: mediavolume
+          persistentVolumeClaim:
+            claimName: azure-managed-disk
 ---
 apiVersion: v1
 kind: Service

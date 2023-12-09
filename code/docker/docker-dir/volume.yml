@@ -15,15 +15,3 @@ spec:
     requests:
       storage: 1Gi
   
-  containers:
-    - name: mongodb
-      image: mongo:latest
-  
-  volumeMounts:
-    - mountPath: "/mnt/vol"
-      name: mediavolume
-  
-  volumes:
-    - name: mediavolume
-      persistentVolumeClaim:
-        claimName: azure-managed-disk
