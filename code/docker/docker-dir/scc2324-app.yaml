@@ -22,39 +22,33 @@ spec:
         - containerPort: 8080
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
             cpu: 250m
-            memory: 256M
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1024M
         env:
-          - name: BlobStoreConnection
-            value: "DefaultEndpointsProtocol=https;AccountName=sccstwesteurope60519;AccountKey=CpUJunbeM2pfVDXCz4czUjmpQ/TDSuRg2VO3yN0gtvl6n8miRC4w1GpQtzVKpHcVCLCTNvdF15ZV+AStB8SBWg==;EndpointSuffix=core.windows.net"
           - name: COSMOSDB_KEY
-            value: "3H167TuvbDEU9nXBYdHu3K4UH0XUE5ivFR6xJcbxJUpb9ZaCEZ3QsmtZ1VQyZ8pvmVgybsVj0purACDb70edJg=="
+            value: "jZq4w7g3u5Ean3pnSi31gKBittRpZ99K9Kjxue2ZQkslN27yhFvngbqYdVNfHOpNuKivk4wlQGRJACDbUi6Nyw=="
           - name: COSMOSDB_URL
-            value: "https://scc2460519.documents.azure.com:443/"
+            value: "https://scc2459895.documents.azure.com:443/"
           - name: COSMOSDB_DATABASE
-            value: "scc24db60519"
+            value: "scc24db59895"
           - name: AzureCosmosDBConnection
-            value: "AccountEndpoint=https://scc2460519.documents.azure.com:443/;AccountKey=sNr6sveFhPUpNMMK4vuBKIFgEmhCoKZA2bjVCeIxmfGeKDdTpCbflNjXlPK2c7wdEwFxvkwiB2dXACDbwABKJQ==;"
+            value: "AccountEndpoint=https://scc2459895.documents.azure.com:443/;AccountKey=jZq4w7g3u5Ean3pnSi31gKBittRpZ99K9Kjxue2ZQkslN27yhFvngbqYdVNfHOpNuKivk4wlQGRJACDbUi6Nyw=="
           - name: REDIS_URL
             value: "redis"
           - name: REDIS_PORT
             value: "6379"
           - name: REGION_NAME
             value: "westeurope"
-          
           - name: REDIS_TIMEOUT
             value: "10000"
-
           - name: VOLUME_PATH
             value: "/mnt/vol"
-
         volumeMounts:
           - mountPath: "/mnt/vol"
             name: mediavolume
-  
       volumes:
         - name: mediavolume
           persistentVolumeClaim:

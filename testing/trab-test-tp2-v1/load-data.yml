@@ -1,0 +1,120 @@
+config:
+  target: 'http://51.105.185.101/scc2324-project1-1.0/rest'
+  # plugins:
+  #   metrics-by-endpoint:
+  #     useOnlyRequestNames: true
+  processor: "./test-utils.js"
+  variables:
+     metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
+  phases:
+  - name: "Create users"    # Create users
+    duration: 1
+    arrivalCount: 1
+
+scenarios:
+  - name: 'Create users'
+    weight: 1
+    flow:
+      # create users just to have some in store
+      - loop:                            # let's create 950 users - loop ... count
+        - post:                          # First: post image for the user
+            url: "/media"
+            name: "POST:/media"
+            headers:
+              Content-Type: application/octet-stream
+              Accept: application/json
+            beforeRequest: "uploadImageBody"
+            capture: 
+              regexp: "(.+)"
+              as: "imageId"              # capture the reply as image id to be used in user creation        
+        - function: "genNewUser"         # Generate the needed information for the user
+        - post:
+            url: "/user"
+            name: "POST:/user"
+            headers:
+              Content-Type: application/json
+              Accept: application/json
+            json:
+              id: "{{ userid }}"
+              name: "{{ name }}"
+              pwd: "{{ pwd }}"
+              photoId: "{{ imageId }}"
+            afterResponse: "genNewUserReply"    # capture result and store in file
+        count: 5
+      - loop:
+        - post:                          # First: post image for the user
+            url: "/media"
+            name: "POST:/media"
+            headers:
+              Content-Type: application/octet-stream
+              Accept: application/json
+            beforeRequest: "uploadImageBody"
+            capture: 
+              regexp: "(.+)"
+              as: "imageId"              # capture the reply as image id to be used in user creation
+          #creates user to post houses
+        - function: "genNewUser"         
+        - post:
+            url: "/user"
+            name: "POST:/user"
+            headers:
+              Content-Type: application/json
+              Accept: application/json
+            json:
+              id: "{{ userid }}"
+              name: "{{ name }}"
+              pwd: "{{ pwd }}"
+              photoId: "{{ imageId }}"
+            afterResponse: "genNewUserReply"    
+        - post:
+            url: "/user/auth"
+            name: "POST:/user/auth"
+            headers:
+              Content-Type: application/json
+            json:
+              user: "{{ userid }}"
+              pwd: "{{ pwd }}"
+            afterResponse: "captureAuthCookie"
+            # creates all the houses 
+        - loop:                            
+          - function: "genNewHouse"
+            name: "POST:/house"
+          - post:
+              url: "/house"
+              beforeRequest: "getRandomDates"
+              headers:
+                Content-Type: application/json
+                Accept: application/json
+                Cookie: "{{ authToken }}"
+              json:
+                id: null
+                name: "{{ name }}"
+                location: "{{ location }}"
+                description: "{{ description }}"
+                ownerId: "{{ userid }}"
+                discountMonth: "{{ toDate }}"
+                photoIds: [] #["{{ imageId }}"]
+              afterResponse: "genNewHouseReply"
+              capture: 
+                json: "$.id"
+                as: "houseid"
+          # make house available
+          - post:                          
+              url: "/house/{{ houseid }}/available"
+              name: "POST:/house/{{ houseid }}/available"
+              headers:
+                Content-Type: application/json
+                Accept: application/json
+                Cookie: "{{ authToken }}"
+              beforeRequest: "getRandomDates"
+              json:
+                id: "null"
+                houseId: "{{ houseid }}"
+                fromDate: "2023-12"
+                toDate:  "{{ toDate }}" #"2024-12"
+                cost: "{{ cost }}"
+                discount: "{{ discount }}"
+              afterResponse: "responseStatus"
+          whileTrue: random20
+        count: 5
+        
